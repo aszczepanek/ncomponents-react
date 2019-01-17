@@ -1,0 +1,52 @@
+.n-datepicker-view {
+  border: 1px solid #aaa;
+  box-shadow: 5px 5px 5px 0px rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+  background-color: #fff;
+
+  button {
+    width: 100%;
+
+    &.selected {
+      font-weight: bold;
+      background-color: #4444ff;
+    }
+  }
+}
+
+.n-multiselect {
+  display: inline-block;
+  width: 300px;
+}
+
+.n-multiselect-view {
+  .selected {
+    background-color: #4444ff;
+    color: #fff;
+  }
+}
+
+.n-dropdown {
+  border: 1px solid #aaa;
+  box-shadow: 5px 5px 5px 0px rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+  background-color: #fff;
+  display: inline-block;
+  max-height: 40vh;
+  overflow: auto;
+
+  ul {
+    list-style: none;
+    padding: 0px;
+    margin: 0px;
+  }
+
+  li {
+    padding: 2px 5px;
+    cursor: pointer;
+
+    &:hover, &.focused {
+      background-color: #ddd;
+    }
+  }
+}
