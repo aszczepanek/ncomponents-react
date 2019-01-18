@@ -31,7 +31,6 @@ export class DatepickerInput<TModel> extends Component<
 
   popper?: Popper;
   datepicker?: DatepickerView;
-  datepickerOnSelectCallback: (value: Date) => void;
   inputRef = React.createRef<HTMLInputElement>();
 
   modelDateAdapter: DateAdapter;
@@ -52,7 +51,7 @@ export class DatepickerInput<TModel> extends Component<
     this.viewDateAdapter = dateAdapterFactory.getForFormat(
       this.props.viewFormat || DatepickerInput.defaultViewFormat
     );
-    this.datepickerOnSelectCallback = (value: Date) => this.onDateSelect(value);
+    this.onDateSelect = this.onDateSelect.bind(this);
     this.onFocus = this.onFocus.bind(this);
     this.onBlur = this.onBlur.bind(this);
     this.onChange = this.onChange.bind(this);
@@ -87,7 +86,14 @@ export class DatepickerInput<TModel> extends Component<
 
   renderDatepickerView() {
     const placement = this.props.placement || DatepickerInput.defaultPlacement;
-    return <DatepickerView placement={placement} value={this.props.value} />;
+    return (
+      <DatepickerView
+        placement={placement}
+        popoverRef={this.inputRef.current!}
+        value={this.props.value}
+        onSelect={this.onDateSelect}
+      />
+    );
   }
 
   onFocus(ev: React.FocusEvent<HTMLInputElement>) {

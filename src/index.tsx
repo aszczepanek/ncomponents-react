@@ -4,6 +4,9 @@ import 'bootstrap/dist/css/bootstrap.css';
 import './index.css';
 import App from './demo/App';
 import * as serviceWorker from './serviceWorker';
+import Popper from 'popper.js';
+
+Popper.Defaults.modifiers!.preventOverflow!.boundariesElement = 'window';
 
 ReactDOM.render(<App />, document.getElementById('root'));
 

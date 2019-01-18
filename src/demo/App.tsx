@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { BPanel } from "./BPanel";
 import { DatepickerInput } from "../lib";
 import "./App.css";
-import "./lib.styles.less";
+import "./lib.styles.scss";
 
 interface AppState {
   date: string | undefined;

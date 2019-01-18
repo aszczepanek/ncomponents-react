@@ -1,11 +1,12 @@
 import React, { Component } from "react";
-import { Placement } from "popper.js";
+import Popper, { Placement } from "popper.js";
 import { parseISO, formatDate } from "../utils/dateUtils";
 import { isDate } from "../utils/typeHelpers";
 import { stopPropagationAndPrevent } from "../utils/domEventHelpers";
 import { toClassNames } from "../utils/reactHelpers";
 
 interface DatepickerViewProps {
+  popoverRef: HTMLElement;
   placement: Placement;
   value?: any;
   onSelect?: (date: Date) => any;
@@ -30,6 +31,9 @@ export class DatepickerView extends Component<
   static nextMonthHtml = ">";
   static firstDayOfWeek = 1;
 
+  popper?: Popper;
+  rootEl = React.createRef<HTMLDivElement>();
+
   constructor(props: DatepickerViewProps) {
     super(props);
 
@@ -53,6 +57,7 @@ export class DatepickerView extends Component<
         onClick={stopPropagationAndPrevent}
         onMouseDown={stopPropagationAndPrevent}
         onWheel={this.onMouseWheel}
+        ref={this.rootEl}
       >
         <table>
           <thead>
@@ -99,6 +104,18 @@ export class DatepickerView extends Component<
         </tr>
       );
     });
+  }
+
+  componentDidMount() {
+    this.popper = new Popper(this.props.popoverRef, this.rootEl.current!, {
+      placement: this.props.placement
+    });
+  }
+
+  componentWillUnmount() {
+    if (this.popper) {
+      this.popper.destroy();
+    }
   }
 
   componentDidUpdate(prevProps: DatepickerViewProps) {
