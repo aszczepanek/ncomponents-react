@@ -3,6 +3,7 @@ import { BPanel } from "./BPanel";
 import { DatepickerInput } from "../lib";
 import "./App.css";
 import "./lib.styles.scss";
+import { SelectDemo } from "./SelectDemo";
 
 interface AppState {
   date: string | undefined;
@@ -28,6 +29,8 @@ class App extends Component<{}, AppState> {
             modelFormat="yyyy-MM-dd"
           />
         </BPanel>
+
+        <SelectDemo />
       </div>
     );
   }

@@ -2,6 +2,8 @@ export const selectUtils = {
   formatItemDisplay
 }
 
+export type SelectDisplayFn<T> = (item: T) => string;
+
 function formatItemDisplay(item: any, display?: any): string {
   if (typeof display !== 'function') {
     if (typeof item === 'string') return item;

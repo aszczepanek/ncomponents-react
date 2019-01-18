@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import Popper, { Placement } from "popper.js";
+import { Placement } from "popper.js";
 import { DateAdapter, dateAdapterFactory } from "../utils/dateAdapter";
 import { DatepickerView } from "./DatepickerView";
 import { isDate } from "../utils/typeHelpers";
@@ -29,7 +29,6 @@ export class DatepickerInput<TModel> extends Component<
   static defaultViewFormat = "yyyy-MM-dd";
   static defaultPlacement: Placement = "bottom-start";
 
-  popper?: Popper;
   datepicker?: DatepickerView;
   inputRef = React.createRef<HTMLInputElement>();
 
