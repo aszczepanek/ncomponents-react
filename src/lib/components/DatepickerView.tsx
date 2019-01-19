@@ -1,9 +1,10 @@
 import React, { Component } from "react";
+import ReactDOM from "react-dom";
 import Popper, { Placement } from "popper.js";
 import { parseISO, formatDate } from "../utils/dateUtils";
 import { isDate } from "../utils/typeHelpers";
 import { stopPropagationAndPrevent } from "../utils/domEventHelpers";
-import { toClassNames } from "../utils/reactHelpers";
+import { toClassNames, getBodyPortal } from "../utils/reactHelpers";
 
 interface DatepickerViewProps {
   popoverRef: HTMLElement;
@@ -47,6 +48,10 @@ export class DatepickerView extends Component<
   }
 
   render() {
+    return ReactDOM.createPortal(this.renderView(), getBodyPortal());
+  }
+
+  renderView() {
     const nextMonthHtml = DatepickerView.nextMonthHtml;
     const prevMonthHtml = DatepickerView.prevMonthHtml;
     const yearMonthHeader = formatDate(this.state.currentDate, "LLLL yyyy");

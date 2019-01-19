@@ -1,9 +1,10 @@
 import React from "react";
+import ReactDOM from 'react-dom';
 import Popper, { Placement } from "popper.js";
 import { stopPropagationAndPrevent } from "../utils/domEventHelpers";
 import { SelectDisplayFn, selectUtils } from "../utils/selectUtils";
 import { keyCodes } from "../utils/keyCodeMap";
-import { toClassNames } from "../utils/reactHelpers";
+import { toClassNames, getBodyPortal } from "../utils/reactHelpers";
 
 interface SelectViewProps<TItem> {
   items: TItem[];
@@ -40,6 +41,10 @@ export class SelectView<TItem> extends React.Component<
   }
 
   render() {
+    return ReactDOM.createPortal(this.renderView(), getBodyPortal());
+  }
+
+  renderView() {
     return (
       <div
         className="n-dropdown n-select"
