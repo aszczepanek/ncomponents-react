@@ -1,5 +1,5 @@
 import React from "react";
-import ReactDOM from 'react-dom';
+import ReactDOM from "react-dom";
 import Popper, { Placement } from "popper.js";
 import { stopPropagationAndPrevent } from "../utils/domEventHelpers";
 import { SelectDisplayFn, selectUtils } from "../utils/selectUtils";
@@ -45,11 +45,13 @@ export class SelectView<TItem> extends React.Component<
   }
 
   renderView() {
+    const minWidth = this.props.popoverRef.getBoundingClientRect().width;
     return (
       <div
         className="n-dropdown n-select"
         onMouseDown={stopPropagationAndPrevent}
         ref={this.rootEl}
+        style={{ minWidth }}
       >
         <ul>
           {this.renderMessage()}
