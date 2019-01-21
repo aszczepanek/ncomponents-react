@@ -1,7 +1,8 @@
 import React from "react";
 import { DemoItem, demoData } from "./demoData";
 import { BPanel } from "./BPanel";
-import { SelectInput } from "../lib/components/SelectInput";
+import { SelectInput } from "../lib";
+import { toJson } from "./demoUtils";
 
 interface SelectDemoState {
   selectedItem?: DemoItem | string;
@@ -147,8 +148,4 @@ export class SelectDemo extends React.Component<{}, SelectDemoState> {
       selectedItem
     });
   }
-}
-
-function toJson(obj: any) {
-  return JSON.stringify(obj);
 }

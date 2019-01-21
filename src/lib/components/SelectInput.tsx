@@ -47,7 +47,6 @@ export class SelectInput<TItem, TModel = TItem> extends Component<
     this.onChange = this.onChange.bind(this);
     this.onKeydown = this.onKeydown.bind(this);
     this.onClick = this.onClick.bind(this);
-    this.onKeydown = this.onKeydown.bind(this);
     this.onSelect = this.onSelect.bind(this);
     this.hide = this.hide.bind(this);
   }
@@ -129,6 +128,7 @@ export class SelectInput<TItem, TModel = TItem> extends Component<
   onClick(ev: React.MouseEvent) {
     ev.stopPropagation();
     ev.preventDefault();
+    ev.nativeEvent.stopImmediatePropagation();
     this.show();
   }
 

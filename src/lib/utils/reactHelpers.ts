@@ -9,10 +9,10 @@ export function getBodyPortal() {
   if (!el) {
     el = document.createElement('div');
     el.id = id;
-    el.style.position = 'absolute';
-    el.style.top = '0px';
-    el.style.left = '0px';
-    el.style.width = '100vh';
+    // el.style.position = 'absolute';
+    // el.style.top = '0px';
+    // el.style.left = '0px';
+    // el.style.width = '100vh';
     document.body.appendChild(el);
   }
 

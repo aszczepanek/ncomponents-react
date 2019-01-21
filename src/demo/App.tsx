@@ -4,6 +4,7 @@ import { DatepickerInput } from "../lib";
 import "./App.css";
 import "./lib.styles.scss";
 import { SelectDemo } from "./SelectDemo";
+import { MultiselectDemo } from "./MultiselectDemo";
 
 interface AppState {
   date: string | undefined;
@@ -30,6 +31,7 @@ class App extends Component<{}, AppState> {
           />
         </BPanel>
 
+        <MultiselectDemo />
         <SelectDemo />
       </div>
     );

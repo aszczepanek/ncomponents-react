@@ -93,9 +93,7 @@ export class SelectView<TItem> extends React.Component<
     this.popper = new Popper(this.props.popoverRef, this.rootEl.current!, {
       placement: this.props.placement
     });
-    Promise.resolve(() => {
-      document.addEventListener("click", this.onDocumentClick);
-    });
+    document.addEventListener("click", this.onDocumentClick);
   }
 
   componentDidUpdate(prevProps: SelectViewProps<TItem>) {
@@ -171,7 +169,7 @@ export class SelectView<TItem> extends React.Component<
   }
 
   scrollToFocused() {
-    Promise.resolve(() => {
+    Promise.resolve().then(() => {
       if (this.rootEl.current) {
         let focusedEl = this.rootEl.current.querySelector(".focused");
         if (focusedEl) {

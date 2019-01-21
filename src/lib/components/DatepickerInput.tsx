@@ -56,7 +56,6 @@ export class DatepickerInput<TModel> extends Component<
     this.onChange = this.onChange.bind(this);
     this.onKeydown = this.onKeydown.bind(this);
     this.onMouseWheel = this.onMouseWheel.bind(this);
-    this.onKeydown = this.onKeydown.bind(this);
   }
 
   render() {
@@ -112,7 +111,6 @@ export class DatepickerInput<TModel> extends Component<
   }
 
   onChange(ev: React.ChangeEvent<HTMLInputElement>) {
-    console.log("on change");
     this.setState({
       inputValue: ev.target.value
     });
