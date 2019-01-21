@@ -9,10 +9,10 @@ import { keyCodes } from "../utils/keyCodeMap";
 
 interface DatepickerInputProps<TModel> {
   value: string | Date | undefined;
+  onChange: (value?: TModel) => any;
   modelFormat?: string;
   viewFormat?: string;
   placement?: Placement;
-  onChange?: (value?: TModel) => any;
 }
 
 interface DatepickerInputState {
@@ -144,6 +144,9 @@ export class DatepickerInput<TModel> extends Component<
   }
 
   onMouseWheel(ev: React.WheelEvent) {
+    ev.stopPropagation();
+    ev.preventDefault();
+
     const delta = ev.deltaY < 0 ? 1 : -1;
     if (ev.shiftKey) {
       this.addMonth(delta);

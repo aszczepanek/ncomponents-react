@@ -5,6 +5,7 @@ import "./App.css";
 import "./lib.styles.scss";
 import { SelectDemo } from "./SelectDemo";
 import { MultiselectDemo } from "./MultiselectDemo";
+import { DropdownDemo } from "./DropdownDemo";
 
 interface AppState {
   date: string | undefined;
@@ -33,6 +34,7 @@ class App extends Component<{}, AppState> {
 
         <MultiselectDemo />
         <SelectDemo />
+        <DropdownDemo />
       </div>
     );
   }

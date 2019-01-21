@@ -2,17 +2,17 @@ import React, { Component } from "react";
 import { Placement } from "popper.js";
 import { keyCodes } from "../utils/keyCodeMap";
 import { SelectView } from "./SelectView";
-import { selectUtils, SelectDisplayFn } from "../utils/selectUtils";
+import { selectUtils, ItemDisplayFn } from "../utils/selectUtils";
 
 interface SelectInputProps<TItem, TModel> {
   value: any | undefined;
   items: TItem[];
   itemKey?: string;
   itemKeyAsModel?: boolean;
-  display?: string | SelectDisplayFn<TItem>;
+  display?: string | ItemDisplayFn<TItem>;
   placement?: Placement;
   nonStrict?: boolean;
-  onChange?: (value?: TModel) => any;
+  onChange: (value?: TModel) => any;
   onChangeNonStrict?: (value?: string) => any;
 }
 

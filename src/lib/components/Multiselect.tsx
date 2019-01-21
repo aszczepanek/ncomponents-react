@@ -1,5 +1,5 @@
 import React from "react";
-import { SelectDisplayFn, selectUtils } from "../utils/selectUtils";
+import { ItemDisplayFn, selectUtils } from "../utils/selectUtils";
 import { Placement } from "popper.js";
 import { keyCodes } from "../utils/keyCodeMap";
 import { stopPropagationAndPrevent } from "../utils/domEventHelpers";
@@ -8,13 +8,13 @@ import { MultiselectView } from "./MultiselectView";
 interface MultiselectProps<TItem> {
   value: TItem[] | undefined;
   items: TItem[];
+  onChange: (value: TItem[]) => any;
   itemKey?: string;
-  display?: string | SelectDisplayFn<TItem>;
+  display?: string | ItemDisplayFn<TItem>;
   placement?: Placement;
   filterable?: boolean;
   disablePortalRender?: boolean;
   children?: CustomRenderSelectedItemsFn<TItem>;
-  onChange?: (value: TItem[]) => any;
   onKeyDown?: (ev: React.KeyboardEvent) => any;
 }
 

@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import Popper, { Placement } from "popper.js";
 import { stopPropagationAndPrevent } from "../utils/domEventHelpers";
-import { SelectDisplayFn, selectUtils } from "../utils/selectUtils";
+import { ItemDisplayFn, selectUtils } from "../utils/selectUtils";
 import { keyCodes } from "../utils/keyCodeMap";
 import { toClassNames, getBodyPortal } from "../utils/reactHelpers";
 
@@ -12,7 +12,7 @@ interface SelectViewProps<TItem> {
   placement: Placement;
   onOutsideClick?: () => any;
   itemKey?: string;
-  display?: string | SelectDisplayFn<TItem>;
+  display?: string | ItemDisplayFn<TItem>;
   nonStrict?: boolean;
   message?: string;
   noResultMessage?: string;

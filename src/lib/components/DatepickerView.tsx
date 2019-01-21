@@ -75,7 +75,7 @@ export class DatepickerView extends Component<
                 <button onClick={this.nextMonth}>{nextMonthHtml}</button>
               </th>
             </tr>
-            <tr>{this.renderDasOfWeek()}</tr>
+            <tr>{this.renderDaysOfWeek()}</tr>
           </thead>
           <tbody>{this.renderMonth()}</tbody>
         </table>
@@ -83,7 +83,7 @@ export class DatepickerView extends Component<
     );
   }
 
-  renderDasOfWeek() {
+  renderDaysOfWeek() {
     return this.generateDaysInWeek().map(x => <th key={x.label}>{x.label}</th>);
   }
 
@@ -144,6 +144,9 @@ export class DatepickerView extends Component<
   }
 
   onMouseWheel(ev: React.WheelEvent) {
+    ev.stopPropagation();
+    ev.preventDefault();
+
     const delta = ev.deltaY > 0 ? 1 : -1;
     if (delta < 0) {
       this.prevMonth();

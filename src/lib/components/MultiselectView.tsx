@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { SelectDisplayFn, selectUtils } from "../utils/selectUtils";
+import { ItemDisplayFn, selectUtils } from "../utils/selectUtils";
 import Popper, { Placement } from "popper.js";
 import { stopPropagationAndPrevent } from "../utils/domEventHelpers";
 import { keyCodes } from "../utils/keyCodeMap";
@@ -10,7 +10,7 @@ interface MultiselectViewProps<TItem> {
   items: TItem[] | undefined;
   selected: TItem[] | undefined;
   itemKey?: string;
-  display?: string | SelectDisplayFn<TItem>;
+  display?: string | ItemDisplayFn<TItem>;
   placement?: Placement;
   filterable?: boolean;
   disablePortalRender?: boolean;
