@@ -1,3 +1,13 @@
+.n-datepicker-input {
+  width: 90px;
+  text-align: center;
+}
+
+.n-timepicker-input {
+  width: 90px;
+  text-align: center;
+}
+
 .n-datepicker-view {
   border: 1px solid #aaa;
   box-shadow: 5px 5px 5px 0px rgba(0, 0, 0, 0.1);
@@ -10,6 +20,35 @@
     &.selected {
       font-weight: bold;
       background-color: #4444ff;
+    }
+  }
+}
+
+.n-timepicker-view {
+  border: 1px solid #aaa;
+  box-shadow: 5px 5px 5px 0px rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+  background-color: #fff;
+  display: inline-block;
+  max-height: 300px;
+  overflow: auto;
+
+  ul {
+    list-style: none;
+    padding: 0px;
+    margin: 0px;
+  }
+
+  li {
+    padding: 2px 20px;
+    cursor: pointer;
+
+    &:hover, &.focused {
+      background-color: #ddd;
+    }
+
+    &.selected {
+      background-color: #7777cc;
     }
   }
 }

@@ -33,6 +33,8 @@ class DateAdapterFactory {
     this.createAdapter('yyyy-MM-ddTHH:mm', dateUtils.parseISO);
     this.createAdapter('yyyy-MM-ddTHH:mm:ss', dateUtils.parseISO);
     this.createAdapter('d.MM.yyyy', parserForDayMonthYearUsingRegex(/(\d{1,2})\.(\d\d)\.(\d{4})/));
+    this.createAdapter('HH:mm', parserForHourMinuteUsingRegex(/(\d\d):?(\d\d)/));
+    this.createAdapter('HH:mm:ss', parserForHourMinuteSecondUsingRegex(/(\d\d):?(\d\d):?(\d\d)/));
     this.createAdapter('Date', function parse(value) {
         return isDate(value) ? value : undefined;
     });
@@ -68,6 +70,26 @@ function parserForDayMonthYearUsingRegex(regex: RegExp) {
       var match;
       if (match = str.match(regex)) { // jshint ignore:line
           return new Date(toInt(match[3]), toInt(match[2]) - 1, toInt(match[1]));
+      }
+      return undefined;
+  };
+}
+
+function parserForHourMinuteUsingRegex(regex: RegExp) {
+  return function parseHourMinute(str: string) {
+      var match;
+      if (match = str.match(regex)) { // jshint ignore:line
+          return new Date(1970, 0, 1, toInt(match[1]), toInt(match[2]));
+      }
+      return undefined;
+  };
+}
+
+function parserForHourMinuteSecondUsingRegex(regex: RegExp) {
+  return function parseHourMinuteSecond(str: string) {
+      var match;
+      if (match = str.match(regex)) { // jshint ignore:line
+          return new Date(1970, 0, 1, toInt(match[1]), toInt(match[2]), toInt(match[3]));
       }
       return undefined;
   };
