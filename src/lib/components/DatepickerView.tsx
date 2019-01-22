@@ -1,9 +1,9 @@
-import React, { Component } from "react";
+import React from "react";
 import ReactDOM from "react-dom";
 import Popper, { Placement } from "popper.js";
-import { parseISO, formatDate } from "../utils/dateUtils";
+import { dateUtils } from "../utils/dateUtils";
 import { isDate } from "../utils/typeHelpers";
-import { stopPropagationAndPrevent } from "../utils/domEventHelpers";
+import { domEventHelpers } from "../utils/domEventHelpers";
 import { toClassNames, getBodyPortal } from "../utils/reactHelpers";
 
 interface DatepickerViewProps {
@@ -24,7 +24,7 @@ interface DateViewItem {
   isSelected: boolean;
 }
 
-export class DatepickerView extends Component<
+export class DatepickerView extends React.Component<
   DatepickerViewProps,
   DatepickerViewState
 > {
@@ -51,16 +51,16 @@ export class DatepickerView extends Component<
     return ReactDOM.createPortal(this.renderView(), getBodyPortal());
   }
 
-  renderView() {
+  private renderView() {
     const nextMonthHtml = DatepickerView.nextMonthHtml;
     const prevMonthHtml = DatepickerView.prevMonthHtml;
-    const yearMonthHeader = formatDate(this.state.currentDate, "LLLL yyyy");
+    const yearMonthHeader = dateUtils.formatDate(this.state.currentDate, "LLLL yyyy");
 
     return (
       <div
         className="n-datepicker-view"
-        onClick={stopPropagationAndPrevent}
-        onMouseDown={stopPropagationAndPrevent}
+        onClick={domEventHelpers.stopPropagationAndPrevent}
+        onMouseDown={domEventHelpers.stopPropagationAndPrevent}
         onWheel={this.onMouseWheel}
         ref={this.rootEl}
       >
@@ -83,11 +83,11 @@ export class DatepickerView extends Component<
     );
   }
 
-  renderDaysOfWeek() {
+  private renderDaysOfWeek() {
     return this.generateDaysInWeek().map(x => <th key={x.label}>{x.label}</th>);
   }
 
-  renderMonth() {
+  private renderMonth() {
     return this.generateMonth().map((week, i) => {
       return (
         <tr key={i}>
@@ -140,10 +140,10 @@ export class DatepickerView extends Component<
   }
 
   getFocusDate() {
-    return parseISO(this.props.value || "") || new Date();
+    return dateUtils.parseISO(this.props.value || "") || new Date();
   }
 
-  onMouseWheel(ev: React.WheelEvent) {
+  private onMouseWheel(ev: React.WheelEvent) {
     ev.stopPropagation();
     ev.preventDefault();
 
@@ -173,17 +173,17 @@ export class DatepickerView extends Component<
     // this.generateMonth();
   }
 
-  select(d: DateViewItem) {
+  private select(d: DateViewItem) {
     this.props.onSelect && this.props.onSelect(d.date);
   }
 
-  generateDaysInWeek() {
+  private generateDaysInWeek() {
     const daysOfWeek: Array<{ label: string }> = [];
     const dayNames: any = {};
 
     let d = new Date();
     for (var i = 0; i < 7; i++) {
-      dayNames[d.getDay()] = formatDate(d, "EEE");
+      dayNames[d.getDay()] = dateUtils.formatDate(d, "EEE");
       d.setDate(d.getDate() + 1);
     }
 
@@ -198,7 +198,7 @@ export class DatepickerView extends Component<
     return daysOfWeek;
   }
 
-  generateMonth() {
+  private generateMonth() {
     var currentModel = this.getFocusDate();
     var date = this.state.currentDate;
     var month = date.getMonth();

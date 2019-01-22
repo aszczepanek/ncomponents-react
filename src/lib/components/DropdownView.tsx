@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import Popper, { Placement, ReferenceObject } from "popper.js";
 import { ItemDisplayFn, selectUtils } from "../utils/selectUtils";
-import { stopPropagationAndPrevent } from "../utils/domEventHelpers";
+import { domEventHelpers } from "../utils/domEventHelpers";
 import { getBodyPortal } from "../utils/reactHelpers";
 
 export type DropdownCustomRenderItem<TItem> = (
@@ -44,7 +44,7 @@ export class DropdownView<TItem> extends React.Component<
     return (
       <div
         className="n-dropdown"
-        onMouseDown={stopPropagationAndPrevent}
+        onMouseDown={domEventHelpers.stopPropagationAndPrevent}
         ref={this.rootEl}
       >
         <ul>{this.props.items.map((x, i) => this.renderItem(x, i))}</ul>

@@ -3,7 +3,7 @@ import { BPanel } from "./BPanel";
 import { Multiselect } from "../lib";
 import { demoData, DemoItem } from "./demoData";
 import { toJson } from "./demoUtils";
-import { stopPropagationAndPrevent } from "../lib/utils/domEventHelpers";
+import { domEventHelpers } from "../lib/utils/domEventHelpers";
 
 interface MultiselectDemoState {
   selectedItems: DemoItem[];
@@ -58,7 +58,7 @@ export class MultiselectDemo extends React.Component<{}, MultiselectDemoState> {
                 )}
                 <button
                   onClick={this.clear}
-                  onMouseDown={stopPropagationAndPrevent}
+                  onMouseDown={domEventHelpers.stopPropagationAndPrevent}
                 >
                   Clear
                 </button>

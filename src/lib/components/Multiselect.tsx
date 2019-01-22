@@ -2,7 +2,7 @@ import React from "react";
 import { ItemDisplayFn, selectUtils } from "../utils/selectUtils";
 import { Placement } from "popper.js";
 import { keyCodes } from "../utils/keyCodeMap";
-import { stopPropagationAndPrevent } from "../utils/domEventHelpers";
+import { domEventHelpers } from "../utils/domEventHelpers";
 import { MultiselectView } from "./MultiselectView";
 
 interface MultiselectProps<TItem> {
@@ -83,7 +83,7 @@ export class Multiselect<TItem> extends React.Component<
           onFocus={this.onFocus}
           onKeyDown={this.onKeydown}
           tabIndex={0}
-          onClick={stopPropagationAndPrevent}
+          onClick={domEventHelpers.stopPropagationAndPrevent}
           ref={this.elRef}
         >
           {this.renderSelectedItems()}

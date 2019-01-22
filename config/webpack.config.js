@@ -143,9 +143,9 @@ module.exports = function(webpackEnv) {
       // initialization, it doesn't blow up the WebpackDevServer client, and
       // changing JS code would still trigger a refresh.
     ].filter(Boolean),
-    externals: {
+    externals: isEnvDevelopment ? undefined : {
       react: 'react',
-      'react-dom': 'reactDOM',
+      'react-dom': 'react-dom',
       "popper.js": {
         root: "Popper",
         commonjs2: "popper.js",
@@ -162,7 +162,7 @@ module.exports = function(webpackEnv) {
       // There will be one main bundle, and one file per asynchronous chunk.
       // In development, it does not produce real files.
       filename: isEnvProduction
-        ? 'ncomponents-react.js'
+        ? 'dist/ncomponents-react.js'
         : isEnvDevelopment && 'static/js/bundle.js',
       // There are also additional JS chunk files if you use code splitting.
       chunkFilename: isEnvProduction

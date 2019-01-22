@@ -1,4 +1,4 @@
-import { namedPatterns, formatDate, parseISO } from '../utils/dateUtils';
+import { dateUtils } from '../utils/dateUtils';
 import { toInt, isDate } from '../utils/typeHelpers';
 
 type ParseFn = (str: string) => Date | undefined;
@@ -27,11 +27,11 @@ class DateAdapterFactory {
   }
 
   private initAdapters() {
-    this.createAdapter('ISO8601', parseISO);
-    this.createAdapter('ISO8601_SECONDS', parseISO);
-    this.createAdapter('yyyy-MM-dd', parseISO);
-    this.createAdapter('yyyy-MM-ddTHH:mm', parseISO);
-    this.createAdapter('yyyy-MM-ddTHH:mm:ss', parseISO);
+    this.createAdapter('ISO8601', dateUtils.parseISO);
+    this.createAdapter('ISO8601_SECONDS', dateUtils.parseISO);
+    this.createAdapter('yyyy-MM-dd', dateUtils.parseISO);
+    this.createAdapter('yyyy-MM-ddTHH:mm', dateUtils.parseISO);
+    this.createAdapter('yyyy-MM-ddTHH:mm:ss', dateUtils.parseISO);
     this.createAdapter('d.MM.yyyy', parserForDayMonthYearUsingRegex(/(\d{1,2})\.(\d\d)\.(\d{4})/));
     this.createAdapter('Date', function parse(value) {
         return isDate(value) ? value : undefined;
@@ -39,7 +39,7 @@ class DateAdapterFactory {
   }
 
   private createAdapter(formatName: string, parseFn: ParseFn) {
-    const formatPattern = namedPatterns[formatName] || formatName;
+    const formatPattern = dateUtils.namedPatterns[formatName] || formatName;
 
     this.adapters[formatName] = {
       parse: parseFn,
@@ -57,7 +57,7 @@ class DateAdapterFactory {
     }
     else {
       return function (date) {
-        return formatDate(date, formatPattern);
+        return dateUtils.formatDate(date, formatPattern);
       };
     }
   }

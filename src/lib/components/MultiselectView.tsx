@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { ItemDisplayFn, selectUtils } from "../utils/selectUtils";
 import Popper, { Placement } from "popper.js";
-import { stopPropagationAndPrevent } from "../utils/domEventHelpers";
+import { domEventHelpers } from "../utils/domEventHelpers";
 import { keyCodes } from "../utils/keyCodeMap";
 import { toClassNames, getBodyPortal } from "../utils/reactHelpers";
 
@@ -51,7 +51,7 @@ export class MultiselectView<TItem> extends React.Component<
     const result = (
       <div
         className="n-dropdown n-multiselect-view"
-        onClick={stopPropagationAndPrevent}
+        onClick={domEventHelpers.stopPropagationAndPrevent}
         ref={this.rootEl}
         style={{ minWidth }}
       >

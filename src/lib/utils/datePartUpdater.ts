@@ -8,9 +8,9 @@ const options = {
 };
 
 export const datePartUpdater = {
-  options: options,
-  setDate: setDate,
-  setTime: setTime
+  options,
+  setDate,
+  setTime
 };
 
 function setDate(originalDate: Date | undefined, valueToSet: Date) {

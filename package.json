@@ -2,7 +2,14 @@
   "name": "ncomponents-react",
   "version": "0.1.0",
   "private": true,
+  "main": "dist/ncomponents-react.js",
+  "typings": "index.d.ts",
   "dependencies": {
+    "popper.js": "^1.14.4",
+    "react": "^16.7.0",
+    "react-dom": "^16.7.0"
+  },
+  "devDependencies": {
     "@babel/core": "7.1.6",
     "@svgr/webpack": "2.4.1",
     "@types/jest": "23.3.12",
@@ -41,15 +48,12 @@
     "node-sass": "^4.11.0",
     "optimize-css-assets-webpack-plugin": "5.0.1",
     "pnp-webpack-plugin": "1.1.0",
-    "popper.js": "^1.14.4",
     "postcss-flexbugs-fixes": "4.1.0",
     "postcss-loader": "3.0.0",
     "postcss-preset-env": "6.3.1",
     "postcss-safe-parser": "4.0.1",
-    "react": "^16.7.0",
     "react-app-polyfill": "^0.2.0",
     "react-dev-utils": "^7.0.1",
-    "react-dom": "^16.7.0",
     "resolve": "1.8.1",
     "sass-loader": "7.1.0",
     "style-loader": "0.23.0",
@@ -63,7 +67,7 @@
   },
   "scripts": {
     "start": "node scripts/start.js",
-    "build": "node scripts/build.js",
+    "build": "node scripts/build.js && tsc -p src/lib/tsconfig.decl.json && node scripts/copyPackageJson.js",
     "test": "node scripts/test.js"
   },
   "eslintConfig": {
