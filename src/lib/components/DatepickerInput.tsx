@@ -69,7 +69,7 @@ export class DatepickerInput<TModel = Date | string> extends Component<
     return (
       <>
         <input
-          className="n-datepicker-input"
+          className="n-datepicker"
           style={this.props.style}
           type="text"
           ref={this.inputRef}

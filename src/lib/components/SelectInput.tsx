@@ -12,6 +12,7 @@ interface SelectInputProps<TItem, TModel> {
   display?: string | ItemDisplayFn<TItem>;
   placement?: Placement;
   nonStrict?: boolean;
+  style?: React.CSSProperties;
   onChange: (value?: TModel) => any;
   onChangeNonStrict?: (value?: string) => any;
 }
@@ -59,6 +60,7 @@ export class SelectInput<TItem, TModel = TItem> extends Component<
     return (
       <>
         <input
+          style={this.props.style}
           className="n-select"
           type="text"
           ref={this.inputRef}

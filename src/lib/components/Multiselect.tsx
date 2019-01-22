@@ -15,6 +15,7 @@ interface MultiselectProps<TItem> {
   filterable?: boolean;
   disablePortalRender?: boolean;
   children?: CustomRenderSelectedItemsFn<TItem>;
+  style?: React.CSSProperties;
   onKeyDown?: (ev: React.KeyboardEvent) => any;
 }
 
@@ -79,6 +80,7 @@ export class Multiselect<TItem> extends React.Component<
     return (
       <>
         <div
+          style={this.props.style}
           className="n-multiselect"
           onFocus={this.onFocus}
           onKeyDown={this.onKeydown}

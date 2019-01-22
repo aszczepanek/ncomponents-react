@@ -70,7 +70,7 @@ export class TimepickerInput<TModel = Date | string> extends Component<
       <>
         <input
           style={this.props.style}
-          className="n-timepicker-input"
+          className="n-timepicker"
           type="text"
           ref={this.inputRef}
           value={viewValue}
