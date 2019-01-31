@@ -13,6 +13,7 @@ interface MultiselectProps<TItem> {
   display?: string | ItemDisplayFn<TItem>;
   placement?: Placement;
   filterable?: boolean;
+  clearButton?: boolean;
   disablePortalRender?: boolean;
   children?: CustomRenderSelectedItemsFn<TItem>;
   style?: React.CSSProperties;
@@ -24,8 +25,10 @@ interface MultiselectState {
 }
 
 interface DefaultRenderSelectedItemsFnArgs {
+  props: MultiselectProps<any>;
   selectedItems: any[];
   formatItemDisplay: (item: any) => string;
+  clear: (ev?: React.MouseEvent) => void;
 }
 
 type DefaultRenderSelectedItemsFn = (
@@ -33,8 +36,10 @@ type DefaultRenderSelectedItemsFn = (
 ) => React.ReactNode;
 
 interface CustomRenderSelectedItemsFnArgs<TItem> {
+  props: MultiselectProps<TItem>;
   selectedItems: TItem[];
   formatItemDisplay: (item: TItem) => string;
+  clear: (ev?: React.MouseEvent) => void;
   defaultRenderSelectedItems: () => React.ReactNode;
 }
 
@@ -50,10 +55,17 @@ export class Multiselect<TItem> extends React.Component<
 > {
   static defaultPlacement: Placement = "bottom-start";
   static defaultRenderSelectedItems: DefaultRenderSelectedItemsFn = ({
+    props,
     selectedItems,
-    formatItemDisplay
+    formatItemDisplay,
+    clear
   }) => {
-    return selectedItems.map(x => formatItemDisplay(x)).join(", ") || "-";
+    return (
+      <>
+        {selectedItems.map(x => formatItemDisplay(x)).join(", ") || "-"}
+        {props.clearButton && <button onClick={clear} onMouseDown={domEventHelpers.stopPropagationAndPrevent}>Clear</button>}
+      </>
+    );
   };
 
   multiselectView?: MultiselectView<TItem>;
@@ -70,6 +82,7 @@ export class Multiselect<TItem> extends React.Component<
     this.onFocus = this.onFocus.bind(this);
     this.formatItemDisplay = this.formatItemDisplay.bind(this);
     this.onItemSelect = this.onItemSelect.bind(this);
+    this.clear = this.clear.bind(this);
     this.defaultRenderSelectedItems = this.defaultRenderSelectedItems.bind(
       this
     );
@@ -99,6 +112,8 @@ export class Multiselect<TItem> extends React.Component<
     if (this.props.children) {
       return this.props.children({
         formatItemDisplay: this.formatItemDisplay,
+        clear: this.clear,
+        props: this.props,
         selectedItems: this.props.value || [],
         defaultRenderSelectedItems: this.defaultRenderSelectedItems
       });
@@ -132,7 +147,9 @@ export class Multiselect<TItem> extends React.Component<
   defaultRenderSelectedItems() {
     return Multiselect.defaultRenderSelectedItems({
       formatItemDisplay: this.formatItemDisplay,
-      selectedItems: this.props.value || []
+      clear: this.clear,
+      selectedItems: this.props.value || [],
+      props: this.props
     });
   }
 
@@ -201,6 +218,11 @@ export class Multiselect<TItem> extends React.Component<
     }
 
     this.props.onChange && this.props.onChange(newModel);
+  }
+
+  clear(ev?: React.MouseEvent) {
+    ev && ev.stopPropagation();
+    this.props.onChange([]);
   }
 
   show() {

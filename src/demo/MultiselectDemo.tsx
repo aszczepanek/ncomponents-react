@@ -38,6 +38,19 @@ export class MultiselectDemo extends React.Component<{}, MultiselectDemoState> {
           />
         </div>
 
+        <div className="mb-20">
+          Default selected template with clear button:
+          <br />
+          <Multiselect
+            value={this.state.selectedItems}
+            items={this.items}
+            filterable={true}
+            disablePortalRender={true}
+            clearButton
+            onChange={selectedItems => this.setState({ selectedItems })}
+          />
+        </div>
+
         <div>
           Custom selected template:
           <br />
