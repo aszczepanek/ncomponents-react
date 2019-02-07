@@ -192,9 +192,7 @@ export class Multiselect<TItem> extends React.Component<
         break;
     }
 
-    if (this.props.onKeyDown) {
-      this.props.onKeyDown(ev);
-    }
+    this.props.onKeyDown && this.props.onKeyDown(ev);
   }
 
   formatItemDisplay(item: any) {

@@ -15,6 +15,7 @@ interface SelectInputProps<TItem, TModel> {
   style?: React.CSSProperties;
   onChange: (value?: TModel) => any;
   onChangeNonStrict?: (value?: string) => any;
+  onKeyDown?: (ev: React.KeyboardEvent) => any;
 }
 
 interface SelectInputState {
@@ -166,6 +167,8 @@ export class SelectInput<TItem, TModel = TItem> extends Component<
       default:
         break;
     }
+
+    this.props.onKeyDown && this.props.onKeyDown(ev);
   }
 
   onSelect<TItem>(value: TItem) {
