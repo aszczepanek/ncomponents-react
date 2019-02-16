@@ -13,6 +13,7 @@ interface SelectInputProps<TItem, TModel> {
   placement?: Placement;
   nonStrict?: boolean;
   style?: React.CSSProperties;
+  placeholder?: string;
   onChange: (value?: TModel) => any;
   onChangeNonStrict?: (value?: string) => any;
   onKeyDown?: (ev: React.KeyboardEvent) => any;
@@ -71,6 +72,7 @@ export class SelectInput<TItem, TModel = TItem> extends Component<
           onChange={this.onChange}
           onKeyDown={this.onKeydown}
           onClick={this.onClick}
+          placeholder={this.props.placeholder}
         />
         {selectView}
       </>
