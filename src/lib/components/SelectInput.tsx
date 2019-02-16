@@ -185,10 +185,6 @@ export class SelectInput<TItem, TModel = TItem> extends Component<
         this.props.onChangeNonStrict(modelValue);
       }
     } else {
-      if (this.props.itemKeyAsModel && newValue !== undefined) {
-        modelValue = this.getItemKey(newValue);
-      }
-
       if (this.props.onChange) {
         this.props.onChange(modelValue);
       }
