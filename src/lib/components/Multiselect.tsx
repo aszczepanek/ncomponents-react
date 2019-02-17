@@ -9,8 +9,8 @@ interface MultiselectProps<TItem> {
   value: TItem[] | undefined;
   items: TItem[];
   onChange: (value: TItem[]) => any;
-  itemKey?: string;
-  display?: string | ItemDisplayFn<TItem>;
+  itemKey?: keyof TItem;
+  display?: keyof TItem | ItemDisplayFn<TItem>;
   placement?: Placement;
   filterable?: boolean;
   clearButton?: boolean;

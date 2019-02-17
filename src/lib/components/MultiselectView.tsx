@@ -9,8 +9,8 @@ import { toClassNames, getBodyPortal } from "../utils/reactHelpers";
 interface MultiselectViewProps<TItem> {
   items: TItem[] | undefined;
   selected: TItem[] | undefined;
-  itemKey?: string;
-  display?: string | ItemDisplayFn<TItem>;
+  itemKey?: keyof TItem;
+  display?: keyof TItem | ItemDisplayFn<TItem>;
   placement?: Placement;
   filterable?: boolean;
   disablePortalRender?: boolean;

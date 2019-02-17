@@ -4,17 +4,17 @@ import { keyCodes } from "../utils/keyCodeMap";
 import { SelectView } from "./SelectView";
 import { selectUtils, ItemDisplayFn } from "../utils/selectUtils";
 
-interface SelectInputProps<TItem, TModel> {
+interface SelectInputProps<TItem> {
   value: any | undefined;
   items: TItem[];
-  itemKey?: string;
+  itemKey?: keyof TItem;
   itemKeyAsModel?: boolean;
-  display?: string | ItemDisplayFn<TItem>;
+  display?: keyof TItem | ItemDisplayFn<TItem>;
   placement?: Placement;
   nonStrict?: boolean;
   style?: React.CSSProperties;
   placeholder?: string;
-  onChange: (value?: TModel) => any;
+  onChange: (value?: TItem) => any;
   onChangeNonStrict?: (value?: string) => any;
   onKeyDown?: (ev: React.KeyboardEvent) => any;
 }
@@ -26,8 +26,8 @@ interface SelectInputState {
   selectVisible: boolean;
 }
 
-export class SelectInput<TItem, TModel = TItem> extends Component<
-  SelectInputProps<TItem, TModel>,
+export class SelectInput<TItem> extends Component<
+  SelectInputProps<TItem>,
   SelectInputState
 > {
   static defaultPlacement: Placement = "bottom-start";
@@ -35,7 +35,7 @@ export class SelectInput<TItem, TModel = TItem> extends Component<
   selectView?: SelectView<TItem>;
   inputRef = React.createRef<HTMLInputElement>();
 
-  constructor(props: SelectInputProps<TItem, TModel>) {
+  constructor(props: SelectInputProps<TItem>) {
     super(props);
 
     this.state = {

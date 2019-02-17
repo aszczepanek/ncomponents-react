@@ -89,10 +89,10 @@ export class SelectDemo extends React.Component<{}, SelectDemoState> {
             <br />
             Model: {selectedItemByKey}
           </div>
-          <SelectInput<DemoItem, number>
+          <SelectInput<DemoItem>
             items={this.items}
             value={selectedItemByKey}
-            onChange={id => this.setState({ selectedItemByKey: id })}
+            onChange={item => this.setState({ selectedItemByKey: item && item.id })}
             itemKeyAsModel
           />
         </div>

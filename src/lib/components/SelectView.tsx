@@ -11,8 +11,8 @@ interface SelectViewProps<TItem> {
   popoverRef: HTMLElement;
   placement: Placement;
   onOutsideClick?: () => any;
-  itemKey?: string;
-  display?: string | ItemDisplayFn<TItem>;
+  itemKey?: keyof TItem;
+  display?: keyof TItem | ItemDisplayFn<TItem>;
   nonStrict?: boolean;
   message?: string;
   noResultMessage?: string;
