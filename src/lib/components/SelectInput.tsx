@@ -91,6 +91,7 @@ export class SelectInput<TItem> extends Component<
         onSelect={this.onSelect}
         onOutsideClick={this.hide}
         display={this.props.display}
+        itemKey={this.props.itemKey}
         ref={view => (this.selectView = view || undefined)}
       />
     );
