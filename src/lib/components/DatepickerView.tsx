@@ -54,7 +54,10 @@ export class DatepickerView extends React.Component<
   private renderView() {
     const nextMonthHtml = DatepickerView.nextMonthHtml;
     const prevMonthHtml = DatepickerView.prevMonthHtml;
-    const yearMonthHeader = dateUtils.formatDate(this.state.currentDate, "LLLL yyyy");
+    const yearMonthHeader = dateUtils.formatDate(
+      this.state.currentDate,
+      "LLLL yyyy"
+    );
 
     return (
       <div
@@ -140,6 +143,10 @@ export class DatepickerView extends React.Component<
   }
 
   getFocusDate() {
+    if (typeof this.props.value === "number") {
+      // Assume unix
+      return new Date(this.props.value * 1000);
+    }
     return dateUtils.parseISO(this.props.value || "") || new Date();
   }
 

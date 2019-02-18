@@ -8,6 +8,7 @@ interface DateAndTimeDemoState {
   time: string | undefined;
   timeWithSeconds: string | undefined;
   dateTimeIso: string | undefined;
+  unix: number | undefined;
 }
 
 export class DateAndTimeDemo extends React.Component<{}, DateAndTimeDemoState> {
@@ -18,7 +19,8 @@ export class DateAndTimeDemo extends React.Component<{}, DateAndTimeDemoState> {
       date: "2018-05-09",
       time: "10:30",
       timeWithSeconds: "10:30:35",
-      dateTimeIso: "2018-10-02T22:00:30.000+0200"
+      dateTimeIso: "2018-10-02T22:00:30.000+0200",
+      unix: Math.floor(new Date().getTime() / 1000)
     };
   }
 
@@ -59,6 +61,21 @@ export class DateAndTimeDemo extends React.Component<{}, DateAndTimeDemoState> {
         <TimepickerInput
           value={this.state.dateTimeIso}
           onChange={dateTimeIso => this.setState({ dateTimeIso })}
+          viewFormat="HH:mm"
+        />
+
+        <div className="mt-10">
+          Model (date and time unix): {this.state.unix}
+        </div>
+        <DatepickerInput
+          modelFormat="unix"
+          value={this.state.unix}
+          onChange={unix => this.setState({ unix })}
+        />
+        <TimepickerInput
+          modelFormat="unix"
+          value={this.state.unix}
+          onChange={unix => this.setState({ unix })}
           viewFormat="HH:mm"
         />
       </BPanel>

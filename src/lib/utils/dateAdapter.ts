@@ -38,6 +38,7 @@ class DateAdapterFactory {
     this.createAdapter('Date', function parse(value) {
         return isDate(value) ? value : undefined;
     });
+    this.createAdapter('unix', unixTimestampParser);
   }
 
   private createAdapter(formatName: string, parseFn: ParseFn) {
@@ -56,6 +57,14 @@ class DateAdapterFactory {
       return function (date: Date | string) {
         return date
       };
+    }
+    else if (formatPattern == "unix") {
+      return function (date: Date | string) {
+        if (typeof date === 'string') {
+          date = new Date(date);
+        }
+        return Math.floor(date.getTime() / 1000);
+      }
     }
     else {
       return function (date) {
@@ -93,6 +102,10 @@ function parserForHourMinuteSecondUsingRegex(regex: RegExp) {
       }
       return undefined;
   };
+}
+
+function unixTimestampParser(unixTimestamp: string) {
+  return new Date(Number(unixTimestamp) * 1000);
 }
 
 export const dateAdapterFactory = new DateAdapterFactory();
