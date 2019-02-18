@@ -14,6 +14,7 @@ interface SelectInputProps<TItem> {
   nonStrict?: boolean;
   style?: React.CSSProperties;
   placeholder?: string;
+  disabled?: boolean;
   onChange: (value?: TItem) => any;
   onChangeNonStrict?: (value?: string) => any;
   onKeyDown?: (ev: React.KeyboardEvent) => any;
@@ -73,6 +74,7 @@ export class SelectInput<TItem> extends Component<
           onKeyDown={this.onKeydown}
           onClick={this.onClick}
           placeholder={this.props.placeholder}
+          disabled={this.props.disabled}
         />
         {selectView}
       </>
