@@ -13,10 +13,11 @@ export type DropdownCustomRenderItem<TItem> = (
 interface DropdownViewProps<TItem> {
   items: TItem[];
   popoverRef: HTMLElement | ReferenceObject;
-  placement?: Placement;
+  placement: Placement;
   onSelect: (item: TItem) => any;
   onOutsideClick?: () => any;
   display?: string | ItemDisplayFn<TItem>;
+  renderDisplay?: DropdownCustomRenderItem<TItem>;
   renderItem?: DropdownCustomRenderItem<TItem>;
   renderInBody?: boolean;
 }
@@ -59,7 +60,7 @@ export class DropdownView<TItem> extends React.Component<
 
     return (
       <li key={index} onClick={() => this.props.onSelect(item)}>
-        {this.formatItemDisplay(item)}
+        {this.props.renderDisplay ? this.props.renderDisplay(item, index) : this.formatItemDisplay(item)}
       </li>
     );
   }
@@ -82,7 +83,7 @@ export class DropdownView<TItem> extends React.Component<
     document.removeEventListener("click", this.onDocumentClick);
   }
 
-  formatItemDisplay(item: any): string {
+  formatItemDisplay(item: any) {
     return selectUtils.formatItemDisplay(item, this.props.display);
   }
 
