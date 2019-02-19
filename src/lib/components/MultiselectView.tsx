@@ -17,6 +17,7 @@ interface MultiselectViewProps<TItem> {
   onSelect: (item: TItem) => any;
   popoverRef: HTMLElement;
   onOutsideClick?: () => any;
+  onKeyDown?: (ev: React.KeyboardEvent) => any;
 }
 
 interface MultiselectViewState {
@@ -140,6 +141,7 @@ export class MultiselectView<TItem> extends React.Component<
         this.toggleFocused();
         break;
       default:
+        this.props.onKeyDown && this.props.onKeyDown(event);
         break;
     }
   }

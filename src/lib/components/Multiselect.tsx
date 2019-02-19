@@ -139,6 +139,7 @@ export class Multiselect<TItem> extends React.Component<
         placement={placement}
         popoverRef={this.elRef.current!}
         onOutsideClick={this.hide}
+        onKeyDown={this.onKeydown}
         ref={view => (this.multiselectView = view || undefined)}
       />
     );
