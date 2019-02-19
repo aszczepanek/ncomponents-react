@@ -44,6 +44,18 @@ export class DropdownDemo extends React.Component<{}, DropdownDemoState> {
               </div>
             </Dropdown>
           </div>
+
+          <div>
+              <div
+                style={{
+                  height: "50px",
+                  width: "300px",
+                  border: "1px solid #000"
+                }}
+              >
+                ADHoc mode
+              </div>
+          </div>
         </div>
       </BPanel>
     );

@@ -2,21 +2,22 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { ItemDisplayFn, selectUtils } from "../utils/selectUtils";
 import Popper, { Placement } from "popper.js";
-import { stopPropagationAndPrevent } from "../utils/domEventHelpers";
+import { domEventHelpers } from "../utils/domEventHelpers";
 import { keyCodes } from "../utils/keyCodeMap";
 import { toClassNames, getBodyPortal } from "../utils/reactHelpers";
 
 interface MultiselectViewProps<TItem> {
   items: TItem[] | undefined;
   selected: TItem[] | undefined;
-  itemKey?: string;
-  display?: string | ItemDisplayFn<TItem>;
+  itemKey?: keyof TItem;
+  display?: keyof TItem | ItemDisplayFn<TItem>;
   placement?: Placement;
   filterable?: boolean;
   disablePortalRender?: boolean;
   onSelect: (item: TItem) => any;
   popoverRef: HTMLElement;
   onOutsideClick?: () => any;
+  onKeyDown?: (ev: React.KeyboardEvent) => any;
 }
 
 interface MultiselectViewState {
@@ -51,7 +52,7 @@ export class MultiselectView<TItem> extends React.Component<
     const result = (
       <div
         className="n-dropdown n-multiselect-view"
-        onClick={stopPropagationAndPrevent}
+        onClick={domEventHelpers.stopPropagationAndPrevent}
         ref={this.rootEl}
         style={{ minWidth }}
       >
@@ -140,6 +141,7 @@ export class MultiselectView<TItem> extends React.Component<
         this.toggleFocused();
         break;
       default:
+        this.props.onKeyDown && this.props.onKeyDown(event);
         break;
     }
   }

@@ -4,16 +4,20 @@ import { keyCodes } from "../utils/keyCodeMap";
 import { SelectView } from "./SelectView";
 import { selectUtils, ItemDisplayFn } from "../utils/selectUtils";
 
-interface SelectInputProps<TItem, TModel> {
+interface SelectInputProps<TItem> {
   value: any | undefined;
   items: TItem[];
-  itemKey?: string;
+  itemKey?: keyof TItem;
   itemKeyAsModel?: boolean;
-  display?: string | ItemDisplayFn<TItem>;
+  display?: keyof TItem | ItemDisplayFn<TItem>;
   placement?: Placement;
   nonStrict?: boolean;
-  onChange: (value?: TModel) => any;
+  style?: React.CSSProperties;
+  placeholder?: string;
+  disabled?: boolean;
+  onChange: (value?: TItem) => any;
   onChangeNonStrict?: (value?: string) => any;
+  onKeyDown?: (ev: React.KeyboardEvent) => any;
 }
 
 interface SelectInputState {
@@ -23,8 +27,8 @@ interface SelectInputState {
   selectVisible: boolean;
 }
 
-export class SelectInput<TItem, TModel = TItem> extends Component<
-  SelectInputProps<TItem, TModel>,
+export class SelectInput<TItem> extends Component<
+  SelectInputProps<TItem>,
   SelectInputState
 > {
   static defaultPlacement: Placement = "bottom-start";
@@ -32,7 +36,7 @@ export class SelectInput<TItem, TModel = TItem> extends Component<
   selectView?: SelectView<TItem>;
   inputRef = React.createRef<HTMLInputElement>();
 
-  constructor(props: SelectInputProps<TItem, TModel>) {
+  constructor(props: SelectInputProps<TItem>) {
     super(props);
 
     this.state = {
@@ -59,6 +63,7 @@ export class SelectInput<TItem, TModel = TItem> extends Component<
     return (
       <>
         <input
+          style={this.props.style}
           className="n-select"
           type="text"
           ref={this.inputRef}
@@ -68,6 +73,8 @@ export class SelectInput<TItem, TModel = TItem> extends Component<
           onChange={this.onChange}
           onKeyDown={this.onKeydown}
           onClick={this.onClick}
+          placeholder={this.props.placeholder}
+          disabled={this.props.disabled}
         />
         {selectView}
       </>
@@ -86,6 +93,7 @@ export class SelectInput<TItem, TModel = TItem> extends Component<
         onSelect={this.onSelect}
         onOutsideClick={this.hide}
         display={this.props.display}
+        itemKey={this.props.itemKey}
         ref={view => (this.selectView = view || undefined)}
       />
     );
@@ -164,6 +172,8 @@ export class SelectInput<TItem, TModel = TItem> extends Component<
       default:
         break;
     }
+
+    this.props.onKeyDown && this.props.onKeyDown(ev);
   }
 
   onSelect<TItem>(value: TItem) {
@@ -180,10 +190,6 @@ export class SelectInput<TItem, TModel = TItem> extends Component<
         this.props.onChangeNonStrict(modelValue);
       }
     } else {
-      if (this.props.itemKeyAsModel && newValue !== undefined) {
-        modelValue = this.getItemKey(newValue);
-      }
-
       if (this.props.onChange) {
         this.props.onChange(modelValue);
       }

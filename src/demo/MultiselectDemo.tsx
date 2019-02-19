@@ -3,7 +3,7 @@ import { BPanel } from "./BPanel";
 import { Multiselect } from "../lib";
 import { demoData, DemoItem } from "./demoData";
 import { toJson } from "./demoUtils";
-import { stopPropagationAndPrevent } from "../lib/utils/domEventHelpers";
+import { domEventHelpers } from "../lib/utils/domEventHelpers";
 
 interface MultiselectDemoState {
   selectedItems: DemoItem[];
@@ -38,6 +38,19 @@ export class MultiselectDemo extends React.Component<{}, MultiselectDemoState> {
           />
         </div>
 
+        <div className="mb-20">
+          Default selected template with clear button:
+          <br />
+          <Multiselect
+            value={this.state.selectedItems}
+            items={this.items}
+            filterable={true}
+            disablePortalRender={true}
+            clearButton
+            onChange={selectedItems => this.setState({ selectedItems })}
+          />
+        </div>
+
         <div>
           Custom selected template:
           <br />
@@ -58,7 +71,7 @@ export class MultiselectDemo extends React.Component<{}, MultiselectDemoState> {
                 )}
                 <button
                   onClick={this.clear}
-                  onMouseDown={stopPropagationAndPrevent}
+                  onMouseDown={domEventHelpers.stopPropagationAndPrevent}
                 >
                   Clear
                 </button>

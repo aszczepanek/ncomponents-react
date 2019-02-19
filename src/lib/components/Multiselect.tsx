@@ -2,19 +2,21 @@ import React from "react";
 import { ItemDisplayFn, selectUtils } from "../utils/selectUtils";
 import { Placement } from "popper.js";
 import { keyCodes } from "../utils/keyCodeMap";
-import { stopPropagationAndPrevent } from "../utils/domEventHelpers";
+import { domEventHelpers } from "../utils/domEventHelpers";
 import { MultiselectView } from "./MultiselectView";
 
 interface MultiselectProps<TItem> {
   value: TItem[] | undefined;
   items: TItem[];
   onChange: (value: TItem[]) => any;
-  itemKey?: string;
-  display?: string | ItemDisplayFn<TItem>;
+  itemKey?: keyof TItem;
+  display?: keyof TItem | ItemDisplayFn<TItem>;
   placement?: Placement;
   filterable?: boolean;
+  clearButton?: boolean;
   disablePortalRender?: boolean;
   children?: CustomRenderSelectedItemsFn<TItem>;
+  style?: React.CSSProperties;
   onKeyDown?: (ev: React.KeyboardEvent) => any;
 }
 
@@ -23,8 +25,10 @@ interface MultiselectState {
 }
 
 interface DefaultRenderSelectedItemsFnArgs {
+  props: MultiselectProps<any>;
   selectedItems: any[];
   formatItemDisplay: (item: any) => string;
+  clear: (ev?: React.MouseEvent) => void;
 }
 
 type DefaultRenderSelectedItemsFn = (
@@ -32,8 +36,10 @@ type DefaultRenderSelectedItemsFn = (
 ) => React.ReactNode;
 
 interface CustomRenderSelectedItemsFnArgs<TItem> {
+  props: MultiselectProps<TItem>;
   selectedItems: TItem[];
   formatItemDisplay: (item: TItem) => string;
+  clear: (ev?: React.MouseEvent) => void;
   defaultRenderSelectedItems: () => React.ReactNode;
 }
 
@@ -49,10 +55,17 @@ export class Multiselect<TItem> extends React.Component<
 > {
   static defaultPlacement: Placement = "bottom-start";
   static defaultRenderSelectedItems: DefaultRenderSelectedItemsFn = ({
+    props,
     selectedItems,
-    formatItemDisplay
+    formatItemDisplay,
+    clear
   }) => {
-    return selectedItems.map(x => formatItemDisplay(x)).join(", ") || "-";
+    return (
+      <>
+        {selectedItems.map(x => formatItemDisplay(x)).join(", ") || "-"}
+        {props.clearButton && <button onClick={clear} onMouseDown={domEventHelpers.stopPropagationAndPrevent}>Clear</button>}
+      </>
+    );
   };
 
   multiselectView?: MultiselectView<TItem>;
@@ -69,6 +82,7 @@ export class Multiselect<TItem> extends React.Component<
     this.onFocus = this.onFocus.bind(this);
     this.formatItemDisplay = this.formatItemDisplay.bind(this);
     this.onItemSelect = this.onItemSelect.bind(this);
+    this.clear = this.clear.bind(this);
     this.defaultRenderSelectedItems = this.defaultRenderSelectedItems.bind(
       this
     );
@@ -79,11 +93,12 @@ export class Multiselect<TItem> extends React.Component<
     return (
       <>
         <div
+          style={this.props.style}
           className="n-multiselect"
           onFocus={this.onFocus}
           onKeyDown={this.onKeydown}
           tabIndex={0}
-          onClick={stopPropagationAndPrevent}
+          onClick={domEventHelpers.stopPropagationAndPrevent}
           ref={this.elRef}
         >
           {this.renderSelectedItems()}
@@ -97,6 +112,8 @@ export class Multiselect<TItem> extends React.Component<
     if (this.props.children) {
       return this.props.children({
         formatItemDisplay: this.formatItemDisplay,
+        clear: this.clear,
+        props: this.props,
         selectedItems: this.props.value || [],
         defaultRenderSelectedItems: this.defaultRenderSelectedItems
       });
@@ -122,6 +139,7 @@ export class Multiselect<TItem> extends React.Component<
         placement={placement}
         popoverRef={this.elRef.current!}
         onOutsideClick={this.hide}
+        onKeyDown={this.onKeydown}
         ref={view => (this.multiselectView = view || undefined)}
       />
     );
@@ -130,7 +148,9 @@ export class Multiselect<TItem> extends React.Component<
   defaultRenderSelectedItems() {
     return Multiselect.defaultRenderSelectedItems({
       formatItemDisplay: this.formatItemDisplay,
-      selectedItems: this.props.value || []
+      clear: this.clear,
+      selectedItems: this.props.value || [],
+      props: this.props
     });
   }
 
@@ -173,9 +193,7 @@ export class Multiselect<TItem> extends React.Component<
         break;
     }
 
-    if (this.props.onKeyDown) {
-      this.props.onKeyDown(ev);
-    }
+    this.props.onKeyDown && this.props.onKeyDown(ev);
   }
 
   formatItemDisplay(item: any) {
@@ -199,6 +217,11 @@ export class Multiselect<TItem> extends React.Component<
     }
 
     this.props.onChange && this.props.onChange(newModel);
+  }
+
+  clear(ev?: React.MouseEvent) {
+    ev && ev.stopPropagation();
+    this.props.onChange([]);
   }
 
   show() {

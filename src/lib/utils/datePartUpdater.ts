@@ -8,9 +8,9 @@ const options = {
 };
 
 export const datePartUpdater = {
-  options: options,
-  setDate: setDate,
-  setTime: setTime
+  options,
+  setDate,
+  setTime
 };
 
 function setDate(originalDate: Date | undefined, valueToSet: Date) {
@@ -30,18 +30,19 @@ function setDate(originalDate: Date | undefined, valueToSet: Date) {
   return result;
 }
 
-function setTime(originalDate: Date, valueToSet: Date) {
+function setTime(originalDate: Date | undefined, valueToSet: Date) {
   validateInput(originalDate, valueToSet);
 
   var hours = valueToSet.getHours();
   var minutes = valueToSet.getMinutes();
+  var seconds = valueToSet.getSeconds();
 
   var result = originalDate
     ? new Date(originalDate)
     : createDefaultForTime(valueToSet);
   result.setHours(hours);
   result.setMinutes(minutes);
-  result.setSeconds(0);
+  result.setSeconds(seconds);
   result.setMilliseconds(0);
 
   return result;

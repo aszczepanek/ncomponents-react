@@ -2,6 +2,14 @@ import { isDate, isString } from '../utils/typeHelpers';
 
 const regexInferChain = [
   {
+    pattern: /^\d\d:\d\d$/,
+    format: 'HH:mm'
+  },
+  {
+    pattern: /^\d\d:\d\d:\d\d$/,
+    format: 'HH:mm:ss'
+  },
+  {
     pattern: /^\d{4}-\d\d-\d\d$/,
     format: 'yyyy-MM-dd'
   },

@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import Popper, { Placement, ReferenceObject } from "popper.js";
 import { ItemDisplayFn, selectUtils } from "../utils/selectUtils";
-import { stopPropagationAndPrevent } from "../utils/domEventHelpers";
+import { domEventHelpers } from "../utils/domEventHelpers";
 import { getBodyPortal } from "../utils/reactHelpers";
 
 export type DropdownCustomRenderItem<TItem> = (
@@ -13,10 +13,11 @@ export type DropdownCustomRenderItem<TItem> = (
 interface DropdownViewProps<TItem> {
   items: TItem[];
   popoverRef: HTMLElement | ReferenceObject;
-  placement?: Placement;
+  placement: Placement;
   onSelect: (item: TItem) => any;
   onOutsideClick?: () => any;
   display?: string | ItemDisplayFn<TItem>;
+  renderDisplay?: DropdownCustomRenderItem<TItem>;
   renderItem?: DropdownCustomRenderItem<TItem>;
   renderInBody?: boolean;
 }
@@ -44,7 +45,7 @@ export class DropdownView<TItem> extends React.Component<
     return (
       <div
         className="n-dropdown"
-        onMouseDown={stopPropagationAndPrevent}
+        onMouseDown={domEventHelpers.stopPropagationAndPrevent}
         ref={this.rootEl}
       >
         <ul>{this.props.items.map((x, i) => this.renderItem(x, i))}</ul>
@@ -59,7 +60,7 @@ export class DropdownView<TItem> extends React.Component<
 
     return (
       <li key={index} onClick={() => this.props.onSelect(item)}>
-        {this.formatItemDisplay(item)}
+        {this.props.renderDisplay ? this.props.renderDisplay(item, index) : this.formatItemDisplay(item)}
       </li>
     );
   }
@@ -82,7 +83,7 @@ export class DropdownView<TItem> extends React.Component<
     document.removeEventListener("click", this.onDocumentClick);
   }
 
-  formatItemDisplay(item: any): string {
+  formatItemDisplay(item: any) {
     return selectUtils.formatItemDisplay(item, this.props.display);
   }
 

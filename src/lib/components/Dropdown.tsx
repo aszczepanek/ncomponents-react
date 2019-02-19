@@ -9,6 +9,7 @@ interface DropdownProps<TItem> {
   placement?: Placement;
   display?: string | ItemDisplayFn<TItem>;
   renderInBody?: boolean;
+  renderDisplay?: DropdownCustomRenderItem<TItem>;
   renderItem?: DropdownCustomRenderItem<TItem>;
   contextMenu?: boolean;
 }
@@ -68,6 +69,7 @@ export class Dropdown<TItem> extends React.Component<
         onOutsideClick={this.hide}
         display={this.props.display}
         renderInBody={this.props.renderInBody}
+        renderDisplay={this.props.renderDisplay}
         renderItem={this.props.renderItem}
       />
     );

@@ -103,7 +103,7 @@ const DATE_FORMATS_GETTERS: { [key: string]: (date: Date, formats: any, dateTime
 const DATE_FORMATS_SPLIT = /((?:[^yMLdHhmsaZEwG']+)|(?:'(?:[^']|'')*')|(?:E+|y+|M+|L+|d+|H+|h+|m+|s+|a|Z|G+|w+))(.*)/;
 const NUMBER_STRING = /^\-?\d+$/;
 
-export const namedPatterns: { [key: string]: string | undefined } = {
+const namedPatterns: { [key: string]: string | undefined } = {
   ISO8601: 'yyyy-MM-ddTHH:mm:ss.sssZ',
   ISO8601_SECONDS: 'yyyy-MM-ddTHH:mm:ssZ',
   "dateTime": "d.MM.yyyy HH:mm",
@@ -117,7 +117,13 @@ export const namedPatterns: { [key: string]: string | undefined } = {
   "shortTime": "HH:mm"
 };
 
-export function parseISO(string: string) {
+export const dateUtils = {
+  namedPatterns,
+  parseISO,
+  formatDate
+}
+
+function parseISO(string: string) {
   let match;
   if (match = string.match(R_ISO8601_STR)) {
     let date = new Date(0),
@@ -141,7 +147,7 @@ export function parseISO(string: string) {
   return undefined;
 }
 
-export function formatDate(date: any, format: string) {
+function formatDate(date: any, format: string) {
   var text = '',
     parts = [],
     fn, match;
