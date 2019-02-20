@@ -104,7 +104,10 @@ export class SelectInput<TItem> extends Component<
     const { value, nonStrict } = this.props;
     const filterToken = this.state.filterToken.toLowerCase();
 
-    if ((value === undefined || value === null || nonStrict) && filterToken) {
+    if (
+      (value === undefined || value === null || value === "" || nonStrict) &&
+      filterToken
+    ) {
       result = result.filter(x => {
         const display = this.formatItemDisplay(x).toLowerCase();
         return display.indexOf(filterToken) >= 0;
