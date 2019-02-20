@@ -131,8 +131,11 @@ export class SelectView<TItem> extends React.Component<
   selectFocused() {
     if (!this.props.items) return;
 
-    const focusedItem = this.props.items[this.state.focusedIndex];
-    if (focusedItem) {
+    if (
+      this.state.focusedIndex >= 0 &&
+      this.state.focusedIndex < this.props.items.length
+    ) {
+      const focusedItem = this.props.items[this.state.focusedIndex];
       this.select(focusedItem);
     }
   }
