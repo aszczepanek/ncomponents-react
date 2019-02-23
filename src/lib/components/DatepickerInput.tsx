@@ -15,6 +15,7 @@ interface DatepickerInputProps<TModel> {
   placement?: Placement;
   style?: React.CSSProperties;
   onKeyDown?: (ev: React.KeyboardEvent) => any;
+  placeholder?: string;
 }
 
 interface DatepickerInputState {
@@ -80,6 +81,7 @@ export class DatepickerInput<TModel = Date | string> extends Component<
           onChange={this.onChange}
           onWheel={this.onMouseWheel}
           onKeyDown={this.onKeydown}
+          placeholder={this.props.placeholder}
         />
         {datepickerView}
       </>
