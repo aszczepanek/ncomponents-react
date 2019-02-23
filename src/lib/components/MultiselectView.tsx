@@ -228,6 +228,8 @@ export class MultiselectView<TItem> extends React.Component<
   }
 
   getItemKey(item: any) {
+    if (typeof item === "string") return item;
+
     return item[this.props.itemKey || "id"];
   }
 
