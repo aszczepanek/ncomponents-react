@@ -1,9 +1,23 @@
 {
   "name": "ncomponents-react",
-  "version": "0.1.0",
+  "version": "1.0.0",
+  "description": "General usage react components (select, datepicker, timepicker, dropdown, multiselect)",
+  "keywords": [
+    "react",
+    "components"
+  ],
   "private": true,
-  "main": "dist/ncomponents-react.js",
-  "typings": "index.d.ts",
+  "main": "build/dist/ncomponents-react.js",
+  "typings": "build/index.d.ts",
+  "files": [
+    "build"
+  ],
+  "author": "Aleksander Szczepanek <aleksander.szczepanek@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/aszczepanek/ncomponents-react"
+  },
+  "license": "MIT",
   "dependencies": {
     "popper.js": "^1.14.4",
     "react": "^16.7.0",
@@ -67,7 +81,7 @@
   },
   "scripts": {
     "start": "node scripts/start.js",
-    "build": "node scripts/build.js && tsc -p src/lib/tsconfig.decl.json && node scripts/copyPackageJson.js",
+    "build": "node scripts/build.js && tsc -p src/lib/tsconfig.decl.json",
     "test": "node scripts/test.js"
   },
   "eslintConfig": {
