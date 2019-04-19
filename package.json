@@ -6,7 +6,6 @@
     "react",
     "components"
   ],
-  "private": true,
   "main": "build/dist/ncomponents-react.js",
   "typings": "build/index.d.ts",
   "files": [
@@ -82,7 +81,8 @@
   "scripts": {
     "start": "node scripts/start.js",
     "build": "node scripts/build.js && tsc -p src/lib/tsconfig.decl.json",
-    "test": "node scripts/test.js"
+    "test": "node scripts/test.js",
+    "prepare": "npm run build"
   },
   "eslintConfig": {
     "extends": "react-app"
