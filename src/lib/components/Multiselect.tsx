@@ -15,6 +15,7 @@ interface MultiselectProps<TItem> {
   filterable?: boolean;
   clearButton?: boolean;
   disablePortalRender?: boolean;
+  sortOnChange?: boolean;
   children?: CustomRenderSelectedItemsFn<TItem>;
   style?: React.CSSProperties;
   onKeyDown?: (ev: React.KeyboardEvent) => any;
@@ -202,6 +203,7 @@ export class Multiselect<TItem> extends React.Component<
 
   getItemKey(item: any) {
     if (typeof item === 'string') return item;
+    if (typeof item === "number") return item;
     
     return item[this.props.itemKey || "id"];
   }
@@ -218,6 +220,7 @@ export class Multiselect<TItem> extends React.Component<
       newModel.push(item);
     }
 
+    if (this.props.sortOnChange) newModel.sort();
     this.props.onChange && this.props.onChange(newModel);
   }
 

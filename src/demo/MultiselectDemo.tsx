@@ -7,13 +7,16 @@ import { domEventHelpers } from "../lib/utils/domEventHelpers";
 
 interface MultiselectDemoState {
   selectedItems: DemoItem[];
+  selectedNumber: number[];
 }
 
 export class MultiselectDemo extends React.Component<{}, MultiselectDemoState> {
   items = demoData.people;
   state = {
-    selectedItems: [this.items[0]]
+    selectedItems: [this.items[0]],
+    selectedNumber: []
   };
+  numbers = [0, 1, 2, 3, 4];
 
   constructor(props: {}) {
     super(props);
@@ -51,7 +54,7 @@ export class MultiselectDemo extends React.Component<{}, MultiselectDemoState> {
           />
         </div>
 
-        <div>
+        <div className="mb-20">
           Custom selected template:
           <br />
           <Multiselect
@@ -66,9 +69,7 @@ export class MultiselectDemo extends React.Component<{}, MultiselectDemoState> {
                     <li key={s.id}>{s.label}</li>
                   ))}
                 </ul>
-                {!args.selectedItems.length && (
-                  <div v-if="!selected.length">Brak</div>
-                )}
+                {!args.selectedItems.length && <div v-if="!selected.length">Brak</div>}
                 <button
                   onClick={this.clear}
                   onMouseDown={domEventHelpers.stopPropagationAndPrevent}
@@ -78,6 +79,18 @@ export class MultiselectDemo extends React.Component<{}, MultiselectDemoState> {
               </>
             )}
           </Multiselect>
+        </div>
+
+        <div className="mb-20">
+          Plain numbers array:
+          <br />
+          <Multiselect
+            value={this.state.selectedNumber}
+            items={this.numbers}
+            disablePortalRender
+            sortOnChange
+            onChange={selectedNumber => this.setState({ selectedNumber })}
+          />
         </div>
       </BPanel>
     );
