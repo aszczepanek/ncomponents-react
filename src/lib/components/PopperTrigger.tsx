@@ -6,6 +6,7 @@ interface PopperTriggerProps {
   children: React.ReactElement<any>;
   trigger: TriggerType | TriggerType[];
   content: React.ReactNode | (() => React.ReactNode);
+  closeOnDocumentClick?: boolean;
 }
 
 interface PopperTriggerState {
@@ -23,6 +24,7 @@ export class PopperTrigger extends React.PureComponent<PopperTriggerProps, Poppe
     this.handleMouseOut = this.handleMouseOut.bind(this);
     this.handleFocus = this.handleFocus.bind(this);
     this.handleBlur = this.handleBlur.bind(this);
+    this.handleDocumentClick = this.handleDocumentClick.bind(this);
 
     this.state = {
       show: false
@@ -61,10 +63,9 @@ export class PopperTrigger extends React.PureComponent<PopperTriggerProps, Poppe
   renderContent() {
     const content = this.props.content;
 
-    if (typeof content === 'function') {
+    if (typeof content === "function") {
       return (content as any)();
-    }
-    else {
+    } else {
       return content;
     }
   }
@@ -81,8 +82,25 @@ export class PopperTrigger extends React.PureComponent<PopperTriggerProps, Poppe
     this.state.show ? this.hide() : this.show();
   }
 
+  componentDidMount() {
+    if (this.props.closeOnDocumentClick) {
+      document.addEventListener("click", this.handleDocumentClick);
+    }
+  }
+
+  componentWillUnmount() {
+    if (this.props.closeOnDocumentClick) {
+      document.removeEventListener("click", this.handleDocumentClick);
+    }
+  }
+
+  private handleDocumentClick() {
+    this.hide();
+  }
+
   private handleClick(ev: React.MouseEvent<any>) {
     this.toggle();
+    ev.nativeEvent.stopImmediatePropagation();
 
     const { onClick } = this.getChildProps();
     onClick && onClick(ev);

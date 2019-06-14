@@ -6,6 +6,7 @@ import { MultiselectDemo } from "./MultiselectDemo";
 import { DropdownDemo } from "./DropdownDemo";
 import { DateAndTimeDemo } from "./DateAndTimeDemo";
 import { TooltipDemo } from "./TooltipDemo";
+import { PopoverDemo } from "./PopoverDemo";
 
 class App extends Component {
   render() {
@@ -16,6 +17,7 @@ class App extends Component {
         <SelectDemo />
         <DropdownDemo />
         <TooltipDemo />
+        <PopoverDemo />
       </div>
     );
   }
