@@ -16,6 +16,8 @@
 - **Select**
 - **Multiselect**
 - **Dropdown**
+- **Tooltip**
+- **Popover**
 
 ## Install
 

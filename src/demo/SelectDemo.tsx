@@ -32,12 +32,7 @@ export class SelectDemo extends React.Component<{}, SelectDemoState> {
   }
 
   render() {
-    const {
-      selectedItem,
-      selectedItemByKey,
-      selectedString,
-      selectedNumber
-    } = this.state;
+    const { selectedItem, selectedItemByKey, selectedString, selectedNumber } = this.state;
 
     return (
       <BPanel header="Select">
@@ -48,9 +43,7 @@ export class SelectDemo extends React.Component<{}, SelectDemoState> {
             value={selectedItem}
             onChange={selectedItem => this.setState({ selectedItem })}
           />
-          <button onClick={() => this.setOutOfListValue()}>
-            Set out of list value
-          </button>
+          <button onClick={() => this.setOutOfListValue()}>Set out of list value</button>
           <button onClick={() => this.setIncompatibleObjectValue()}>
             Set incompatible object value
           </button>
@@ -118,6 +111,47 @@ export class SelectDemo extends React.Component<{}, SelectDemoState> {
             items={this.numbers}
             value={selectedNumber}
             onChange={val => this.setState({ selectedNumber: val })}
+          />
+        </div>
+        <div>
+          <div>Async data provider</div>
+          <SelectInput
+            items={demoData.asyncPeople}
+            value={selectedItem}
+            onChange={selectedItem => this.setState({ selectedItem })}
+          />
+        </div>
+
+        <div>
+          <div>Async data provider with error</div>
+          <SelectInput
+            items={demoData.asyncPeopleError}
+            value={selectedItem}
+            onChange={selectedItem => this.setState({ selectedItem })}
+          />
+        </div>
+
+        <div>
+          <div>Async data provider item key as model</div>
+          <SelectInput
+            itemKeyAsModel
+            items={demoData.asyncPeople}
+            value={selectedItemByKey}
+            onChange={selectedItem =>
+              this.setState({ selectedItemByKey: selectedItem ? selectedItem.id : undefined })
+            }
+          />
+        </div>
+
+        <div>
+          <div>Async data provider item key as model no return for key request</div>
+          <SelectInput
+            itemKeyAsModel
+            items={demoData.asyncPeopleNoGetByKey}
+            value={selectedItemByKey}
+            onChange={selectedItem =>
+              this.setState({ selectedItemByKey: selectedItem ? selectedItem.id : undefined })
+            }
           />
         </div>
       </BPanel>

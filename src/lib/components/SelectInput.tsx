@@ -3,10 +3,11 @@ import { Placement } from "popper.js";
 import { keyCodes } from "../utils/keyCodeMap";
 import { SelectView } from "./SelectView";
 import { selectUtils, ItemDisplayFn } from "../utils/selectUtils";
+import { AsyncItemsProvider } from "../utils/asyncItemsProvider";
 
 interface SelectInputProps<TItem> {
   value: any | undefined;
-  items: TItem[];
+  items: TItem[] | AsyncItemsProvider<TItem>;
   itemKey?: keyof TItem;
   itemKeyAsModel?: boolean;
   display?: keyof TItem | ItemDisplayFn<TItem>;
@@ -20,7 +21,7 @@ interface SelectInputProps<TItem> {
   onKeyDown?: (ev: React.KeyboardEvent) => any;
 }
 
-interface SelectInputState {
+interface SelectInputState<TItem> {
   inputValue: string;
   isInputFocused: boolean;
   filterToken: string;
@@ -29,12 +30,16 @@ interface SelectInputState {
 
 export class SelectInput<TItem> extends Component<
   SelectInputProps<TItem>,
-  SelectInputState
+  SelectInputState<TItem>
 > {
   static defaultPlacement: Placement = "bottom-start";
 
   selectView?: SelectView<TItem>;
   inputRef = React.createRef<HTMLInputElement>();
+
+  itemByKeyKeyValue?: any;
+  itemByKey?: TItem;
+  itemByKeyLoaded = false;
 
   constructor(props: SelectInputProps<TItem>) {
     super(props);
@@ -83,11 +88,12 @@ export class SelectInput<TItem> extends Component<
 
   renderSelectView() {
     const placement = this.props.placement || SelectInput.defaultPlacement;
-    const filteredItems = this.getFilteredItems();
+    const filterToken = this.getFilterTokenForView();
 
     return (
       <SelectView
-        items={filteredItems}
+        items={this.props.items}
+        filterToken={filterToken}
         placement={placement}
         popoverRef={this.inputRef.current!}
         onSelect={this.onSelect}
@@ -99,22 +105,12 @@ export class SelectInput<TItem> extends Component<
     );
   }
 
-  getFilteredItems() {
-    let result = this.props.items || [];
+  getFilterTokenForView() {
     const { value, nonStrict } = this.props;
-    const filterToken = this.state.filterToken.toLowerCase();
 
-    if (
-      (value === undefined || value === null || value === "" || nonStrict) &&
-      filterToken
-    ) {
-      result = result.filter(x => {
-        const display = this.formatItemDisplay(x).toLowerCase();
-        return display.indexOf(filterToken) >= 0;
-      });
-    }
-
-    return result;
+    if (value === undefined || value === null || value === "" || nonStrict)
+      return this.state.filterToken;
+    else return "";
   }
 
   onFocus(ev: React.FocusEvent<HTMLInputElement>) {
@@ -195,6 +191,11 @@ export class SelectInput<TItem> extends Component<
     } else {
       if (this.props.onChange) {
         this.props.onChange(modelValue);
+        if (this.props.itemKeyAsModel && !Array.isArray(this.props.items)) {
+          this.itemByKey = modelValue;
+          this.itemByKeyKeyValue = modelValue ? this.getItemKey(modelValue) : undefined;
+          this.itemByKeyLoaded = true;
+        }
       }
     }
 
@@ -220,13 +221,35 @@ export class SelectInput<TItem> extends Component<
       return "";
     } else {
       if (this.props.itemKeyAsModel) {
-        const item = this.props.items.filter(
-          x => this.getItemKey(x) == value
-        )[0];
-        return this.formatItemDisplay(item || value);
+        const keyValue = value;
+        if (this.itemByKeyKeyValue != keyValue) {
+          this.tryToLoadItemByKey(keyValue);
+        }
+
+        return this.formatItemDisplay(this.itemByKey || value);
       } else {
         return this.formatItemDisplay(value);
       }
+    }
+  }
+
+  tryToLoadItemByKey(keyValue: any) {
+    this.itemByKey = undefined;
+    this.itemByKeyKeyValue = keyValue;
+    this.itemByKeyLoaded = false;
+
+    if (Array.isArray(this.props.items)) {
+      const item = this.props.items.filter(x => this.getItemKey(x) == keyValue)[0];
+      this.itemByKeyLoaded = true;
+      this.itemByKey = item;
+    } else {
+      const asyncItemProvider = this.props.items;
+      asyncItemProvider.getItemByKey(keyValue).then(res => {
+        if (this.itemByKeyKeyValue != keyValue) return;
+        this.itemByKey = res;
+        this.itemByKeyLoaded;
+        this.forceUpdate();
+      });
     }
   }
 
