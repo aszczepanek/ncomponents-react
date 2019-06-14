@@ -4,6 +4,7 @@ import { ItemDisplayFn } from "../utils/selectUtils";
 import { DropdownView, DropdownCustomRenderItem } from "./DropdownView";
 
 interface DropdownProps<TItem> {
+  children: React.ReactElement<any>;
   items: TItem[];
   onSelect: (item: TItem) => any;
   placement?: Placement;
