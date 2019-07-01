@@ -28,6 +28,7 @@ export class DatepickerInput<TModel = Date | string> extends Component<
   DatepickerInputProps<TModel>,
   DatepickerInputState
 > {
+  static rootClassName = "n-datepicker";
   static defaultModelFormat = "ISO8601";
   static defaultViewFormat = "yyyy-MM-dd";
   static defaultPlacement: Placement = "bottom-start";
@@ -64,14 +65,12 @@ export class DatepickerInput<TModel = Date | string> extends Component<
   render() {
     const viewValue = this.getViewValue();
     const datepickerVisible = this.state.datepickerVisible;
-    const datepickerView = datepickerVisible
-      ? this.renderDatepickerView()
-      : undefined;
+    const datepickerView = datepickerVisible ? this.renderDatepickerView() : undefined;
 
     return (
       <>
         <input
-          className="n-datepicker"
+          className={DatepickerInput.rootClassName}
           style={this.props.style}
           type="text"
           ref={this.inputRef}
@@ -152,11 +151,11 @@ export class DatepickerInput<TModel = Date | string> extends Component<
   }
 
   onMouseWheel(ev: React.WheelEvent) {
+    if (!ev.shiftKey) return;
     ev.stopPropagation();
-    ev.preventDefault();
 
     const delta = ev.deltaY < 0 ? 1 : -1;
-    if (ev.shiftKey) {
+    if (ev.altKey) {
       this.addMonth(delta);
     } else {
       this.addDate(delta);

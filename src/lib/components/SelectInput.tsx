@@ -32,6 +32,7 @@ export class SelectInput<TItem> extends Component<
   SelectInputProps<TItem>,
   SelectInputState<TItem>
 > {
+  static rootClassName = "n-select";
   static defaultPlacement: Placement = "bottom-start";
 
   selectView?: SelectView<TItem>;
@@ -69,7 +70,7 @@ export class SelectInput<TItem> extends Component<
       <>
         <input
           style={this.props.style}
-          className="n-select"
+          className={SelectInput.rootClassName}
           type="text"
           ref={this.inputRef}
           value={viewValue}

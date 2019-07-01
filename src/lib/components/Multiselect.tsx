@@ -32,9 +32,7 @@ interface DefaultRenderSelectedItemsFnArgs {
   clear: (ev?: React.MouseEvent) => void;
 }
 
-type DefaultRenderSelectedItemsFn = (
-  args: DefaultRenderSelectedItemsFnArgs
-) => React.ReactNode;
+type DefaultRenderSelectedItemsFn = (args: DefaultRenderSelectedItemsFnArgs) => React.ReactNode;
 
 interface CustomRenderSelectedItemsFnArgs<TItem> {
   props: MultiselectProps<TItem>;
@@ -50,10 +48,8 @@ type CustomRenderSelectedItemsFn<TItem> = (
 
 let currentOpenMultiselect: Multiselect<any> | undefined;
 
-export class Multiselect<TItem> extends React.Component<
-  MultiselectProps<TItem>,
-  MultiselectState
-> {
+export class Multiselect<TItem> extends React.Component<MultiselectProps<TItem>, MultiselectState> {
+  static rootClassName = "n-multiselect";
   static defaultPlacement: Placement = "bottom-start";
   static defaultRenderSelectedItems: DefaultRenderSelectedItemsFn = ({
     props,
@@ -64,7 +60,11 @@ export class Multiselect<TItem> extends React.Component<
     return (
       <>
         {selectedItems.map(x => formatItemDisplay(x)).join(", ") || "-"}
-        {props.clearButton && <button onClick={clear} onMouseDown={domEventHelpers.stopPropagationAndPrevent}>Clear</button>}
+        {props.clearButton && (
+          <button onClick={clear} onMouseDown={domEventHelpers.stopPropagationAndPrevent}>
+            Clear
+          </button>
+        )}
       </>
     );
   };
@@ -84,9 +84,7 @@ export class Multiselect<TItem> extends React.Component<
     this.formatItemDisplay = this.formatItemDisplay.bind(this);
     this.onItemSelect = this.onItemSelect.bind(this);
     this.clear = this.clear.bind(this);
-    this.defaultRenderSelectedItems = this.defaultRenderSelectedItems.bind(
-      this
-    );
+    this.defaultRenderSelectedItems = this.defaultRenderSelectedItems.bind(this);
     this.hide = this.hide.bind(this);
   }
 
@@ -95,7 +93,7 @@ export class Multiselect<TItem> extends React.Component<
       <>
         <div
           style={this.props.style}
-          className="n-multiselect"
+          className={Multiselect.rootClassName}
           onFocus={this.onFocus}
           onKeyDown={this.onKeydown}
           tabIndex={0}
@@ -202,9 +200,9 @@ export class Multiselect<TItem> extends React.Component<
   }
 
   getItemKey(item: any) {
-    if (typeof item === 'string') return item;
+    if (typeof item === "string") return item;
     if (typeof item === "number") return item;
-    
+
     return item[this.props.itemKey || "id"];
   }
 
@@ -213,7 +211,7 @@ export class Multiselect<TItem> extends React.Component<
 
     const key = this.getItemKey(item);
     const existingItem = newModel.filter(x => this.getItemKey(x) == key)[0];
-    if (existingItem) {
+    if (existingItem !== undefined) {
       const idx = newModel.indexOf(existingItem);
       newModel.splice(idx, 1);
     } else {

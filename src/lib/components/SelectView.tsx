@@ -32,6 +32,8 @@ export class SelectView<TItem> extends React.Component<
   SelectViewProps<TItem>,
   SelectViewState<TItem>
 > {
+  static rootClassName = "n-dropdown n-select";
+
   popper?: Popper;
   rootEl = React.createRef<HTMLDivElement>();
   currentAsyncItemsPromise?: Promise<any>;
@@ -58,7 +60,7 @@ export class SelectView<TItem> extends React.Component<
     const minWidth = this.props.popoverRef.getBoundingClientRect().width;
     return (
       <div
-        className="n-dropdown n-select"
+        className={SelectView.rootClassName}
         onMouseDown={domEventHelpers.stopPropagationAndPrevent}
         ref={this.rootEl}
         style={{ minWidth }}
@@ -240,7 +242,7 @@ export class SelectView<TItem> extends React.Component<
           err => {
             if (promise != this.currentAsyncItemsPromise) return;
             if (this.unmounted) return;
-            
+
             this.setState({
               items: [],
               asyncError: true,

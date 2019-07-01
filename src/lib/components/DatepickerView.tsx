@@ -24,10 +24,8 @@ interface DateViewItem {
   isSelected: boolean;
 }
 
-export class DatepickerView extends React.Component<
-  DatepickerViewProps,
-  DatepickerViewState
-> {
+export class DatepickerView extends React.Component<DatepickerViewProps, DatepickerViewState> {
+  static rootClassName = "n-datepicker-view";
   static prevMonthHtml = "<";
   static nextMonthHtml = ">";
   static firstDayOfWeek = 1;
@@ -54,14 +52,11 @@ export class DatepickerView extends React.Component<
   private renderView() {
     const nextMonthHtml = DatepickerView.nextMonthHtml;
     const prevMonthHtml = DatepickerView.prevMonthHtml;
-    const yearMonthHeader = dateUtils.formatDate(
-      this.state.currentDate,
-      "LLLL yyyy"
-    );
+    const yearMonthHeader = dateUtils.formatDate(this.state.currentDate, "LLLL yyyy");
 
     return (
       <div
-        className="n-datepicker-view"
+        className={DatepickerView.rootClassName}
         onClick={domEventHelpers.stopPropagationAndPrevent}
         onMouseDown={domEventHelpers.stopPropagationAndPrevent}
         onWheel={this.onMouseWheel}
@@ -129,8 +124,7 @@ export class DatepickerView extends React.Component<
   componentDidUpdate(prevProps: DatepickerViewProps) {
     let propValueChanged = false;
     if (isDate(prevProps.value) && isDate(this.props.value)) {
-      propValueChanged =
-        prevProps.value.getTime() != this.props.value.getTime();
+      propValueChanged = prevProps.value.getTime() != this.props.value.getTime();
     } else {
       propValueChanged = prevProps.value != this.props.value;
     }
@@ -151,14 +145,14 @@ export class DatepickerView extends React.Component<
   }
 
   private onMouseWheel(ev: React.WheelEvent) {
+    if (!ev.shiftKey) return;
     ev.stopPropagation();
-    ev.preventDefault();
 
     const delta = ev.deltaY > 0 ? 1 : -1;
     if (delta < 0) {
-      this.prevMonth();
+      ev.altKey ? this.prevYear() : this.prevMonth();
     } else {
-      this.nextMonth();
+      ev.altKey ? this.nextYear() : this.nextMonth();
     }
   }
 
@@ -168,7 +162,6 @@ export class DatepickerView extends React.Component<
     this.setState({
       currentDate: date
     });
-    // this.generateMonth();
   }
 
   nextMonth() {
@@ -177,7 +170,22 @@ export class DatepickerView extends React.Component<
     this.setState({
       currentDate: date
     });
-    // this.generateMonth();
+  }
+
+  prevYear() {
+    const date = new Date(this.state.currentDate);
+    date.setFullYear(date.getFullYear() - 1);
+    this.setState({
+      currentDate: date
+    });
+  }
+
+  nextYear() {
+    const date = new Date(this.state.currentDate);
+    date.setFullYear(date.getFullYear() + 1);
+    this.setState({
+      currentDate: date
+    });
   }
 
   private select(d: DateViewItem) {
@@ -218,19 +226,14 @@ export class DatepickerView extends React.Component<
     }
 
     const weeks: DateViewItem[][] = [];
-    while (
-      (d.getMonth() <= month && d.getFullYear() <= year) ||
-      d.getTime() < date.getTime()
-    ) {
+    while ((d.getMonth() <= month && d.getFullYear() <= year) || d.getTime() < date.getTime()) {
       var week = [];
 
       for (var i = 0; i < 7; i++) {
         week.push({
           date: new Date(d),
           label: d.getDate(),
-          isMuted:
-            date.getMonth() != d.getMonth() ||
-            date.getFullYear() != d.getFullYear(),
+          isMuted: date.getMonth() != d.getMonth() || date.getFullYear() != d.getFullYear(),
           isSelected:
             currentModel &&
             currentModel.getDate() == d.getDate() &&

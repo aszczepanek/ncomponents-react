@@ -29,6 +29,8 @@ export class MultiselectView<TItem> extends React.Component<
   MultiselectViewProps<TItem>,
   MultiselectViewState
 > {
+  static rootClassName = "n-dropdown n-multiselect-view";
+
   popper?: Popper;
   rootEl = React.createRef<HTMLDivElement>();
   filterInputRef = React.createRef<HTMLInputElement>();
@@ -51,7 +53,7 @@ export class MultiselectView<TItem> extends React.Component<
 
     const result = (
       <div
-        className="n-dropdown n-multiselect-view"
+        className={MultiselectView.rootClassName}
         onClick={domEventHelpers.stopPropagationAndPrevent}
         ref={this.rootEl}
         style={{ minWidth }}
@@ -61,9 +63,7 @@ export class MultiselectView<TItem> extends React.Component<
       </div>
     );
 
-    return this.props.disablePortalRender
-      ? result
-      : ReactDOM.createPortal(result, getBodyPortal());
+    return this.props.disablePortalRender ? result : ReactDOM.createPortal(result, getBodyPortal());
   }
 
   renderFilterInput() {

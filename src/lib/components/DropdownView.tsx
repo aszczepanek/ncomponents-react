@@ -5,10 +5,7 @@ import { ItemDisplayFn, selectUtils } from "../utils/selectUtils";
 import { domEventHelpers } from "../utils/domEventHelpers";
 import { getBodyPortal } from "../utils/reactHelpers";
 
-export type DropdownCustomRenderItem<TItem> = (
-  item: TItem,
-  index: number
-) => React.ReactNode;
+export type DropdownCustomRenderItem<TItem> = (item: TItem, index: number) => React.ReactNode;
 
 interface DropdownViewProps<TItem> {
   items: TItem[];
@@ -22,8 +19,9 @@ interface DropdownViewProps<TItem> {
   renderInBody?: boolean;
 }
 
-export class DropdownView<TItem> extends React.Component<
-  DropdownViewProps<TItem>> {
+export class DropdownView<TItem> extends React.Component<DropdownViewProps<TItem>> {
+  static rootClassName = "n-dropdown";
+
   popper?: Popper;
   rootEl = React.createRef<HTMLDivElement>();
 
@@ -42,11 +40,14 @@ export class DropdownView<TItem> extends React.Component<
   }
 
   renderView() {
+    const minWidth = this.props.popoverRef.getBoundingClientRect().width;
+
     return (
       <div
-        className="n-dropdown"
+        className={DropdownView.rootClassName}
         onMouseDown={domEventHelpers.stopPropagationAndPrevent}
         ref={this.rootEl}
+        style={{ minWidth }}
       >
         <ul>{this.props.items.map((x, i) => this.renderItem(x, i))}</ul>
       </div>
@@ -60,7 +61,9 @@ export class DropdownView<TItem> extends React.Component<
 
     return (
       <li key={index} onClick={() => this.props.onSelect(item)}>
-        {this.props.renderDisplay ? this.props.renderDisplay(item, index) : this.formatItemDisplay(item)}
+        {this.props.renderDisplay
+          ? this.props.renderDisplay(item, index)
+          : this.formatItemDisplay(item)}
       </li>
     );
   }

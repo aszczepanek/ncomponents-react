@@ -62,9 +62,7 @@ export class TimepickerInput<TModel = Date | string> extends Component<
   render() {
     const viewValue = this.getViewValue();
     const timepickerVisible = this.state.timepickerVisible;
-    const timepickerView = timepickerVisible
-      ? this.renderTimepickerView()
-      : undefined;
+    const timepickerView = timepickerVisible ? this.renderTimepickerView() : undefined;
 
     return (
       <>
@@ -87,8 +85,7 @@ export class TimepickerInput<TModel = Date | string> extends Component<
 
   renderTimepickerView() {
     const placement = this.props.placement || TimepickerInput.defaultPlacement;
-    const viewFormat =
-      this.props.viewFormat || TimepickerInput.defaultViewFormat;
+    const viewFormat = this.props.viewFormat || TimepickerInput.defaultViewFormat;
     const currentModelValue = this.convertToDateModelValue(this.props.value);
 
     return (
@@ -124,7 +121,9 @@ export class TimepickerInput<TModel = Date | string> extends Component<
     let updatedInputRenderValue = ev.target.value;
     if (parsedValue) {
       const viewParsed = this.viewDateAdapter.format(parsedValue);
-      const viewModel = this.viewDateAdapter.format(this.convertToDateModelValue(this.props.value) || '');
+      const viewModel = this.viewDateAdapter.format(
+        this.convertToDateModelValue(this.props.value) || ""
+      );
 
       if (viewParsed != viewModel) {
         updatedInputRenderValue = viewParsed;
@@ -162,11 +161,11 @@ export class TimepickerInput<TModel = Date | string> extends Component<
   }
 
   onMouseWheel(ev: React.WheelEvent) {
+    if (!ev.shiftKey) return;
     ev.stopPropagation();
-    ev.preventDefault();
 
     const delta = ev.deltaY < 0 ? 1 : -1;
-    if (ev.shiftKey) {
+    if (ev.altKey) {
       this.addHour(delta);
     } else {
       this.addMinute(delta);

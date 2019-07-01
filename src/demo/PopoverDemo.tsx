@@ -1,5 +1,4 @@
 import React from "react";
-import "./PopoverDemo.scss";
 import { BPanel } from "./BPanel";
 import { Popover } from "../lib";
 import { Placement } from "popper.js";
@@ -12,12 +11,16 @@ export class PopoverDemo extends React.Component<{}, PopoverDemoState> {
   }
 
   render() {
+    const placements: Placement[] = ["top", "right", "bottom", "left"];
+
     return (
       <BPanel header="Popover">
         <div className="mb-20">
-          <Popover header="Sample header" content="Test content">
-            <button>Popover on click</button>
-          </Popover>
+          {placements.map(x => (
+            <Popover key={x} header="Sample header" content="Test content" placement={x}>
+              <button style={{ marginRight: "5px" }}>Popover {x} on click</button>
+            </Popover>
+          ))}
         </div>
       </BPanel>
     );

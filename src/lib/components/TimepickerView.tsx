@@ -22,10 +22,9 @@ interface TimeViewItem {
   isSelected: boolean;
 }
 
-export class TimepickerView extends React.Component<
-  TimepickerViewProps,
-  TimepickerViewState
-> {
+export class TimepickerView extends React.Component<TimepickerViewProps, TimepickerViewState> {
+  static rootClassName = "n-timepicker-view";
+
   closestModelTimeItem?: TimeViewItem;
   popper?: Popper;
   rootEl = React.createRef<HTMLDivElement>();
@@ -35,9 +34,7 @@ export class TimepickerView extends React.Component<
   constructor(props: TimepickerViewProps) {
     super(props);
 
-    this.viewDateAdapter = dateAdapterFactory.getForFormat(
-      this.props.viewFormat
-    );
+    this.viewDateAdapter = dateAdapterFactory.getForFormat(this.props.viewFormat);
     this.state = {
       // currentDate: this.getFocusDate()
     };
@@ -50,7 +47,7 @@ export class TimepickerView extends React.Component<
   private renderView() {
     return (
       <div
-        className="n-timepicker-view"
+        className={TimepickerView.rootClassName}
         onClick={domEventHelpers.stopPropagationAndPrevent}
         onMouseDown={domEventHelpers.stopPropagationAndPrevent}
         ref={this.rootEl}
@@ -117,10 +114,10 @@ export class TimepickerView extends React.Component<
       if (!this.rootEl.current) return;
 
       const el = this.rootEl.current;
-      const element = el.querySelector<HTMLElement>('li.selected');
+      const element = el.querySelector<HTMLElement>("li.selected");
       if (!element) return;
 
-      el.scrollTop = element.offsetTop - (element.clientHeight * 2);
+      el.scrollTop = element.offsetTop - element.clientHeight * 2;
     });
   }
 

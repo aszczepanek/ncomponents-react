@@ -1,5 +1,4 @@
 import React from "react";
-import "./TooltipDemo.scss";
 import { BPanel } from "./BPanel";
 import { Tooltip } from "../lib";
 import { Placement } from "popper.js";

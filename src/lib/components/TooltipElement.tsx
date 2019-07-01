@@ -8,6 +8,8 @@ interface TooltipElementProps {
 }
 
 export class TooltipElement extends React.PureComponent<TooltipElementProps> {
+  static rootClassName = "n-tooltip";
+  static arrowClassName = "n-arrow";
   static defaultPlacement: Placement = "auto";
 
   popper?: Popper;
@@ -15,9 +17,9 @@ export class TooltipElement extends React.PureComponent<TooltipElementProps> {
 
   render() {
     return (
-      <div className="n-tooltip" ref={this.tooltipRef}>
+      <div className={TooltipElement.rootClassName} ref={this.tooltipRef}>
         {this.props.children}
-        <span className="n-arrow" />
+        <span className={TooltipElement.arrowClassName} />
       </div>
     );
   }
@@ -60,4 +62,3 @@ export class TooltipElement extends React.PureComponent<TooltipElementProps> {
     }
   }
 }
-

@@ -10,6 +10,10 @@ interface PopoverElementProps {
 }
 
 export class PopoverElement extends React.PureComponent<PopoverElementProps> {
+  static rootClassName = "n-popover";
+  static headerClassName = "n-popover-header";
+  static contentClassName = "n-popover-content";
+  static arrowClassName = "n-arrow";
   static defaultPlacement: Placement = "auto";
 
   popper?: Popper;
@@ -19,10 +23,14 @@ export class PopoverElement extends React.PureComponent<PopoverElementProps> {
     const { header } = this.props;
 
     return (
-      <div className="n-popover" ref={this.popoverRef} onClick={domEventHelpers.stopPropagation}>
-        {header && <div className="n-popover-header">{header}</div>}
-        <div className="n-popover-content">{this.props.children}</div>
-        <span className="n-arrow" />
+      <div
+        className={PopoverElement.rootClassName}
+        ref={this.popoverRef}
+        onClick={domEventHelpers.stopPropagation}
+      >
+        {header && <div className={PopoverElement.headerClassName}>{header}</div>}
+        <div className={PopoverElement.contentClassName}>{this.props.children}</div>
+        <span className={PopoverElement.arrowClassName} />
       </div>
     );
   }
@@ -53,7 +61,7 @@ export class PopoverElement extends React.PureComponent<PopoverElementProps> {
       modifiers: {
         arrow: {
           enabled: true,
-          element: "n-arrow"
+          element: PopoverElement.arrowClassName
         }
       }
     });
