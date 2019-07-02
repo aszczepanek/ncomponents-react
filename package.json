@@ -1,5 +1,6 @@
 {
   "name": "ncomponents-react",
+  "homepage": "https://aszczepanek.github.io/ncomponents-react",
   "version": "1.1.0",
   "description": "General usage react components (select, datepicker, timepicker, dropdown, multiselect)",
   "keywords": [
@@ -36,7 +37,6 @@
     "babel-plugin-named-asset-import": "^0.3.0",
     "babel-preset-react-app": "^7.0.0",
     "bfj": "6.1.1",
-    "bootstrap": "^3.3.7",
     "case-sensitive-paths-webpack-plugin": "2.1.2",
     "chalk": "2.4.1",
     "css-loader": "1.0.0",
@@ -79,7 +79,7 @@
     "workbox-webpack-plugin": "3.6.3"
   },
   "scripts": {
-    "start": "node scripts/start.js",
+    "start": "cd example && npm start",
     "build": "node scripts/build.js && tsc -p src/lib/tsconfig.decl.json",
     "test": "node scripts/test.js",
     "prepare": "npm run build"

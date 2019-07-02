@@ -1,15 +1,11 @@
 import React from "react";
 import { BPanel } from "./BPanel";
-import { Tooltip } from "../lib";
+import { Tooltip } from "ncomponents-react";
 import { Placement } from "popper.js";
 
 interface TooltipDemoState {}
 
 export class TooltipDemo extends React.Component<{}, TooltipDemoState> {
-  constructor(props: {}) {
-    super(props);
-  }
-
   render() {
     const placements: Placement[] = ["top", "right", "bottom", "left"];
     return (

@@ -1,4 +1,4 @@
-import { AsyncItemsProvider } from "../lib/utils/asyncItemsProvider";
+import { AsyncItemsProvider } from "ncomponents-react";
 
 interface DemoAsyncProviderOptions {
   items: DemoItem[];

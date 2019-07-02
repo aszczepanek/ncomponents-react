@@ -1,7 +1,7 @@
 import React from "react";
 import { DemoItem, demoData } from "./demoData";
 import { BPanel } from "./BPanel";
-import { SelectInput } from "../lib";
+import { SelectInput } from "ncomponents-react";
 import { toJson } from "./demoUtils";
 
 interface SelectDemoState {

@@ -1,15 +1,11 @@
 import React from "react";
 import { BPanel } from "./BPanel";
-import { Popover } from "../lib";
+import { Popover } from "ncomponents-react";
 import { Placement } from "popper.js";
 
 interface PopoverDemoState {}
 
 export class PopoverDemo extends React.Component<{}, PopoverDemoState> {
-  constructor(props: {}) {
-    super(props);
-  }
-
   render() {
     const placements: Placement[] = ["top", "right", "bottom", "left"];
 

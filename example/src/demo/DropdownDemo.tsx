@@ -1,6 +1,6 @@
 import React from "react";
 import { BPanel } from "./BPanel";
-import { Dropdown } from "../lib/components/Dropdown";
+import { Dropdown } from "ncomponents-react";
 import { demoData, DemoItem } from "./demoData";
 import { toJson } from "./demoUtils";
 

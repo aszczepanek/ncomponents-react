@@ -1,9 +1,8 @@
 import React from "react";
 import { BPanel } from "./BPanel";
-import { Multiselect } from "../lib";
+import { Multiselect } from "ncomponents-react";
 import { demoData, DemoItem } from "./demoData";
 import { toJson } from "./demoUtils";
-import { domEventHelpers } from "../lib/utils/domEventHelpers";
 
 interface MultiselectDemoState {
   selectedItems: DemoItem[];
@@ -70,10 +69,7 @@ export class MultiselectDemo extends React.Component<{}, MultiselectDemoState> {
                   ))}
                 </ul>
                 {!args.selectedItems.length && <div v-if="!selected.length">Brak</div>}
-                <button
-                  onClick={this.clear}
-                  onMouseDown={domEventHelpers.stopPropagationAndPrevent}
-                >
+                <button onClick={this.clear} onMouseDown={stopPropagationAndPrevent}>
                   Clear
                 </button>
               </>
@@ -104,4 +100,10 @@ export class MultiselectDemo extends React.Component<{}, MultiselectDemoState> {
       selectedItems: []
     });
   }
+}
+
+function stopPropagationAndPrevent(ev: React.SyntheticEvent) {
+  ev.stopPropagation();
+  ev.nativeEvent.stopImmediatePropagation();
+  ev.preventDefault();
 }
