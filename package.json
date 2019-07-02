@@ -52,6 +52,7 @@
     "file-loader": "2.0.0",
     "fork-ts-checker-webpack-plugin-alt": "0.4.14",
     "fs-extra": "7.0.0",
+    "gh-pages": "^2.0.1",
     "html-webpack-plugin": "4.0.0-alpha.2",
     "identity-obj-proxy": "3.0.0",
     "jest": "23.6.0",
@@ -82,7 +83,9 @@
     "start": "cd example && npm start",
     "build": "node scripts/build.js && tsc -p src/lib/tsconfig.decl.json",
     "test": "node scripts/test.js",
-    "prepare": "npm run build"
+    "prepare": "npm run build",
+    "predeploy": "cd example && npm install && npm run build",
+    "deploy": "gh-pages -d example/build"
   },
   "eslintConfig": {
     "extends": "react-app"
