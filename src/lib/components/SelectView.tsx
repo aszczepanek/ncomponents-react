@@ -119,13 +119,21 @@ export class SelectView<TItem> extends React.Component<
     this.updateFilteredItems();
   }
 
-  componentDidUpdate(prevProps: SelectViewProps<TItem>) {
+  componentDidUpdate(prevProps: SelectViewProps<TItem>, prevState: SelectViewState<TItem>) {
     if (prevProps.items != this.props.items || prevProps.filterToken != this.props.filterToken) {
       this.updateFilteredItems();
     }
 
     if (prevProps.items != this.props.items && this.state.focusedIndex !== 0) {
       this.resetfocusedIndex();
+    } else if (prevProps.filterToken != this.props.filterToken) {
+      this.setState({
+        focusedIndex: this.props.filterToken ? 0 : -1
+      });
+    }
+
+    if (prevState.items != this.state.items) {
+      this.popper && this.popper.update();
     }
   }
 
@@ -283,10 +291,6 @@ export class SelectView<TItem> extends React.Component<
       case keyCodes.enter:
         event.preventDefault();
         event.stopPropagation();
-        this.selectFocused();
-        break;
-
-      case keyCodes.tab:
         this.selectFocused();
         break;
 
