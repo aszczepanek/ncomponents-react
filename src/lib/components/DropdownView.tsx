@@ -13,7 +13,7 @@ interface DropdownViewProps<TItem> {
   placement: Placement;
   onSelect: (item: TItem) => any;
   onOutsideClick?: () => any;
-  display?: string | ItemDisplayFn<TItem>;
+  display?: keyof TItem | ItemDisplayFn<TItem>;
   renderDisplay?: DropdownCustomRenderItem<TItem>;
   renderItem?: DropdownCustomRenderItem<TItem>;
   renderInBody?: boolean;

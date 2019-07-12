@@ -8,7 +8,7 @@ interface DropdownProps<TItem> {
   items: TItem[];
   onSelect: (item: TItem) => any;
   placement?: Placement;
-  display?: string | ItemDisplayFn<TItem>;
+  display?: keyof TItem | ItemDisplayFn<TItem>;
   renderInBody?: boolean;
   renderDisplay?: DropdownCustomRenderItem<TItem>;
   renderItem?: DropdownCustomRenderItem<TItem>;
