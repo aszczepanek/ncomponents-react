@@ -28,8 +28,8 @@ export class DatepickerView extends React.Component<DatepickerViewProps, Datepic
   static rootClassName = "n-datepicker-view";
   static btnClassName = "";
   static btnSelectedClassName = "selected";
-  static prevMonthHtml = "<";
-  static nextMonthHtml = ">";
+  static prevMonthHtml: React.ReactNode = "<";
+  static nextMonthHtml: React.ReactNode = ">";
   static firstDayOfWeek = 1;
 
   popper?: Popper;
@@ -52,8 +52,6 @@ export class DatepickerView extends React.Component<DatepickerViewProps, Datepic
   }
 
   private renderView() {
-    const nextMonthHtml = DatepickerView.nextMonthHtml;
-    const prevMonthHtml = DatepickerView.prevMonthHtml;
     const yearMonthHeader = dateUtils.formatDate(this.state.currentDate, "LLLL yyyy");
 
     return (
@@ -68,21 +66,17 @@ export class DatepickerView extends React.Component<DatepickerViewProps, Datepic
           <thead>
             <tr>
               <th>
-                <button
-                  className={DatepickerView.btnClassName}
-                  onClick={this.prevMonth}
-                  dangerouslySetInnerHTML={{ __html: prevMonthHtml }}
-                />
+                <button className={DatepickerView.btnClassName} onClick={this.prevMonth}>
+                  {DatepickerView.prevMonthHtml}
+                </button>
               </th>
               <th colSpan={5}>
                 <button className={DatepickerView.btnClassName}>{yearMonthHeader}</button>
               </th>
               <th>
-                <button
-                  className={DatepickerView.btnClassName}
-                  onClick={this.nextMonth}
-                  dangerouslySetInnerHTML={{ __html: nextMonthHtml }}
-                />
+                <button className={DatepickerView.btnClassName} onClick={this.nextMonth}>
+                  {DatepickerView.nextMonthHtml}
+                </button>
               </th>
             </tr>
             <tr>{this.renderDaysOfWeek()}</tr>
