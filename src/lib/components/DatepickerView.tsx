@@ -26,6 +26,8 @@ interface DateViewItem {
 
 export class DatepickerView extends React.Component<DatepickerViewProps, DatepickerViewState> {
   static rootClassName = "n-datepicker-view";
+  static btnClassName = "";
+  static btnSelectedClassName = "selected";
   static prevMonthHtml = "<";
   static nextMonthHtml = ">";
   static firstDayOfWeek = 1;
@@ -66,11 +68,21 @@ export class DatepickerView extends React.Component<DatepickerViewProps, Datepic
           <thead>
             <tr>
               <th>
-                <button onClick={this.prevMonth}>{prevMonthHtml}</button>
+                <button
+                  className={DatepickerView.btnClassName}
+                  onClick={this.prevMonth}
+                  dangerouslySetInnerHTML={{ __html: prevMonthHtml }}
+                />
               </th>
-              <th colSpan={5}>{yearMonthHeader}</th>
+              <th colSpan={5}>
+                <button className={DatepickerView.btnClassName}>{yearMonthHeader}</button>
+              </th>
               <th>
-                <button onClick={this.nextMonth}>{nextMonthHtml}</button>
+                <button
+                  className={DatepickerView.btnClassName}
+                  onClick={this.nextMonth}
+                  dangerouslySetInnerHTML={{ __html: nextMonthHtml }}
+                />
               </th>
             </tr>
             <tr>{this.renderDaysOfWeek()}</tr>
@@ -95,7 +107,8 @@ export class DatepickerView extends React.Component<DatepickerViewProps, Datepic
                 <button
                   onClick={() => this.select(d)}
                   className={toClassNames({
-                    selected: d.isSelected,
+                    [DatepickerView.btnClassName]: true,
+                    [DatepickerView.btnSelectedClassName]: d.isSelected,
                     muted: d.isMuted
                   })}
                 >
