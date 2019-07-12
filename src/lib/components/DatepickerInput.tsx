@@ -7,15 +7,14 @@ import { inferDateFormat } from "../utils/dateFormatInferer";
 import { datePartUpdater } from "../utils/datePartUpdater";
 import { keyCodes } from "../utils/keyCodeMap";
 
-interface DatepickerInputProps<TModel> {
+interface DatepickerInputProps<TModel>
+  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "value" | "onChange"> {
   value: TModel | undefined;
   onChange: (value?: TModel) => any;
   modelFormat?: string;
   viewFormat?: string;
   placement?: Placement;
-  style?: React.CSSProperties;
   onKeyDown?: (ev: React.KeyboardEvent) => any;
-  placeholder?: string;
 }
 
 interface DatepickerInputState {
@@ -66,12 +65,22 @@ export class DatepickerInput<TModel = Date | string> extends Component<
     const viewValue = this.getViewValue();
     const datepickerVisible = this.state.datepickerVisible;
     const datepickerView = datepickerVisible ? this.renderDatepickerView() : undefined;
+    const {
+      value,
+      onChange,
+      modelFormat,
+      viewFormat,
+      placement,
+      className,
+      ...restProps
+    } = this.props;
+    const classNames = [className, DatepickerInput.rootClassName].filter(Boolean).join(" ");
 
     return (
       <>
         <input
-          className={DatepickerInput.rootClassName}
-          style={this.props.style}
+          {...restProps}
+          className={classNames}
           type="text"
           ref={this.inputRef}
           value={viewValue}
@@ -80,7 +89,6 @@ export class DatepickerInput<TModel = Date | string> extends Component<
           onChange={this.onChange}
           onWheel={this.onMouseWheel}
           onKeyDown={this.onKeydown}
-          placeholder={this.props.placeholder}
         />
         {datepickerView}
       </>
@@ -105,14 +113,16 @@ export class DatepickerInput<TModel = Date | string> extends Component<
       inputValue: ev.target.value,
       datepickerVisible: true
     });
+    this.props.onFocus && this.props.onFocus(ev);
   }
 
-  onBlur() {
+  onBlur(ev: React.FocusEvent<HTMLInputElement>) {
     this.setState({
       isInputFocused: false,
       inputValue: "",
       datepickerVisible: false
     });
+    this.props.onBlur && this.props.onBlur(ev);
   }
 
   onChange(ev: React.ChangeEvent<HTMLInputElement>) {

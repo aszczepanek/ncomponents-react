@@ -5,7 +5,7 @@ import { keyCodes } from "../utils/keyCodeMap";
 import { domEventHelpers } from "../utils/domEventHelpers";
 import { MultiselectView } from "./MultiselectView";
 
-interface MultiselectProps<TItem> {
+interface MultiselectProps<TItem> extends Omit<React.HTMLAttributes<HTMLDivElement>, "onChange"> {
   value: TItem[] | undefined;
   items: TItem[];
   onChange: (value: TItem[]) => any;
@@ -17,7 +17,6 @@ interface MultiselectProps<TItem> {
   disablePortalRender?: boolean;
   sortOnChange?: boolean;
   children?: CustomRenderSelectedItemsFn<TItem>;
-  style?: React.CSSProperties;
   onKeyDown?: (ev: React.KeyboardEvent) => any;
 }
 
@@ -89,11 +88,28 @@ export class Multiselect<TItem> extends React.Component<MultiselectProps<TItem>,
   }
 
   render() {
+    const {
+      value,
+      className,
+      items,
+      onChange,
+      itemKey,
+      display,
+      placement,
+      filterable,
+      clearButton,
+      disablePortalRender,
+      sortOnChange,
+      children,
+      ...restProps
+    } = this.props;
+    const classNames = [className, Multiselect.rootClassName].filter(Boolean).join(" ");
+
     return (
       <>
         <div
-          style={this.props.style}
-          className={Multiselect.rootClassName}
+          {...restProps}
+          className={classNames}
           onFocus={this.onFocus}
           onKeyDown={this.onKeydown}
           tabIndex={0}
@@ -153,8 +169,9 @@ export class Multiselect<TItem> extends React.Component<MultiselectProps<TItem>,
     });
   }
 
-  onFocus() {
+  onFocus(ev: React.FocusEvent<HTMLInputElement>) {
     this.show();
+    this.props.onFocus && this.props.onFocus(ev);
   }
 
   onKeydown(ev: React.KeyboardEvent) {

@@ -5,7 +5,8 @@ import { SelectView } from "./SelectView";
 import { selectUtils, ItemDisplayFn } from "../utils/selectUtils";
 import { AsyncItemsProvider } from "../utils/asyncItemsProvider";
 
-interface SelectInputProps<TItem> {
+interface SelectInputProps<TItem>
+  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "value" | "onChange"> {
   value: any | undefined;
   items: TItem[] | AsyncItemsProvider<TItem>;
   itemKey?: keyof TItem;
@@ -13,12 +14,8 @@ interface SelectInputProps<TItem> {
   display?: keyof TItem | ItemDisplayFn<TItem>;
   placement?: Placement;
   nonStrict?: boolean;
-  style?: React.CSSProperties;
-  placeholder?: string;
-  disabled?: boolean;
   onChange: (value?: TItem) => any;
   onChangeNonStrict?: (value?: string) => any;
-  onKeyDown?: (ev: React.KeyboardEvent) => any;
 }
 
 interface SelectInputState<TItem> {
@@ -65,12 +62,26 @@ export class SelectInput<TItem> extends Component<
     const viewValue = this.getViewValue();
     const selectVisible = this.state.selectVisible;
     const selectView = selectVisible ? this.renderSelectView() : undefined;
+    const {
+      value,
+      items,
+      itemKey,
+      itemKeyAsModel,
+      display,
+      placement,
+      nonStrict,
+      onChange,
+      className,
+      onChangeNonStrict,
+      ...restProps
+    } = this.props;
+    const classNames = [className, SelectInput.rootClassName].filter(Boolean).join(" ");
 
     return (
       <>
         <input
-          style={this.props.style}
-          className={SelectInput.rootClassName}
+          {...restProps}
+          className={classNames}
           type="text"
           ref={this.inputRef}
           value={viewValue}
@@ -79,8 +90,6 @@ export class SelectInput<TItem> extends Component<
           onChange={this.onChange}
           onKeyDown={this.onKeydown}
           onClick={this.onClick}
-          placeholder={this.props.placeholder}
-          disabled={this.props.disabled}
         />
         {selectView}
       </>
@@ -122,22 +131,25 @@ export class SelectInput<TItem> extends Component<
       selectVisible: true
     });
     this.inputRef.current!.select();
+    this.props.onFocus && this.props.onFocus(ev);
   }
 
-  onBlur() {
+  onBlur(ev: React.FocusEvent<HTMLInputElement>) {
     this.setState({
       isInputFocused: false,
       inputValue: "",
       filterToken: "",
       selectVisible: false
     });
+    this.props.onBlur && this.props.onBlur(ev);
   }
 
-  onClick(ev: React.MouseEvent) {
+  onClick(ev: React.MouseEvent<HTMLInputElement>) {
     ev.stopPropagation();
     ev.preventDefault();
     ev.nativeEvent.stopImmediatePropagation();
     this.show();
+    this.props.onClick && this.props.onClick(ev);
   }
 
   onChange(ev: React.ChangeEvent<HTMLInputElement>) {
@@ -156,7 +168,7 @@ export class SelectInput<TItem> extends Component<
     });
   }
 
-  onKeydown(ev: React.KeyboardEvent) {
+  onKeydown(ev: React.KeyboardEvent<HTMLInputElement>) {
     switch (ev.keyCode) {
       case keyCodes.downarrow:
       case keyCodes.uparrow:

@@ -7,13 +7,13 @@ import { datePartUpdater } from "../utils/datePartUpdater";
 import { keyCodes } from "../utils/keyCodeMap";
 import { TimepickerView } from "./TimepickerView";
 
-interface TimepickerInputProps<TModel> {
+interface TimepickerInputProps<TModel>
+  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "value" | "onChange"> {
   value: TModel | undefined;
   onChange: (value?: TModel) => any;
   modelFormat?: string;
   viewFormat?: string;
   placement?: Placement;
-  style?: React.CSSProperties;
 }
 
 interface TimepickerInputState {
@@ -64,12 +64,22 @@ export class TimepickerInput<TModel = Date | string> extends Component<
     const viewValue = this.getViewValue();
     const timepickerVisible = this.state.timepickerVisible;
     const timepickerView = timepickerVisible ? this.renderTimepickerView() : undefined;
+    const {
+      value,
+      onChange,
+      modelFormat,
+      viewFormat,
+      placement,
+      className,
+      ...restProps
+    } = this.props;
+    const classNames = [className, TimepickerInput.rootClassName].filter(Boolean).join(" ");
 
     return (
       <>
         <input
-          style={this.props.style}
-          className={TimepickerInput.rootClassName}
+          {...restProps}
+          className={classNames}
           type="text"
           ref={this.inputRef}
           value={viewValue}
@@ -106,14 +116,16 @@ export class TimepickerInput<TModel = Date | string> extends Component<
       inputValue: ev.target.value,
       timepickerVisible: true
     });
+    this.props.onFocus && this.props.onFocus(ev);
   }
 
-  onBlur() {
+  onBlur(ev: React.FocusEvent<HTMLInputElement>) {
     this.setState({
       isInputFocused: false,
       inputValue: "",
       timepickerVisible: false
     });
+    this.props.onBlur && this.props.onBlur(ev);
   }
 
   onChange(ev: React.ChangeEvent<HTMLInputElement>) {
@@ -136,7 +148,7 @@ export class TimepickerInput<TModel = Date | string> extends Component<
     this.updateModel(parsedValue);
   }
 
-  onKeydown(ev: React.KeyboardEvent) {
+  onKeydown(ev: React.KeyboardEvent<HTMLInputElement>) {
     switch (ev.keyCode) {
       case keyCodes.downarrow:
         ev.preventDefault();
@@ -159,6 +171,8 @@ export class TimepickerInput<TModel = Date | string> extends Component<
       default:
         break;
     }
+
+    this.props.onKeyDown && this.props.onKeyDown(ev);
   }
 
   onMouseWheel(ev: React.WheelEvent) {
