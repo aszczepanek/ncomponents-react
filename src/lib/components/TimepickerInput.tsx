@@ -26,6 +26,7 @@ export class TimepickerInput<TModel = Date | string> extends Component<
   TimepickerInputProps<TModel>,
   TimepickerInputState
 > {
+  static rootClassName = "n-timepicker";
   static defaultModelFormat = "ISO8601";
   static defaultViewFormat = "HH:mm";
   static defaultPlacement: Placement = "bottom-start";
@@ -68,7 +69,7 @@ export class TimepickerInput<TModel = Date | string> extends Component<
       <>
         <input
           style={this.props.style}
-          className="n-timepicker"
+          className={TimepickerInput.rootClassName}
           type="text"
           ref={this.inputRef}
           value={viewValue}
