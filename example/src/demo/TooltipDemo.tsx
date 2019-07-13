@@ -26,6 +26,11 @@ export class TooltipDemo extends React.Component<{}, TooltipDemoState> {
             <input type="text" placeholder="Tooltip on focus" />
           </Tooltip>
         </div>
+        <div>
+          <Tooltip content="Some tooltip text">
+            Tooltip on static text (will be autowrapped in span)
+          </Tooltip>
+        </div>
       </BPanel>
     );
   }

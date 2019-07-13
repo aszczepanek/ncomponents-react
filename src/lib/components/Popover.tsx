@@ -15,13 +15,12 @@ interface PopoverProps {
 export class Popover extends React.PureComponent<PopoverProps> {
   static defaultTrigger: TriggerType | TriggerType[] = "click";
 
-  popperRef?: HTMLElement | null;
+  popperTriggerRef = React.createRef<PopperTrigger>();
 
   constructor(props: PopoverProps) {
     super(props);
 
     this.renderPopoverElement = this.renderPopoverElement.bind(this);
-    this.setPopperRef = this.setPopperRef.bind(this);
   }
 
   render() {
@@ -29,7 +28,7 @@ export class Popover extends React.PureComponent<PopoverProps> {
 
     return (
       <PopperTrigger
-        ref={this.setPopperRef}
+        ref={this.popperTriggerRef}
         trigger={trigger}
         content={this.renderPopoverElement}
         closeOnDocumentClick
@@ -40,19 +39,19 @@ export class Popover extends React.PureComponent<PopoverProps> {
   }
 
   renderPopoverElement() {
-    if (!this.popperRef) return null;
+    if (!this.popperTriggerRef.current) return null;
+
+    const popperRef = ReactDOM.findDOMNode(this.popperTriggerRef.current) as any;
+    if (!popperRef) return null;
+
     return (
       <PopoverElement
-        popperRef={this.popperRef}
+        popperRef={popperRef}
         placement={this.props.placement}
         header={this.props.header}
       >
         {this.props.content}
       </PopoverElement>
     );
-  }
-
-  setPopperRef(el: any | null) {
-    this.popperRef = ReactDOM.findDOMNode(el) as any;
   }
 }

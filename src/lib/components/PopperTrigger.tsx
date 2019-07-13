@@ -3,7 +3,7 @@ import React, { cloneElement } from "react";
 export type TriggerType = "hover" | "click" | "focus";
 
 interface PopperTriggerProps {
-  children: React.ReactElement<any>;
+  children: React.ReactChild;
   trigger: TriggerType | TriggerType[];
   content: React.ReactNode | (() => React.ReactNode);
   closeOnDocumentClick?: boolean;
@@ -14,8 +14,6 @@ interface PopperTriggerState {
 }
 
 export class PopperTrigger extends React.PureComponent<PopperTriggerProps, PopperTriggerState> {
-  triggerRef = React.createRef<any>();
-
   constructor(props: PopperTriggerProps) {
     super(props);
 
@@ -32,9 +30,9 @@ export class PopperTrigger extends React.PureComponent<PopperTriggerProps, Poppe
   }
 
   render() {
-    const { trigger, children } = this.props;
+    const { trigger } = this.props;
     const { show } = this.state;
-    const child = React.Children.only(children);
+    const child = this.getChildAsElement();
     const triggers = normalizeTriggers(trigger);
     const triggerProps: React.HTMLAttributes<HTMLElement> = {};
 
@@ -134,8 +132,16 @@ export class PopperTrigger extends React.PureComponent<PopperTriggerProps, Poppe
     onBlur && onBlur(ev);
   }
 
+  private getChildAsElement(): React.ReactElement {
+    return typeof this.props.children === "object" ? (
+      (React.Children.only(this.props.children) as React.ReactElement)
+    ) : (
+      <span>{this.props.children}</span>
+    );
+  }
+
   private getChildProps(): React.HTMLAttributes<HTMLElement> {
-    return React.Children.only(this.props.children).props;
+    return this.getChildAsElement().props;
   }
 }
 

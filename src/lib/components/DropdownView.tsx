@@ -16,6 +16,8 @@ interface DropdownViewProps<TItem> {
   display?: keyof TItem | ItemDisplayFn<TItem>;
   renderDisplay?: DropdownCustomRenderItem<TItem>;
   renderItem?: DropdownCustomRenderItem<TItem>;
+
+  /** When true, dropdown element will be rendered in document body, otherwise as sibling */
   renderInBody?: boolean;
 }
 
@@ -72,6 +74,7 @@ export class DropdownView<TItem> extends React.Component<DropdownViewProps<TItem
     this.popper = new Popper(this.props.popoverRef, this.rootEl.current!, {
       placement: this.props.placement
     });
+    this.popper.scheduleUpdate();
     document.addEventListener("click", this.onDocumentClick);
   }
 

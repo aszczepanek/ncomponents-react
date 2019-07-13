@@ -1,4 +1,5 @@
 import React from "react";
+import ReactDOM from "react-dom";
 import { Placement, ReferenceObject } from "popper.js";
 import { ItemDisplayFn } from "../utils/selectUtils";
 import { DropdownView, DropdownCustomRenderItem } from "./DropdownView";
@@ -20,13 +21,10 @@ interface DropdownState {
   popperRef?: HTMLElement | ReferenceObject;
 }
 
-export class Dropdown<TItem> extends React.Component<
-  DropdownProps<TItem>,
-  DropdownState
-> {
+export class Dropdown<TItem> extends React.Component<DropdownProps<TItem>, DropdownState> {
   static defaultPlacement: Placement = "bottom-start";
+  static defaultRenderInBody = false;
 
-  childRef = React.createRef<HTMLElement>();
   clientX = 0;
   clientY = 0;
 
@@ -40,12 +38,11 @@ export class Dropdown<TItem> extends React.Component<
 
     this.state = {
       dropdownVisible: false
-    }
+    };
   }
 
   render() {
-    const child = React.Children.only(this.props.children);
-    const newChild = React.cloneElement(child, this.getWrappedElementAttrs());
+    const newChild = React.cloneElement(this.props.children, this.getClonedChildProps());
     const dropdownView = this.renderDropdownView();
 
     return (
@@ -57,37 +54,39 @@ export class Dropdown<TItem> extends React.Component<
   }
 
   renderDropdownView() {
-    if (!this.state.dropdownVisible) return undefined;
+    if (!this.state.dropdownVisible) return null;
+    if (!this.state.popperRef) return null;
 
     const placement = this.props.placement || Dropdown.defaultPlacement;
+    const renderInBody =
+      typeof this.props.renderInBody === "undefined"
+        ? Dropdown.defaultRenderInBody
+        : this.props.renderInBody;
 
     return (
       <DropdownView
         items={this.props.items}
         placement={placement}
-        popoverRef={this.state.popperRef!}
+        popoverRef={this.state.popperRef}
         onSelect={this.props.onSelect}
         onOutsideClick={this.hide}
         display={this.props.display}
-        renderInBody={this.props.renderInBody}
+        renderInBody={renderInBody}
         renderDisplay={this.props.renderDisplay}
         renderItem={this.props.renderItem}
       />
     );
   }
 
-  getWrappedElementAttrs(): React.DOMAttributes<any> & React.RefAttributes<any> {
-    let result: React.DOMAttributes<any> & React.RefAttributes<any> = {
-      ref: this.childRef
-    };
+  getClonedChildProps(): React.DOMAttributes<any> & React.RefAttributes<any> {
+    let result: React.DOMAttributes<any> & React.RefAttributes<any> = {};
 
     if (this.props.contextMenu) {
       result.onContextMenu = this.onContextmenu;
       result.onMouseMove = this.onMousemove;
-    }
-    else {
+    } else {
       result.onClick = this.onClick;
-    };
+    }
 
     return result;
   }
@@ -102,10 +101,11 @@ export class Dropdown<TItem> extends React.Component<
 
     if (this.state.dropdownVisible) {
       this.updatePopperRef();
-    }
-    else {
+    } else {
       this.show();
     }
+
+    this.props.children.props;
   }
 
   onMousemove(ev: React.MouseEvent) {
@@ -113,7 +113,7 @@ export class Dropdown<TItem> extends React.Component<
     this.clientY = ev.clientY;
   }
 
-  getPopperRef(): HTMLElement | ReferenceObject {
+  getPopperRef(): HTMLElement | ReferenceObject | undefined {
     if (this.props.contextMenu) {
       return {
         getBoundingClientRect: () => ({
@@ -128,14 +128,14 @@ export class Dropdown<TItem> extends React.Component<
         clientWidth: 0
       };
     } else {
-      return this.childRef.current!;
+      return ReactDOM.findDOMNode(this) as any;
     }
   }
 
   updatePopperRef() {
     this.setState({
       popperRef: this.getPopperRef()
-    })
+    });
   }
 
   show() {
