@@ -7,13 +7,14 @@ interface PopperTriggerProps {
   trigger: TriggerType | TriggerType[];
   content: React.ReactNode | (() => React.ReactNode);
   closeOnDocumentClick?: boolean;
+  disabled?: boolean;
 }
 
 interface PopperTriggerState {
   show: boolean;
 }
 
-export class PopperTrigger extends React.PureComponent<PopperTriggerProps, PopperTriggerState> {
+export class PopperTrigger extends React.Component<PopperTriggerProps, PopperTriggerState> {
   constructor(props: PopperTriggerProps) {
     super(props);
 
@@ -30,6 +31,10 @@ export class PopperTrigger extends React.PureComponent<PopperTriggerProps, Poppe
   }
 
   render() {
+    if (this.props.disabled) {
+      return this.props.children;
+    }
+
     const { trigger } = this.props;
     const { show } = this.state;
     const child = this.getChildAsElement();

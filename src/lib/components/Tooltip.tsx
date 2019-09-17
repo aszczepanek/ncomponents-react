@@ -9,9 +9,10 @@ interface TooltipProps {
   content: React.ReactNode;
   placement?: Placement;
   trigger?: TriggerType | TriggerType[];
+  disabled?: boolean;
 }
 
-export class Tooltip extends React.PureComponent<TooltipProps> {
+export class Tooltip extends React.Component<TooltipProps> {
   static defaultTrigger: TriggerType | TriggerType[] = "hover";
 
   popperTriggerRef = React.createRef<PopperTrigger>();
@@ -30,6 +31,7 @@ export class Tooltip extends React.PureComponent<TooltipProps> {
         ref={this.popperTriggerRef}
         trigger={trigger}
         content={this.renderTooltipElement}
+        disabled={this.props.disabled}
       >
         {this.props.children}
       </PopperTrigger>

@@ -10,6 +10,7 @@ interface PopoverProps {
   content: React.ReactNode;
   placement?: Placement;
   trigger?: TriggerType | TriggerType[];
+  disabled?: boolean;
 }
 
 export class Popover extends React.PureComponent<PopoverProps> {
@@ -31,6 +32,7 @@ export class Popover extends React.PureComponent<PopoverProps> {
         ref={this.popperTriggerRef}
         trigger={trigger}
         content={this.renderPopoverElement}
+        disabled={this.props.disabled}
         closeOnDocumentClick
       >
         {this.props.children}
@@ -45,11 +47,7 @@ export class Popover extends React.PureComponent<PopoverProps> {
     if (!popperRef) return null;
 
     return (
-      <PopoverElement
-        popperRef={popperRef}
-        placement={this.props.placement}
-        header={this.props.header}
-      >
+      <PopoverElement popperRef={popperRef} placement={this.props.placement} header={this.props.header}>
         {this.props.content}
       </PopoverElement>
     );

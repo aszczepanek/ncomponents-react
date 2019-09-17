@@ -27,6 +27,9 @@ class DateAdapterFactory {
   }
 
   private initAdapters() {
+    this.createAdapter('iso', dateUtils.parseISO);
+    this.createAdapter('ISO', dateUtils.parseISO);
+    this.createAdapter('iso8601', dateUtils.parseISO);
     this.createAdapter('ISO8601', dateUtils.parseISO);
     this.createAdapter('ISO8601_SECONDS', dateUtils.parseISO);
     this.createAdapter('yyyy-MM-dd', dateUtils.parseISO);
