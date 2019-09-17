@@ -31,11 +31,8 @@ export class PopperTrigger extends React.Component<PopperTriggerProps, PopperTri
   }
 
   render() {
-    if (this.props.disabled) {
-      return this.props.children;
-    }
-
-    const { trigger } = this.props;
+    const { trigger, disabled } = this.props;
+    
     const { show } = this.state;
     const child = this.getChildAsElement();
     const triggers = normalizeTriggers(trigger);
@@ -58,7 +55,7 @@ export class PopperTrigger extends React.Component<PopperTriggerProps, PopperTri
     return (
       <>
         {cloneElement(child, triggerProps)}
-        {show && this.renderContent()}
+        {show && !disabled && this.renderContent()}
       </>
     );
   }
