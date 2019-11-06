@@ -1,7 +1,7 @@
 {
   "name": "ncomponents-react",
   "homepage": "https://aszczepanek.github.io/ncomponents-react",
-  "version": "1.4.3",
+  "version": "1.4.4",
   "description": "General usage react components (select, datepicker, timepicker, dropdown, multiselect)",
   "keywords": [
     "react",

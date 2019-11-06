@@ -94,6 +94,7 @@ export class TimepickerView extends React.Component<TimepickerViewProps, Timepic
     this.popper = new Popper(this.props.popoverRef, this.rootEl.current!, {
       placement: this.props.placement
     });
+    this.popper.scheduleUpdate();
     this.scrollToClosestModelValue();
   }
 

@@ -65,6 +65,7 @@ export class PopoverElement extends React.PureComponent<PopoverElementProps> {
         }
       }
     });
+    this.popper.scheduleUpdate();
   }
 
   destroyPopper() {

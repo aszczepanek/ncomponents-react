@@ -54,6 +54,7 @@ export class TooltipElement extends React.PureComponent<TooltipElementProps> {
         }
       }
     });
+    this.popper.scheduleUpdate();
   }
 
   destroyPopper() {

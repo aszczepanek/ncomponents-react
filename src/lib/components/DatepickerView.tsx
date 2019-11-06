@@ -120,6 +120,7 @@ export class DatepickerView extends React.Component<DatepickerViewProps, Datepic
     this.popper = new Popper(this.props.popoverRef, this.rootEl.current!, {
       placement: this.props.placement
     });
+    this.popper.scheduleUpdate();
   }
 
   componentWillUnmount() {

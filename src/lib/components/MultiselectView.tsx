@@ -109,6 +109,7 @@ export class MultiselectView<TItem> extends React.Component<
     this.popper = new Popper(this.props.popoverRef, this.rootEl.current!, {
       placement: this.props.placement
     });
+    this.popper.scheduleUpdate();
     document.addEventListener("click", this.onDocumentClick);
   }
 
