@@ -110,6 +110,8 @@ $popover-arrow-outer-fallback-color: darken($popover-fallback-border-color, 20%)
   background-color: $dropdown-bg;
   background-clip: padding-box;
   display: inline-block;
+  max-height: 40vh;
+  overflow: auto;
 
   ul {
     list-style: none;
