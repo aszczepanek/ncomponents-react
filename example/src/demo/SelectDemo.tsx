@@ -154,6 +154,14 @@ export class SelectDemo extends React.Component<{}, SelectDemoState> {
             }
           />
         </div>
+        <div>
+          <div>No value, only onChange handler</div>
+          <SelectInput
+            items={this.items}
+            value={undefined}
+            onChange={selectedItem => this.setState({ selectedItem })}
+          />
+        </div>
       </BPanel>
     );
   }

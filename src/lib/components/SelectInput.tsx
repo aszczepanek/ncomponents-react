@@ -20,6 +20,7 @@ interface SelectInputProps<TItem>
 
 interface SelectInputState<TItem> {
   inputValue: string;
+  isDirty: boolean;
   isInputFocused: boolean;
   filterToken: string;
   selectVisible: boolean;
@@ -44,6 +45,7 @@ export class SelectInput<TItem> extends Component<
 
     this.state = {
       isInputFocused: false,
+      isDirty: false,
       inputValue: "",
       filterToken: "",
       selectVisible: false
@@ -126,6 +128,7 @@ export class SelectInput<TItem> extends Component<
   onFocus(ev: React.FocusEvent<HTMLInputElement>) {
     this.setState({
       isInputFocused: true,
+      isDirty: false,
       inputValue: ev.target.value,
       filterToken: "",
       selectVisible: true
@@ -137,6 +140,7 @@ export class SelectInput<TItem> extends Component<
   onBlur(ev: React.FocusEvent<HTMLInputElement>) {
     this.setState({
       isInputFocused: false,
+      isDirty: false,
       inputValue: "",
       filterToken: "",
       selectVisible: false
@@ -164,7 +168,8 @@ export class SelectInput<TItem> extends Component<
     if (!this.state.selectVisible) this.show();
     this.setState({
       filterToken,
-      inputValue: ev.target.value
+      inputValue: ev.target.value,
+      isDirty: true
     });
   }
 
@@ -191,6 +196,7 @@ export class SelectInput<TItem> extends Component<
   onSelect<TItem>(value: TItem) {
     this.updateModel(value);
     this.hide();
+    this.setState({ isDirty: false });
     //this.getInputElement().blur();
   }
 
@@ -220,7 +226,7 @@ export class SelectInput<TItem> extends Component<
   }
 
   getViewValue() {
-    if (this.state.isInputFocused) {
+    if (this.state.isInputFocused && this.state.isDirty) {
       return this.state.inputValue;
     } else {
       return this.formatModelDisplay();
