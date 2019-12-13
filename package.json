@@ -86,7 +86,8 @@
     "buildDemo": "node scripts/build.js --demo",
     "test": "node scripts/test.js",
     "predeploy": "npm install && npm run buildDemo",
-    "deploy": "gh-pages -d buildDemo"
+    "deploy": "gh-pages -d buildDemo",
+    "prepublish": "npm run build"
   },
   "eslintConfig": {
     "extends": "react-app"
