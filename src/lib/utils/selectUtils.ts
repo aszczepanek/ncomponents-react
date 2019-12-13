@@ -1,33 +1,36 @@
 export const selectUtils = {
   formatItemDisplay
-}
+};
 
-export type ItemDisplayFn<T> = (item: T) => string;
+export type ItemDisplayFn<T> = (item: T) => string | undefined;
 
 function formatItemDisplay(item: any, display?: any): string {
-  if (typeof display !== 'function') {
-    if (typeof item === 'string') return item;
-    if (typeof item === 'number') return item.toString();
+  if (typeof display !== "function") {
+    if (typeof item === "string") return item;
+    if (typeof item === "number") return item.toString();
   }
 
+  let displayValue: any;
+
   if (display) {
-    if (typeof display === 'string') {
-      return (item[display] || '?').toString();
-    }
-    else if (typeof display === 'function') {
+    if (typeof display === "string") {
+      displayValue = item[display];
+    } else if (typeof display === "function") {
       try {
-        return (display(item) || '?').toString();
-      }
-      catch (e) {
+        displayValue = display(item);
+      } catch (e) {
         console.error(e);
-        return 'Display function error';
+        return "Display function error";
       }
+    } else {
+      return "Invalid display parameter";
     }
-    else {
-      return 'Invalid display parameter';
-    }
+  } else {
+    displayValue = item["label"];
   }
-  else {
-    return (item['label'] || '?').toString();
-  }
+
+  if (typeof displayValue === "string") return displayValue;
+  if (typeof displayValue === "number") return displayValue.toString();
+
+  return (displayValue || "").toString();
 }
