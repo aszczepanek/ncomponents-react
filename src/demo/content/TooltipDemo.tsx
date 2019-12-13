@@ -1,7 +1,7 @@
 import React from "react";
 import { BPanel } from "./BPanel";
-import { Tooltip } from "ncomponents-react";
 import { Placement } from "popper.js";
+import { Tooltip } from "../../lib";
 
 interface TooltipDemoState {}
 

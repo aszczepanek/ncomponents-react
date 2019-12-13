@@ -1,6 +1,6 @@
 import React from "react";
 import { BPanel } from "./BPanel";
-import { DatepickerInput, TimepickerInput } from "ncomponents-react";
+import { DatepickerInput, TimepickerInput } from "../../lib";
 
 interface DateAndTimeDemoState {
   date: string | undefined;

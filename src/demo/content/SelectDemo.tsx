@@ -1,20 +1,36 @@
 import React from "react";
 import { DemoItem, demoData } from "./demoData";
 import { BPanel } from "./BPanel";
-import { SelectInput } from "ncomponents-react";
 import { toJson } from "./demoUtils";
+import { SelectInput } from "../../lib";
 
 interface SelectDemoState {
   selectedItem?: DemoItem | string;
   selectedItemByKey?: number;
   selectedString?: string;
   selectedNumber?: number;
+  selectedPersonalStatus?: PersonalStatus;
 }
+
+enum PersonalStatus {
+  Single = 1,
+  Married = 2,
+  Divorced = 3
+}
+
+const personalStatusText = {
+  [PersonalStatus.Single]: "Single",
+  [PersonalStatus.Married]: "Married",
+  [PersonalStatus.Divorced]: "Divorced"
+};
+
+const personalStatusDisplayFn = (value: PersonalStatus | undefined) => value && personalStatusText[value];
 
 export class SelectDemo extends React.Component<{}, SelectDemoState> {
   items = demoData.people;
   strings = demoData.strings.slice();
   numbers = [0, 1, 2, 3, 4];
+  personalStatuses = [PersonalStatus.Single, PersonalStatus.Married, PersonalStatus.Divorced];
 
   constructor(props: {}) {
     super(props);
@@ -32,7 +48,7 @@ export class SelectDemo extends React.Component<{}, SelectDemoState> {
   }
 
   render() {
-    const { selectedItem, selectedItemByKey, selectedString, selectedNumber } = this.state;
+    const { selectedItem, selectedItemByKey, selectedString, selectedNumber, selectedPersonalStatus } = this.state;
 
     return (
       <BPanel header="Select">
@@ -44,9 +60,7 @@ export class SelectDemo extends React.Component<{}, SelectDemoState> {
             onChange={selectedItem => this.setState({ selectedItem })}
           />
           <button onClick={() => this.setOutOfListValue()}>Set out of list value</button>
-          <button onClick={() => this.setIncompatibleObjectValue()}>
-            Set incompatible object value
-          </button>
+          <button onClick={() => this.setIncompatibleObjectValue()}>Set incompatible object value</button>
         </div>
         <div>
           <div>Custom display</div>
@@ -114,6 +128,19 @@ export class SelectDemo extends React.Component<{}, SelectDemoState> {
           />
         </div>
         <div>
+          <div>
+            Enum values with custom display fn
+            <br />
+            Model: {selectedPersonalStatus} / {selectedPersonalStatus && personalStatusText[selectedPersonalStatus]}
+          </div>
+          <SelectInput
+            items={this.personalStatuses}
+            value={selectedPersonalStatus}
+            display={personalStatusDisplayFn}
+            onChange={val => this.setState({ selectedPersonalStatus: val })}
+          />
+        </div>
+        <div>
           <div>Async data provider</div>
           <SelectInput
             items={demoData.asyncPeople}
@@ -137,9 +164,7 @@ export class SelectDemo extends React.Component<{}, SelectDemoState> {
             itemKeyAsModel
             items={demoData.asyncPeople}
             value={selectedItemByKey}
-            onChange={selectedItem =>
-              this.setState({ selectedItemByKey: selectedItem ? selectedItem.id : undefined })
-            }
+            onChange={selectedItem => this.setState({ selectedItemByKey: selectedItem ? selectedItem.id : undefined })}
           />
         </div>
 
@@ -149,9 +174,7 @@ export class SelectDemo extends React.Component<{}, SelectDemoState> {
             itemKeyAsModel
             items={demoData.asyncPeopleNoGetByKey}
             value={selectedItemByKey}
-            onChange={selectedItem =>
-              this.setState({ selectedItemByKey: selectedItem ? selectedItem.id : undefined })
-            }
+            onChange={selectedItem => this.setState({ selectedItemByKey: selectedItem ? selectedItem.id : undefined })}
           />
         </div>
         <div>

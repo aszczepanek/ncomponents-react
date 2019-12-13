@@ -1,7 +1,7 @@
 import React from "react";
 import { BPanel } from "./BPanel";
-import { Popover } from "ncomponents-react";
 import { Placement } from "popper.js";
+import { Popover } from "../../lib";
 
 interface PopoverDemoState {}
 

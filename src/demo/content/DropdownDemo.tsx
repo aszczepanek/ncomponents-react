@@ -1,8 +1,8 @@
 import React from "react";
 import { BPanel } from "./BPanel";
-import { Dropdown } from "ncomponents-react";
 import { demoData, DemoItem } from "./demoData";
 import { toJson } from "./demoUtils";
+import { Dropdown } from "../../lib";
 
 interface DropdownDemoState {
   selectedItem?: DemoItem;

@@ -1,5 +1,7 @@
 'use strict';
 
+const isDemoBuild = process.argv.indexOf("--demo") >= 0;
+
 const fs = require('fs');
 const path = require('path');
 const webpack = require('webpack');
@@ -138,12 +140,12 @@ module.exports = function(webpackEnv) {
       isEnvDevelopment &&
         require.resolve('react-dev-utils/webpackHotDevClient'),
       // Finally, this is your app's code:
-      isEnvDevelopment ? paths.appIndexJs : paths.libIndexJs,
+      isEnvDevelopment || isDemoBuild ? paths.appIndexJs : paths.libIndexJs,
       // We include the app code last so that if there is a runtime error during
       // initialization, it doesn't blow up the WebpackDevServer client, and
       // changing JS code would still trigger a refresh.
     ].filter(Boolean),
-    externals: isEnvDevelopment ? undefined : {
+    externals: isEnvDevelopment || isDemoBuild ? undefined : {
       react: 'react',
       'react-dom': 'react-dom',
       "popper.js": {
@@ -161,13 +163,12 @@ module.exports = function(webpackEnv) {
       pathinfo: isEnvDevelopment,
       // There will be one main bundle, and one file per asynchronous chunk.
       // In development, it does not produce real files.
-      filename: isEnvProduction
-        ? 'dist/ncomponents-react.js'
-        : isEnvDevelopment && 'static/js/bundle.js',
+      filename:
+        isEnvProduction && !isDemoBuild
+          ? "dist/ncomponents-react.js"
+          : (isEnvDevelopment || isDemoBuild) && "static/js/bundle.js",
       // There are also additional JS chunk files if you use code splitting.
-      chunkFilename: isEnvProduction
-        ? '[name].chunk.js'
-        : isEnvDevelopment && 'static/js/[name].chunk.js',
+      chunkFilename: isEnvProduction ? "[name].chunk.js" : isEnvDevelopment && "static/js/[name].chunk.js",
       // We inferred the "public path" (such as / or /my-project) from homepage.
       // We use "/" in development.
       publicPath: publicPath,
@@ -481,7 +482,7 @@ module.exports = function(webpackEnv) {
     },
     plugins: [
       // Generates an `index.html` file with the <script> injected.
-      isEnvDevelopment && new HtmlWebpackPlugin(
+      (isEnvDevelopment || isDemoBuild) && new HtmlWebpackPlugin(
         Object.assign(
           {},
           {

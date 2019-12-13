@@ -4,6 +4,8 @@
 process.env.BABEL_ENV = 'production';
 process.env.NODE_ENV = 'production';
 
+const isDemoBuild = process.argv.indexOf("--demo") >= 0;
+
 // Makes the script crash on unhandled rejections instead of silently
 // ignoring them. In the future, promise rejections that are not handled will
 // terminate the Node.js process with a non-zero exit code.
@@ -65,7 +67,10 @@ checkBrowsers(paths.appPath, isInteractive)
     // if you're in it, you don't end up in Trash
     fs.emptyDirSync(paths.appBuild);
     // Merge with the public folder
-    //copyPublicFolder();
+    if (isDemoBuild) {
+      console.log("Demo build - copying public folder");
+      copyPublicFolder();
+    }
     // Start the webpack build
     return build(previousFileSizes);
   })

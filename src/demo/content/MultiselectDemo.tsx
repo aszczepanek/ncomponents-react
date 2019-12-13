@@ -1,8 +1,8 @@
 import React from "react";
 import { BPanel } from "./BPanel";
-import { Multiselect } from "ncomponents-react";
 import { demoData, DemoItem } from "./demoData";
 import { toJson } from "./demoUtils";
+import { Multiselect } from "../../lib";
 
 interface MultiselectDemoState {
   selectedItems: DemoItem[];
