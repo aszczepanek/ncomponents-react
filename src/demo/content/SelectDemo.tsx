@@ -28,6 +28,7 @@ const personalStatusDisplayFn = (value: PersonalStatus | undefined) => value && 
 
 export class SelectDemo extends React.Component<{}, SelectDemoState> {
   items = demoData.people;
+  delayedItems: DemoItem[] = [];
   strings = demoData.strings.slice();
   numbers = [0, 1, 2, 3, 4];
   personalStatuses = [PersonalStatus.Single, PersonalStatus.Married, PersonalStatus.Divorced];
@@ -45,6 +46,13 @@ export class SelectDemo extends React.Component<{}, SelectDemoState> {
       selectedString: "test",
       selectedNumber: 3
     };
+  }
+
+  componentDidMount() {
+    window.setTimeout(() => {
+      this.delayedItems = demoData.people;
+      this.forceUpdate();
+    }, 3000);
   }
 
   render() {
@@ -98,6 +106,19 @@ export class SelectDemo extends React.Component<{}, SelectDemoState> {
           </div>
           <SelectInput<DemoItem>
             items={this.items}
+            value={selectedItemByKey}
+            onChange={item => this.setState({ selectedItemByKey: item && item.id })}
+            itemKeyAsModel
+          />
+        </div>
+        <div>
+          <div>
+            Item key as model with items loaded with delay
+            <br />
+            Model: {selectedItemByKey}
+          </div>
+          <SelectInput<DemoItem>
+            items={this.delayedItems}
             value={selectedItemByKey}
             onChange={item => this.setState({ selectedItemByKey: item && item.id })}
             itemKeyAsModel

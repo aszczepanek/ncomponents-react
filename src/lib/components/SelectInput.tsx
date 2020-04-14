@@ -60,6 +60,15 @@ export class SelectInput<TItem> extends Component<
     this.hide = this.hide.bind(this);
   }
 
+  componentDidUpdate(prevProps: SelectInputProps<TItem>) {
+    if (this.itemByKeyLoaded && this.props.items !== prevProps.items && Array.isArray(this.props.items)) {
+      this.itemByKeyLoaded = false;
+      this.itemByKey = undefined;
+      this.itemByKeyKeyValue = undefined;
+      this.forceUpdate();
+    }
+  }
+
   render() {
     const viewValue = this.getViewValue();
     const selectVisible = this.state.selectVisible;
