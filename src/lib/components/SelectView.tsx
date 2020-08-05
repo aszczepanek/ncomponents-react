@@ -2,10 +2,11 @@ import React from "react";
 import ReactDOM from "react-dom";
 import Popper, { Placement } from "popper.js";
 import { domEventHelpers } from "../utils/domEventHelpers";
-import { ItemDisplayFn, selectUtils } from "../utils/selectUtils";
+import { ItemDisplayFn, selectUtils, ItemRenderFn } from "../utils/selectUtils";
 import { keyCodes } from "../utils/keyCodeMap";
 import { toClassNames, getBodyPortal } from "../utils/reactHelpers";
 import { AsyncItemsProvider } from "../utils/asyncItemsProvider";
+import { timeStamp } from "console";
 
 interface SelectViewProps<TItem> {
   items: TItem[] | AsyncItemsProvider<TItem>;
@@ -13,6 +14,7 @@ interface SelectViewProps<TItem> {
   placement: Placement;
   onOutsideClick?: () => any;
   itemKey?: keyof TItem;
+  itemRender?: ItemRenderFn<TItem>;
   display?: keyof TItem | ItemDisplayFn<TItem>;
   nonStrict?: boolean;
   message?: string;
@@ -80,7 +82,7 @@ export class SelectView<TItem> extends React.Component<
       const focused = i == this.state.focusedIndex;
       return (
         <li key={itemKey} className={toClassNames({ focused })} onClick={() => this.select(item)}>
-          {this.formatItemDisplay(item)}
+          {this.renderItem(item)}
         </li>
       );
     });
@@ -161,7 +163,11 @@ export class SelectView<TItem> extends React.Component<
     return item[this.props.itemKey || "id"];
   }
 
-  formatItemDisplay(item: any) {
+  renderItem(item: any) {
+    if (this.props.itemRender) {
+      return this.props.itemRender(item);
+    }
+
     return selectUtils.formatItemDisplay(item, this.props.display);
   }
 
@@ -267,7 +273,7 @@ export class SelectView<TItem> extends React.Component<
 
     if (filterToken) {
       items = items.filter(x => {
-        const display = this.formatItemDisplay(x).toLowerCase();
+        const display =  selectUtils.formatItemDisplay(x, this.props.display).toLowerCase();
         return display.indexOf(filterToken) >= 0;
       });
     }

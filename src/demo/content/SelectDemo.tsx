@@ -15,13 +15,13 @@ interface SelectDemoState {
 enum PersonalStatus {
   Single = 1,
   Married = 2,
-  Divorced = 3
+  Divorced = 3,
 }
 
 const personalStatusText = {
   [PersonalStatus.Single]: "Single",
   [PersonalStatus.Married]: "Married",
-  [PersonalStatus.Divorced]: "Divorced"
+  [PersonalStatus.Divorced]: "Divorced",
 };
 
 const personalStatusDisplayFn = (value: PersonalStatus | undefined) => value && personalStatusText[value];
@@ -44,7 +44,7 @@ export class SelectDemo extends React.Component<{}, SelectDemoState> {
       selectedItem: this.items[0],
       selectedItemByKey: this.items[0].id,
       selectedString: "test",
-      selectedNumber: 3
+      selectedNumber: 3,
     };
   }
 
@@ -65,7 +65,7 @@ export class SelectDemo extends React.Component<{}, SelectDemoState> {
           <SelectInput
             items={this.items}
             value={selectedItem}
-            onChange={selectedItem => this.setState({ selectedItem })}
+            onChange={(selectedItem) => this.setState({ selectedItem })}
           />
           <button onClick={() => this.setOutOfListValue()}>Set out of list value</button>
           <button onClick={() => this.setIncompatibleObjectValue()}>Set incompatible object value</button>
@@ -75,7 +75,7 @@ export class SelectDemo extends React.Component<{}, SelectDemoState> {
           <SelectInput
             items={this.items}
             value={selectedItem}
-            onChange={selectedItem => this.setState({ selectedItem })}
+            onChange={(selectedItem) => this.setState({ selectedItem })}
             display="lastName"
           />
         </div>
@@ -84,8 +84,21 @@ export class SelectDemo extends React.Component<{}, SelectDemoState> {
           <SelectInput
             items={this.items}
             value={selectedItem}
-            onChange={selectedItem => this.setState({ selectedItem })}
+            onChange={(selectedItem) => this.setState({ selectedItem })}
             display={this.customItemFormat}
+          />
+        </div>
+        <div>
+          <div>Custom item render fn</div>
+          <SelectInput
+            items={this.items}
+            value={selectedItem}
+            onChange={(selectedItem) => this.setState({ selectedItem })}
+            itemRender={(x) => (
+              <span>
+                <strong>{x.id}</strong>: {x.label}
+              </span>
+            )}
           />
         </div>
         <div>
@@ -93,8 +106,8 @@ export class SelectDemo extends React.Component<{}, SelectDemoState> {
           <SelectInput
             items={this.items}
             value={selectedItem}
-            onChange={selectedItem => this.setState({ selectedItem })}
-            onChangeNonStrict={val => this.setState({ selectedItem: val })}
+            onChange={(selectedItem) => this.setState({ selectedItem })}
+            onChangeNonStrict={(val) => this.setState({ selectedItem: val })}
             nonStrict={true}
           />
         </div>
@@ -107,7 +120,7 @@ export class SelectDemo extends React.Component<{}, SelectDemoState> {
           <SelectInput<DemoItem>
             items={this.items}
             value={selectedItemByKey}
-            onChange={item => this.setState({ selectedItemByKey: item && item.id })}
+            onChange={(item) => this.setState({ selectedItemByKey: item && item.id })}
             itemKeyAsModel
           />
         </div>
@@ -120,7 +133,7 @@ export class SelectDemo extends React.Component<{}, SelectDemoState> {
           <SelectInput<DemoItem>
             items={this.delayedItems}
             value={selectedItemByKey}
-            onChange={item => this.setState({ selectedItemByKey: item && item.id })}
+            onChange={(item) => this.setState({ selectedItemByKey: item && item.id })}
             itemKeyAsModel
           />
         </div>
@@ -133,7 +146,7 @@ export class SelectDemo extends React.Component<{}, SelectDemoState> {
           <SelectInput
             items={this.strings}
             value={selectedString}
-            onChange={val => this.setState({ selectedString: val })}
+            onChange={(val) => this.setState({ selectedString: val })}
           />
         </div>
         <div>
@@ -145,7 +158,7 @@ export class SelectDemo extends React.Component<{}, SelectDemoState> {
           <SelectInput
             items={this.numbers}
             value={selectedNumber}
-            onChange={val => this.setState({ selectedNumber: val })}
+            onChange={(val) => this.setState({ selectedNumber: val })}
           />
         </div>
         <div>
@@ -158,7 +171,7 @@ export class SelectDemo extends React.Component<{}, SelectDemoState> {
             items={this.personalStatuses}
             value={selectedPersonalStatus}
             display={personalStatusDisplayFn}
-            onChange={val => this.setState({ selectedPersonalStatus: val })}
+            onChange={(val) => this.setState({ selectedPersonalStatus: val })}
           />
         </div>
         <div>
@@ -166,7 +179,7 @@ export class SelectDemo extends React.Component<{}, SelectDemoState> {
           <SelectInput
             items={demoData.asyncPeople}
             value={selectedItem}
-            onChange={selectedItem => this.setState({ selectedItem })}
+            onChange={(selectedItem) => this.setState({ selectedItem })}
           />
         </div>
 
@@ -175,7 +188,7 @@ export class SelectDemo extends React.Component<{}, SelectDemoState> {
           <SelectInput
             items={demoData.asyncPeopleError}
             value={selectedItem}
-            onChange={selectedItem => this.setState({ selectedItem })}
+            onChange={(selectedItem) => this.setState({ selectedItem })}
           />
         </div>
 
@@ -185,7 +198,9 @@ export class SelectDemo extends React.Component<{}, SelectDemoState> {
             itemKeyAsModel
             items={demoData.asyncPeople}
             value={selectedItemByKey}
-            onChange={selectedItem => this.setState({ selectedItemByKey: selectedItem ? selectedItem.id : undefined })}
+            onChange={(selectedItem) =>
+              this.setState({ selectedItemByKey: selectedItem ? selectedItem.id : undefined })
+            }
           />
         </div>
 
@@ -195,7 +210,9 @@ export class SelectDemo extends React.Component<{}, SelectDemoState> {
             itemKeyAsModel
             items={demoData.asyncPeopleNoGetByKey}
             value={selectedItemByKey}
-            onChange={selectedItem => this.setState({ selectedItemByKey: selectedItem ? selectedItem.id : undefined })}
+            onChange={(selectedItem) =>
+              this.setState({ selectedItemByKey: selectedItem ? selectedItem.id : undefined })
+            }
           />
         </div>
         <div>
@@ -203,7 +220,7 @@ export class SelectDemo extends React.Component<{}, SelectDemoState> {
           <SelectInput
             items={this.items}
             value={undefined}
-            onChange={selectedItem => this.setState({ selectedItem })}
+            onChange={(selectedItem) => this.setState({ selectedItem })}
           />
         </div>
       </BPanel>
@@ -218,20 +235,20 @@ export class SelectDemo extends React.Component<{}, SelectDemoState> {
     const selectedItem = {
       id: 99,
       label: "Test",
-      lastName: "Test 2"
+      lastName: "Test 2",
     };
 
     this.setState({
-      selectedItem
+      selectedItem,
     });
   }
 
   setIncompatibleObjectValue() {
     const selectedItem: any = {
-      age: 29
+      age: 29,
     };
     this.setState({
-      selectedItem
+      selectedItem,
     });
   }
 }

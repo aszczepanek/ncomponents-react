@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Placement } from "popper.js";
 import { keyCodes } from "../utils/keyCodeMap";
 import { SelectView } from "./SelectView";
-import { selectUtils, ItemDisplayFn } from "../utils/selectUtils";
+import { selectUtils, ItemDisplayFn, ItemRenderFn } from "../utils/selectUtils";
 import { AsyncItemsProvider } from "../utils/asyncItemsProvider";
 
 interface SelectInputProps<TItem>
@@ -11,6 +11,7 @@ interface SelectInputProps<TItem>
   items: TItem[] | AsyncItemsProvider<TItem>;
   itemKey?: keyof TItem;
   itemKeyAsModel?: boolean;
+  itemRender?: ItemRenderFn<TItem>;
   display?: keyof TItem | ItemDisplayFn<TItem>;
   placement?: Placement;
   nonStrict?: boolean;
@@ -121,6 +122,7 @@ export class SelectInput<TItem> extends Component<
         onOutsideClick={this.hide}
         display={this.props.display}
         itemKey={this.props.itemKey}
+        itemRender={this.props.itemRender}
         ref={view => (this.selectView = view || undefined)}
       />
     );

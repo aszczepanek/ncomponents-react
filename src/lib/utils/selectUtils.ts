@@ -3,6 +3,7 @@ export const selectUtils = {
 };
 
 export type ItemDisplayFn<T> = (item: T) => string | undefined;
+export type ItemRenderFn<T> = (item: T) => React.ReactNode;
 
 function formatItemDisplay(item: any, display?: any): string {
   if (typeof display !== "function") {
