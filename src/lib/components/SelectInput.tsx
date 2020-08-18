@@ -79,6 +79,7 @@ export class SelectInput<TItem> extends Component<
       items,
       itemKey,
       itemKeyAsModel,
+      itemRender,
       display,
       placement,
       nonStrict,

@@ -35,7 +35,6 @@ export class MultiselectDemo extends React.Component<{}, MultiselectDemoState> {
             value={this.state.selectedItems}
             items={this.items}
             filterable={true}
-            disablePortalRender={true}
             onChange={selectedItems => this.setState({ selectedItems })}
           />
         </div>
@@ -47,7 +46,6 @@ export class MultiselectDemo extends React.Component<{}, MultiselectDemoState> {
             value={this.state.selectedItems}
             items={this.items}
             filterable={true}
-            disablePortalRender={true}
             clearButton
             onChange={selectedItems => this.setState({ selectedItems })}
           />
@@ -83,7 +81,6 @@ export class MultiselectDemo extends React.Component<{}, MultiselectDemoState> {
           <Multiselect
             value={this.state.selectedNumber}
             items={this.numbers}
-            disablePortalRender
             sortOnChange
             onChange={selectedNumber => this.setState({ selectedNumber })}
           />

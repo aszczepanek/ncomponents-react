@@ -23,7 +23,7 @@ interface DropdownState {
 
 export class Dropdown<TItem> extends React.Component<DropdownProps<TItem>, DropdownState> {
   static defaultPlacement: Placement = "bottom-start";
-  static defaultRenderInBody = false;
+  static defaultRenderInBody = true;
 
   clientX = 0;
   clientY = 0;
@@ -37,7 +37,7 @@ export class Dropdown<TItem> extends React.Component<DropdownProps<TItem>, Dropd
     this.hide = this.hide.bind(this);
 
     this.state = {
-      dropdownVisible: false
+      dropdownVisible: false,
     };
   }
 
@@ -58,10 +58,9 @@ export class Dropdown<TItem> extends React.Component<DropdownProps<TItem>, Dropd
     if (!this.state.popperRef) return null;
 
     const placement = this.props.placement || Dropdown.defaultPlacement;
-    const renderInBody =
-      typeof this.props.renderInBody === "undefined"
-        ? Dropdown.defaultRenderInBody
-        : this.props.renderInBody;
+    const renderInBody = this.props.hasOwnProperty("renderInBody")
+      ? this.props.renderInBody
+      : Dropdown.defaultRenderInBody;
 
     return (
       <DropdownView
@@ -122,10 +121,10 @@ export class Dropdown<TItem> extends React.Component<DropdownProps<TItem>, Dropd
           left: this.clientX,
           right: this.clientX,
           top: this.clientY,
-          bottom: this.clientY
+          bottom: this.clientY,
         }),
         clientHeight: 0,
-        clientWidth: 0
+        clientWidth: 0,
       };
     } else {
       return ReactDOM.findDOMNode(this) as any;
@@ -134,7 +133,7 @@ export class Dropdown<TItem> extends React.Component<DropdownProps<TItem>, Dropd
 
   updatePopperRef() {
     this.setState({
-      popperRef: this.getPopperRef()
+      popperRef: this.getPopperRef(),
     });
   }
 
@@ -143,7 +142,7 @@ export class Dropdown<TItem> extends React.Component<DropdownProps<TItem>, Dropd
 
     this.setState({
       dropdownVisible: true,
-      popperRef: this.getPopperRef()
+      popperRef: this.getPopperRef(),
     });
   }
 
@@ -151,7 +150,7 @@ export class Dropdown<TItem> extends React.Component<DropdownProps<TItem>, Dropd
     if (!this.state.dropdownVisible) return;
 
     this.setState({
-      dropdownVisible: false
+      dropdownVisible: false,
     });
   }
 

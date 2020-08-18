@@ -13,7 +13,7 @@ interface MultiselectViewProps<TItem> {
   display?: keyof TItem | ItemDisplayFn<TItem>;
   placement?: Placement;
   filterable?: boolean;
-  disablePortalRender?: boolean;
+  renderInBody?: boolean;
   onSelect: (item: TItem) => any;
   popoverRef: HTMLElement;
   onOutsideClick?: () => any;
@@ -25,10 +25,7 @@ interface MultiselectViewState {
   focusedIndex: number;
 }
 
-export class MultiselectView<TItem> extends React.Component<
-  MultiselectViewProps<TItem>,
-  MultiselectViewState
-> {
+export class MultiselectView<TItem> extends React.Component<MultiselectViewProps<TItem>, MultiselectViewState> {
   static rootClassName = "n-dropdown n-multiselect-view";
 
   popper?: Popper;
@@ -40,7 +37,7 @@ export class MultiselectView<TItem> extends React.Component<
 
     this.state = {
       filterToken: "",
-      focusedIndex: -1
+      focusedIndex: -1,
     };
 
     this.onKeydown = this.onKeydown.bind(this);
@@ -63,19 +60,14 @@ export class MultiselectView<TItem> extends React.Component<
       </div>
     );
 
-    return this.props.disablePortalRender ? result : ReactDOM.createPortal(result, getBodyPortal());
+    return this.props.renderInBody ? ReactDOM.createPortal(result, getBodyPortal()) : result;
   }
 
   renderFilterInput() {
     if (!this.props.filterable) return;
     return (
       <div ref={this.rootEl}>
-        <input
-          type="text"
-          ref={this.filterInputRef}
-          onChange={this.onFilterTokenChange}
-          onKeyDown={this.onKeydown}
-        />
+        <input type="text" ref={this.filterInputRef} onChange={this.onFilterTokenChange} onKeyDown={this.onKeydown} />
       </div>
     );
   }
@@ -92,7 +84,7 @@ export class MultiselectView<TItem> extends React.Component<
               key={this.getItemKey(item)}
               className={toClassNames({
                 focused: i == focusedIndex,
-                selected: this.isSelected(item)
+                selected: this.isSelected(item),
               })}
               onClick={() => this.select(item)}
             >
@@ -107,7 +99,7 @@ export class MultiselectView<TItem> extends React.Component<
   componentDidMount() {
     this.focusInput();
     this.popper = new Popper(this.props.popoverRef, this.rootEl.current!, {
-      placement: this.props.placement
+      placement: this.props.placement,
     });
     this.popper.scheduleUpdate();
     document.addEventListener("click", this.onDocumentClick);
@@ -155,7 +147,7 @@ export class MultiselectView<TItem> extends React.Component<
     const token = filterToken.toLowerCase();
 
     return items.filter(
-      x =>
+      (x) =>
         this.formatItemDisplay(x)
           .toLowerCase()
           .indexOf(token) >= 0
@@ -168,7 +160,7 @@ export class MultiselectView<TItem> extends React.Component<
     const filtered = this.getFilteredItems();
 
     this.setState({
-      focusedIndex: (this.state.focusedIndex + 1) % filtered.length
+      focusedIndex: (this.state.focusedIndex + 1) % filtered.length,
     });
   }
 
@@ -182,14 +174,14 @@ export class MultiselectView<TItem> extends React.Component<
     }
 
     this.setState({
-      focusedIndex: newfocusedIndex
+      focusedIndex: newfocusedIndex,
     });
   }
 
   resetfocusedIndex() {
     this.setState((prev, next) => {
       return {
-        focusedIndex: prev.filterToken ? 0 : -1
+        focusedIndex: prev.filterToken ? 0 : -1,
       };
     });
   }
@@ -241,7 +233,7 @@ export class MultiselectView<TItem> extends React.Component<
 
   onFilterTokenChange(ev: React.ChangeEvent<HTMLInputElement>) {
     this.setState({
-      filterToken: ev.target.value
+      filterToken: ev.target.value,
     });
     this.resetfocusedIndex();
   }

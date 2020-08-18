@@ -14,7 +14,7 @@ interface MultiselectProps<TItem> extends Omit<React.HTMLAttributes<HTMLDivEleme
   placement?: Placement;
   filterable?: boolean;
   clearButton?: boolean;
-  disablePortalRender?: boolean;
+  renderInBody?: boolean;
   sortOnChange?: boolean;
   children?: CustomRenderSelectedItemsFn<TItem>;
   onKeyDown?: (ev: React.KeyboardEvent) => any;
@@ -41,24 +41,23 @@ interface CustomRenderSelectedItemsFnArgs<TItem> {
   defaultRenderSelectedItems: () => React.ReactNode;
 }
 
-type CustomRenderSelectedItemsFn<TItem> = (
-  args: CustomRenderSelectedItemsFnArgs<TItem>
-) => React.ReactNode;
+type CustomRenderSelectedItemsFn<TItem> = (args: CustomRenderSelectedItemsFnArgs<TItem>) => React.ReactNode;
 
 let currentOpenMultiselect: Multiselect<any> | undefined;
 
 export class Multiselect<TItem> extends React.Component<MultiselectProps<TItem>, MultiselectState> {
   static rootClassName = "n-multiselect";
   static defaultPlacement: Placement = "bottom-start";
+  static defaultRenderInBody = false;
   static defaultRenderSelectedItems: DefaultRenderSelectedItemsFn = ({
     props,
     selectedItems,
     formatItemDisplay,
-    clear
+    clear,
   }) => {
     return (
       <>
-        {selectedItems.map(x => formatItemDisplay(x)).join(", ") || "-"}
+        {selectedItems.map((x) => formatItemDisplay(x)).join(", ") || "-"}
         {props.clearButton && (
           <button onClick={clear} onMouseDown={domEventHelpers.stopPropagationAndPrevent}>
             Clear
@@ -75,7 +74,7 @@ export class Multiselect<TItem> extends React.Component<MultiselectProps<TItem>,
     super(props);
 
     this.state = {
-      multiselectVisible: false
+      multiselectVisible: false,
     };
 
     this.onKeydown = this.onKeydown.bind(this);
@@ -98,7 +97,7 @@ export class Multiselect<TItem> extends React.Component<MultiselectProps<TItem>,
       placement,
       filterable,
       clearButton,
-      disablePortalRender,
+      renderInBody,
       sortOnChange,
       children,
       ...restProps
@@ -130,7 +129,7 @@ export class Multiselect<TItem> extends React.Component<MultiselectProps<TItem>,
         clear: this.clear,
         props: this.props,
         selectedItems: this.props.value || [],
-        defaultRenderSelectedItems: this.defaultRenderSelectedItems
+        defaultRenderSelectedItems: this.defaultRenderSelectedItems,
       });
     } else {
       return this.defaultRenderSelectedItems();
@@ -141,10 +140,13 @@ export class Multiselect<TItem> extends React.Component<MultiselectProps<TItem>,
     if (!this.state.multiselectVisible) return undefined;
 
     const placement = this.props.placement || Multiselect.defaultPlacement;
+    const renderInBody = this.props.hasOwnProperty("renderInBody")
+      ? this.props.renderInBody
+      : Multiselect.defaultRenderInBody;
 
     return (
       <MultiselectView
-        disablePortalRender={this.props.disablePortalRender}
+        renderInBody={renderInBody}
         display={this.props.display}
         items={this.props.items}
         itemKey={this.props.itemKey}
@@ -155,7 +157,7 @@ export class Multiselect<TItem> extends React.Component<MultiselectProps<TItem>,
         popoverRef={this.elRef.current!}
         onOutsideClick={this.hide}
         onKeyDown={this.onKeydown}
-        ref={view => (this.multiselectView = view || undefined)}
+        ref={(view) => (this.multiselectView = view || undefined)}
       />
     );
   }
@@ -165,7 +167,7 @@ export class Multiselect<TItem> extends React.Component<MultiselectProps<TItem>,
       formatItemDisplay: this.formatItemDisplay,
       clear: this.clear,
       selectedItems: this.props.value || [],
-      props: this.props
+      props: this.props,
     });
   }
 
@@ -227,7 +229,7 @@ export class Multiselect<TItem> extends React.Component<MultiselectProps<TItem>,
     let newModel = (this.props.value || []).slice();
 
     const key = this.getItemKey(item);
-    const existingItem = newModel.filter(x => this.getItemKey(x) == key)[0];
+    const existingItem = newModel.filter((x) => this.getItemKey(x) == key)[0];
     if (existingItem !== undefined) {
       const idx = newModel.indexOf(existingItem);
       newModel.splice(idx, 1);
@@ -253,7 +255,7 @@ export class Multiselect<TItem> extends React.Component<MultiselectProps<TItem>,
     currentOpenMultiselect = this;
 
     this.setState({
-      multiselectVisible: true
+      multiselectVisible: true,
     });
   }
 
@@ -263,13 +265,13 @@ export class Multiselect<TItem> extends React.Component<MultiselectProps<TItem>,
       currentOpenMultiselect = undefined;
     }
     this.setState({
-      multiselectVisible: false
+      multiselectVisible: false,
     });
   }
 
   toggle() {
     this.setState({
-      multiselectVisible: !this.state.multiselectVisible
+      multiselectVisible: !this.state.multiselectVisible,
     });
   }
 }

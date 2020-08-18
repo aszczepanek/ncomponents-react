@@ -3,6 +3,7 @@ import ReactDOM from "react-dom";
 import { PopperTrigger, TriggerType } from "./PopperTrigger";
 import { Placement } from "popper.js";
 import { TooltipElement } from "./TooltipElement";
+import { getBodyPortal } from "../utils/reactHelpers";
 
 interface TooltipProps {
   children: React.ReactChild;
@@ -12,15 +13,20 @@ interface TooltipProps {
   disabled?: boolean;
 }
 
-export class Tooltip extends React.Component<TooltipProps> {
-  static defaultTrigger: TriggerType | TriggerType[] = "hover";
+interface TooltipState {
+  popperRef?: HTMLElement;
+}
 
-  popperTriggerRef = React.createRef<PopperTrigger>();
+export class Tooltip extends React.Component<TooltipProps, TooltipState> {
+  static defaultTrigger: TriggerType | TriggerType[] = "hover";
 
   constructor(props: TooltipProps) {
     super(props);
 
     this.renderTooltipElement = this.renderTooltipElement.bind(this);
+    this.updatePopperTriggerRef = this.updatePopperTriggerRef.bind(this);
+
+    this.state = {};
   }
 
   render() {
@@ -28,7 +34,7 @@ export class Tooltip extends React.Component<TooltipProps> {
 
     return (
       <PopperTrigger
-        ref={this.popperTriggerRef}
+        ref={this.updatePopperTriggerRef}
         trigger={trigger}
         content={this.renderTooltipElement}
         disabled={this.props.disabled}
@@ -39,15 +45,19 @@ export class Tooltip extends React.Component<TooltipProps> {
   }
 
   renderTooltipElement() {
-    if (!this.popperTriggerRef.current) return null;
+    if (!this.state.popperRef) return null;
 
-    const popperRef = ReactDOM.findDOMNode(this.popperTriggerRef.current) as any;
-    if (!popperRef) return null;
-
-    return (
-      <TooltipElement popperRef={popperRef} placement={this.props.placement}>
+    return ReactDOM.createPortal(
+      <TooltipElement popperRef={this.state.popperRef} placement={this.props.placement}>
         {this.props.content}
-      </TooltipElement>
+      </TooltipElement>,
+      getBodyPortal()
     );
+  }
+
+  updatePopperTriggerRef(instance: PopperTrigger | null) {
+    this.setState({
+      popperRef: ReactDOM.findDOMNode(instance) as any,
+    });
   }
 }
