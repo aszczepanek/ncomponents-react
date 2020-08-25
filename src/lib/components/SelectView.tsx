@@ -30,10 +30,7 @@ interface SelectViewState<TItem> {
   asyncPending: boolean;
 }
 
-export class SelectView<TItem> extends React.Component<
-  SelectViewProps<TItem>,
-  SelectViewState<TItem>
-> {
+export class SelectView<TItem> extends React.Component<SelectViewProps<TItem>, SelectViewState<TItem>> {
   static rootClassName = "n-dropdown n-select";
 
   popper?: Popper;
@@ -48,7 +45,7 @@ export class SelectView<TItem> extends React.Component<
       focusedIndex: -1,
       items: [],
       asyncPending: false,
-      asyncError: false
+      asyncError: false,
     };
 
     this.onDocumentClick = this.onDocumentClick.bind(this);
@@ -82,7 +79,7 @@ export class SelectView<TItem> extends React.Component<
       const focused = i == this.state.focusedIndex;
       return (
         <li key={itemKey} className={toClassNames({ focused })} onClick={() => this.select(item)}>
-          {this.renderItem(item)}
+          {this.renderItem(item)}&nbsp;
         </li>
       );
     });
@@ -96,9 +93,7 @@ export class SelectView<TItem> extends React.Component<
 
     if (this.state.asyncPending) {
       const asyncDataProvider = this.getAsyncDataProvider();
-      return (
-        <li>{(asyncDataProvider && asyncDataProvider.loadingFeedback) || "Wczytywanie..."}</li>
-      );
+      return <li>{(asyncDataProvider && asyncDataProvider.loadingFeedback) || "Wczytywanie..."}</li>;
     }
 
     const { message } = this.props;
@@ -115,7 +110,7 @@ export class SelectView<TItem> extends React.Component<
 
   componentDidMount() {
     this.popper = new Popper(this.props.popoverRef, this.rootEl.current!, {
-      placement: this.props.placement
+      placement: this.props.placement,
     });
     this.popper.scheduleUpdate();
     document.addEventListener("click", this.onDocumentClick);
@@ -131,7 +126,7 @@ export class SelectView<TItem> extends React.Component<
       this.resetfocusedIndex();
     } else if (prevProps.filterToken != this.props.filterToken) {
       this.setState({
-        focusedIndex: this.props.filterToken ? 0 : -1
+        focusedIndex: this.props.filterToken ? 0 : -1,
       });
     }
 
@@ -184,7 +179,7 @@ export class SelectView<TItem> extends React.Component<
     if (!this.state.items) return;
 
     this.setState({
-      focusedIndex: (this.state.focusedIndex + 1) % this.state.items.length
+      focusedIndex: (this.state.focusedIndex + 1) % this.state.items.length,
     });
 
     this.scrollToFocused();
@@ -197,7 +192,7 @@ export class SelectView<TItem> extends React.Component<
     if (newfocusedIndex < 0) newfocusedIndex = this.state.items.length - 1;
 
     this.setState({
-      focusedIndex: newfocusedIndex
+      focusedIndex: newfocusedIndex,
     });
 
     this.scrollToFocused();
@@ -206,7 +201,7 @@ export class SelectView<TItem> extends React.Component<
   // @Watch("items")
   resetfocusedIndex() {
     this.setState({
-      focusedIndex: 0
+      focusedIndex: 0,
     });
     this.scrollToFocused();
   }
@@ -229,42 +224,38 @@ export class SelectView<TItem> extends React.Component<
   updateFilteredItems() {
     if (Array.isArray(this.props.items)) {
       this.setState({
-        items: this.localFilterItems(this.props.items)
+        items: this.localFilterItems(this.props.items),
       });
     } else {
       const asyncItemsProvider = this.props.items;
       this.setState({
         asyncPending: true,
-        asyncError: false
+        asyncError: false,
       });
-      const promise = (this.currentAsyncItemsPromise = asyncItemsProvider
-        .getItems(this.props.filterToken || "")
-        .then(
-          res => {
-            if (promise != this.currentAsyncItemsPromise) return;
-            if (this.unmounted) return;
+      const promise = (this.currentAsyncItemsPromise = asyncItemsProvider.getItems(this.props.filterToken || "").then(
+        (res) => {
+          if (promise != this.currentAsyncItemsPromise) return;
+          if (this.unmounted) return;
 
-            const items = asyncItemsProvider.enableSelectLocalFiltering
-              ? this.localFilterItems(res)
-              : res;
+          const items = asyncItemsProvider.enableSelectLocalFiltering ? this.localFilterItems(res) : res;
 
-            this.setState({
-              items,
-              asyncError: false,
-              asyncPending: false
-            });
-          },
-          err => {
-            if (promise != this.currentAsyncItemsPromise) return;
-            if (this.unmounted) return;
+          this.setState({
+            items,
+            asyncError: false,
+            asyncPending: false,
+          });
+        },
+        (err) => {
+          if (promise != this.currentAsyncItemsPromise) return;
+          if (this.unmounted) return;
 
-            this.setState({
-              items: [],
-              asyncError: true,
-              asyncPending: false
-            });
-          }
-        ));
+          this.setState({
+            items: [],
+            asyncError: true,
+            asyncPending: false,
+          });
+        }
+      ));
     }
   }
 
@@ -272,8 +263,8 @@ export class SelectView<TItem> extends React.Component<
     const filterToken = (this.props.filterToken || "").toLowerCase();
 
     if (filterToken) {
-      items = items.filter(x => {
-        const display =  selectUtils.formatItemDisplay(x, this.props.display).toLowerCase();
+      items = items.filter((x) => {
+        const display = selectUtils.formatItemDisplay(x, this.props.display).toLowerCase();
         return display.indexOf(filterToken) >= 0;
       });
     }
