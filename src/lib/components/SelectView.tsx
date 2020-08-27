@@ -6,7 +6,6 @@ import { ItemDisplayFn, selectUtils, ItemRenderFn } from "../utils/selectUtils";
 import { keyCodes } from "../utils/keyCodeMap";
 import { toClassNames, getBodyPortal } from "../utils/reactHelpers";
 import { AsyncItemsProvider } from "../utils/asyncItemsProvider";
-import { timeStamp } from "console";
 
 interface SelectViewProps<TItem> {
   items: TItem[] | AsyncItemsProvider<TItem>;
@@ -79,7 +78,7 @@ export class SelectView<TItem> extends React.Component<SelectViewProps<TItem>, S
       const focused = i == this.state.focusedIndex;
       return (
         <li key={itemKey} className={toClassNames({ focused })} onClick={() => this.select(item)}>
-          {this.renderItem(item)}&nbsp;
+          {this.renderItem(item)}
         </li>
       );
     });
@@ -160,10 +159,10 @@ export class SelectView<TItem> extends React.Component<SelectViewProps<TItem>, S
 
   renderItem(item: any) {
     if (this.props.itemRender) {
-      return this.props.itemRender(item);
+      return this.props.itemRender(item) || <span>&nbsp;</span>;
     }
 
-    return selectUtils.formatItemDisplay(item, this.props.display);
+    return selectUtils.formatItemDisplay(item, this.props.display) || <span>&nbsp;</span>;
   }
 
   selectFocused() {

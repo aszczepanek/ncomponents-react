@@ -69,7 +69,7 @@ const people: DemoItem[] = [
   }
 ];
 
-const strings: string[] = ["test", "dwa", "trzy", "cztery"];
+const strings: string[] = ["", "test", "dwa", "trzy", "cztery"];
 
 export const demoData = {
   people,
