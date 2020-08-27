@@ -10,6 +10,7 @@ interface SelectDemoState {
   selectedString?: string;
   selectedNumber?: number;
   selectedPersonalStatus?: PersonalStatus;
+  selectedBool?: boolean;
 }
 
 enum PersonalStatus {
@@ -56,7 +57,14 @@ export class SelectDemo extends React.Component<{}, SelectDemoState> {
   }
 
   render() {
-    const { selectedItem, selectedItemByKey, selectedString, selectedNumber, selectedPersonalStatus } = this.state;
+    const {
+      selectedItem,
+      selectedItemByKey,
+      selectedString,
+      selectedNumber,
+      selectedBool,
+      selectedPersonalStatus,
+    } = this.state;
 
     return (
       <BPanel header="Select">
@@ -121,6 +129,21 @@ export class SelectDemo extends React.Component<{}, SelectDemoState> {
             items={this.items}
             value={selectedItemByKey}
             onChange={(item) => this.setState({ selectedItemByKey: item && item.id })}
+            itemKeyAsModel
+          />
+        </div>
+        <div>
+          <div>
+            Item key as model - true/false/undefined distinction
+            <br />
+            Model: {typeof selectedBool === "boolean" ? selectedBool.toString() : selectedBool}
+          </div>
+          <SelectInput
+            items={demoData.trueFalseUndefined}
+            itemKey="value"
+            display="label"
+            value={selectedBool}
+            onChange={(item) => this.setState({ selectedBool: item && item.value })}
             itemKeyAsModel
           />
         </div>

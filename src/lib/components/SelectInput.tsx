@@ -224,7 +224,7 @@ export class SelectInput<TItem> extends Component<
         this.props.onChange(modelValue);
         if (this.props.itemKeyAsModel && !Array.isArray(this.props.items)) {
           this.itemByKey = modelValue;
-          this.itemByKeyKeyValue = modelValue ? this.getItemKey(modelValue) : undefined;
+          this.itemByKeyKeyValue = modelValue !== undefined ? this.getItemKey(modelValue) : undefined;
           this.itemByKeyLoaded = true;
         }
       }

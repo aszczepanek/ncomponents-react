@@ -29,7 +29,7 @@ class DemoAsyncItemsProvider implements AsyncItemsProvider<DemoItem> {
   getItemByKey(key: any): Promise<DemoItem | undefined> {
     if (this.options.dontProvideItemByKey) return promiseResolveWithDelay(undefined, 500);
 
-    const item = this.options.items.filter(x => x.id === key)[0];
+    const item = this.options.items.filter((x) => x.id === key)[0];
     return promiseResolveWithDelay(item, 500);
   }
 }
@@ -50,23 +50,29 @@ const people: DemoItem[] = [
   {
     id: 1,
     label: "Jan",
-    lastName: "Kowal"
+    lastName: "Kowal",
   },
   {
     id: 2,
     label: "Grześ",
-    lastName: "Hardy"
+    lastName: "Hardy",
   },
   {
     id: 3,
     label: "Krzyś",
-    lastName: "Pyś"
+    lastName: "Pyś",
   },
   {
     id: 4,
     label: "Jerzy",
-    lastName: "Leży"
-  }
+    lastName: "Leży",
+  },
+];
+
+const trueFalseUndefined = [
+  { value: undefined, label: "" },
+  { value: true, label: "Yes" },
+  { value: false, label: "No" },
 ];
 
 const strings: string[] = ["", "test", "dwa", "trzy", "cztery"];
@@ -74,7 +80,8 @@ const strings: string[] = ["", "test", "dwa", "trzy", "cztery"];
 export const demoData = {
   people,
   strings,
+  trueFalseUndefined,
   asyncPeople: new DemoAsyncItemsProvider({ items: people }),
   asyncPeopleError: new DemoAsyncItemsProvider({ items: people, rejectWithError: true }),
-  asyncPeopleNoGetByKey: new DemoAsyncItemsProvider({ items: people, dontProvideItemByKey: true })
+  asyncPeopleNoGetByKey: new DemoAsyncItemsProvider({ items: people, dontProvideItemByKey: true }),
 };
