@@ -15,6 +15,7 @@ interface SelectInputProps<TItem>
   display?: keyof TItem | ItemDisplayFn<TItem>;
   placement?: Placement;
   nonStrict?: boolean;
+  emptyOption?: boolean;
   onChange: (value?: TItem) => any;
   onChangeNonStrict?: (value?: string) => any;
 }
@@ -83,6 +84,7 @@ export class SelectInput<TItem> extends Component<
       display,
       placement,
       nonStrict,
+      emptyOption,
       onChange,
       className,
       onChangeNonStrict,
@@ -124,6 +126,7 @@ export class SelectInput<TItem> extends Component<
         display={this.props.display}
         itemKey={this.props.itemKey}
         itemRender={this.props.itemRender}
+        emptyOption={this.props.emptyOption}
         ref={view => (this.selectView = view || undefined)}
       />
     );
@@ -205,7 +208,7 @@ export class SelectInput<TItem> extends Component<
     this.props.onKeyDown && this.props.onKeyDown(ev);
   }
 
-  onSelect<TItem>(value: TItem) {
+  onSelect<TItem>(value: TItem | undefined) {
     this.updateModel(value);
     this.hide();
     this.setState({ isDirty: false });

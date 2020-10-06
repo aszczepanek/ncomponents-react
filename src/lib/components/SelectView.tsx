@@ -19,7 +19,8 @@ interface SelectViewProps<TItem> {
   message?: string;
   noResultMessage?: string;
   filterToken?: string;
-  onSelect: (item: TItem) => any;
+  emptyOption?: boolean;
+  onSelect: (item: TItem | undefined) => any;
 }
 
 interface SelectViewState<TItem> {
@@ -66,9 +67,21 @@ export class SelectView<TItem> extends React.Component<SelectViewProps<TItem>, S
         <ul>
           {this.renderMessageItem()}
           {this.renderNoResultMessage()}
+          {this.renderEmptyOption()}
           {this.renderItems()}
         </ul>
       </div>
+    );
+  }
+
+  renderEmptyOption() {
+    if (!this.props.emptyOption) return null;
+    if (this.props.filterToken) return null;
+
+    return (
+      <li onClick={() => this.select(undefined)}>
+        <span>&nbsp;</span>
+      </li>
     );
   }
 
@@ -146,7 +159,7 @@ export class SelectView<TItem> extends React.Component<SelectViewProps<TItem>, S
     this.props.onOutsideClick && this.props.onOutsideClick();
   }
 
-  select(item: TItem) {
+  select(item: TItem | undefined) {
     this.props.onSelect && this.props.onSelect(item);
   }
 

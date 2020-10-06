@@ -79,6 +79,15 @@ export class SelectDemo extends React.Component<{}, SelectDemoState> {
           <button onClick={() => this.setIncompatibleObjectValue()}>Set incompatible object value</button>
         </div>
         <div>
+          <div>Empty option</div>
+          <SelectInput
+            emptyOption
+            items={this.items}
+            value={selectedItem}
+            onChange={(selectedItem) => this.setState({ selectedItem })}
+          />
+        </div>
+        <div>
           <div>Custom display</div>
           <SelectInput
             items={this.items}
