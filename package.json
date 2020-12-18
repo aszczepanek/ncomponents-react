@@ -1,7 +1,7 @@
 {
   "name": "ncomponents-react",
   "homepage": "https://aszczepanek.github.io/ncomponents-react",
-  "version": "1.6.4",
+  "version": "1.6.5",
   "description": "General usage react components (select, datepicker, timepicker, dropdown, multiselect)",
   "keywords": [
     "react",
@@ -20,8 +20,8 @@
   "license": "MIT",
   "dependencies": {
     "popper.js": "^1.14.4",
-    "react": "^16.8.0",
-    "react-dom": "^16.8.0"
+    "react": ">=16.8.0",
+    "react-dom": ">=16.8.0"
   },
   "devDependencies": {
     "@babel/core": "7.1.6",
