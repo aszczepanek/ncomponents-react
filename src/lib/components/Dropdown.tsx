@@ -90,7 +90,10 @@ export class Dropdown<TItem> extends React.Component<DropdownProps<TItem>, Dropd
     return result;
   }
 
-  onClick() {
+  onClick(ev: React.MouseEvent<HTMLInputElement>) {
+    ev.stopPropagation();
+    ev.preventDefault();
+    ev.nativeEvent.stopImmediatePropagation();
     this.toggle();
   }
 
