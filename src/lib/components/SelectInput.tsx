@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Placement } from "popper.js";
 import { keyCodes } from "../utils/keyCodeMap";
 import { SelectView } from "./SelectView";
-import { selectUtils, ItemDisplayFn, ItemRenderFn } from "../utils/selectUtils";
+import { selectUtils, ItemDisplayFn, ItemRenderFn, ItemsRenderFn } from "../utils/selectUtils";
 import { AsyncItemsProvider } from "../utils/asyncItemsProvider";
 
 interface SelectInputProps<TItem>
@@ -12,6 +12,7 @@ interface SelectInputProps<TItem>
   itemKey?: keyof TItem;
   itemKeyAsModel?: boolean;
   itemRender?: ItemRenderFn<TItem>;
+  itemsRender?: ItemsRenderFn<TItem>;
   display?: keyof TItem | ItemDisplayFn<TItem>;
   placement?: Placement;
   nonStrict?: boolean;
@@ -81,6 +82,7 @@ export class SelectInput<TItem> extends Component<
       itemKey,
       itemKeyAsModel,
       itemRender,
+      itemsRender,
       display,
       placement,
       nonStrict,
@@ -126,6 +128,7 @@ export class SelectInput<TItem> extends Component<
         display={this.props.display}
         itemKey={this.props.itemKey}
         itemRender={this.props.itemRender}
+        itemsRender={this.props.itemsRender}
         emptyOption={this.props.emptyOption}
         ref={view => (this.selectView = view || undefined)}
       />

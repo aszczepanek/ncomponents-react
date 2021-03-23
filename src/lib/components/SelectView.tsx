@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import Popper, { Placement } from "popper.js";
 import { domEventHelpers } from "../utils/domEventHelpers";
-import { ItemDisplayFn, selectUtils, ItemRenderFn } from "../utils/selectUtils";
+import { ItemDisplayFn, selectUtils, ItemRenderFn, ItemsRenderFn, SelectEntryMetadata } from "../utils/selectUtils";
 import { keyCodes } from "../utils/keyCodeMap";
 import { toClassNames, getBodyPortal } from "../utils/reactHelpers";
 import { AsyncItemsProvider } from "../utils/asyncItemsProvider";
@@ -14,6 +14,7 @@ interface SelectViewProps<TItem> {
   onOutsideClick?: () => any;
   itemKey?: keyof TItem;
   itemRender?: ItemRenderFn<TItem>;
+  itemsRender?: ItemsRenderFn<TItem>;
   display?: keyof TItem | ItemDisplayFn<TItem>;
   nonStrict?: boolean;
   message?: string;
@@ -86,15 +87,36 @@ export class SelectView<TItem> extends React.Component<SelectViewProps<TItem>, S
   }
 
   renderItems() {
-    return this.state.items.map((item, i) => {
+    const selectEntries = this.state.items.map<SelectEntryMetadata<TItem>>((item, i) => {
       const itemKey = this.getItemKey(item);
       const focused = i == this.state.focusedIndex;
-      return (
-        <li key={itemKey} className={toClassNames({ focused })} onClick={() => this.select(item)}>
-          {this.renderItem(item)}
-        </li>
-      );
+
+      return {
+        item,
+        itemKey,
+        focused,
+        index: i,
+      };
     });
+
+    if (this.props.itemsRender) {
+      return this.props.itemsRender({
+        entries: selectEntries,
+        entryDefaultRender: (x) => this.renderSelectEntry(x),
+        onSelect: (x) => this.select(x),
+      });
+    }
+
+    return selectEntries.map((x) => this.renderSelectEntry(x));
+  }
+
+  renderSelectEntry(entry: SelectEntryMetadata<TItem>) {
+    const { item, focused, itemKey } = entry;
+    return (
+      <li key={itemKey} className={toClassNames({ focused })} onClick={() => this.select(item)}>
+        {this.renderItem(item)}
+      </li>
+    );
   }
 
   renderMessageItem() {

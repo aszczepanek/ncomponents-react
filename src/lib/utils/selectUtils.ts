@@ -1,9 +1,26 @@
+import React from "react";
+
 export const selectUtils = {
   formatItemDisplay
 };
 
+export interface SelectEntryMetadata<T> {
+  item: T;
+  itemKey: any;
+  index: number;
+  focused: boolean;
+}
+
+export interface ItemsRenderFnData<T> {
+  entries: Array<SelectEntryMetadata<T>>;
+  onSelect: (item: T | undefined) => void;
+  entryDefaultRender: (item: SelectEntryMetadata<T>) => React.ReactNode;
+}
+
+
 export type ItemDisplayFn<T> = (item: T) => string | undefined;
 export type ItemRenderFn<T> = (item: T) => React.ReactNode;
+export type ItemsRenderFn<T> = (arg: ItemsRenderFnData<T>) => React.ReactNode;
 
 function formatItemDisplay(item: any, display?: any): string {
   if (typeof display !== "function") {
