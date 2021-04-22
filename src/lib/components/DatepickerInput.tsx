@@ -113,6 +113,7 @@ export class DatepickerInput<TModel = Date | string> extends Component<
       inputValue: ev.target.value,
       datepickerVisible: true
     });
+    this.inputRef.current!.select();
     this.props.onFocus && this.props.onFocus(ev);
   }
 
