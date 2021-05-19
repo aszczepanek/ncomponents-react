@@ -170,7 +170,9 @@ export class SelectInput<TItem> extends Component<
     ev.stopPropagation();
     ev.preventDefault();
     ev.nativeEvent.stopImmediatePropagation();
-    this.show();
+    if (this.show()) {
+      this.inputRef.current!.select();
+    }
     this.props.onClick && this.props.onClick(ev);
   }
 
@@ -302,11 +304,12 @@ export class SelectInput<TItem> extends Component<
   }
 
   show() {
-    if (this.state.selectVisible) return;
+    if (this.state.selectVisible) return false;
 
     this.setState({
       selectVisible: true
     });
+    return true;
   }
 
   hide() {
