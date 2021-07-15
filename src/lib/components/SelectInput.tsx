@@ -151,7 +151,7 @@ export class SelectInput<TItem> extends Component<
       filterToken: "",
       selectVisible: true
     });
-    this.inputRef.current!.select();
+    this.inputRef.current && this.inputRef.current.select();
     this.props.onFocus && this.props.onFocus(ev);
   }
 
@@ -171,7 +171,7 @@ export class SelectInput<TItem> extends Component<
     ev.preventDefault();
     ev.nativeEvent.stopImmediatePropagation();
     if (this.show()) {
-      this.inputRef.current!.select();
+      this.inputRef.current && this.inputRef.current.select();
     }
     this.props.onClick && this.props.onClick(ev);
   }

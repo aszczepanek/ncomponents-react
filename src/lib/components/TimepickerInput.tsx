@@ -116,7 +116,7 @@ export class TimepickerInput<TModel = Date | string> extends Component<
       inputValue: ev.target.value,
       timepickerVisible: true
     });
-    this.inputRef.current!.select();
+    this.inputRef.current && this.inputRef.current.select();
     this.props.onFocus && this.props.onFocus(ev);
   }
 
