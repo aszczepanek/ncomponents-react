@@ -36,6 +36,7 @@ class DateAdapterFactory {
     this.createAdapter('yyyy-MM-ddTHH:mm', dateUtils.parseISO);
     this.createAdapter('yyyy-MM-ddTHH:mm:ss', dateUtils.parseISO);
     this.createAdapter('d.MM.yyyy', parserForDayMonthYearUsingRegex(/(\d{1,2})\.(\d\d)\.(\d{4})/));
+    this.createAdapter('dd.MM.yyyy', parserForDayMonthYearUsingRegex(/(\d{1,2})\.(\d\d)\.(\d{4})/));
     this.createAdapter('HH:mm', parserForHourMinuteUsingRegex(/(\d\d):?(\d\d)/, /(\d{1,2}):(\d\d)/));
     this.createAdapter('HH:mm:ss', parserForHourMinuteSecondUsingRegex(/(\d\d):?(\d\d):?(\d\d)/, /(\d{1,2}):(\d\d):(\d\d)/));
     this.createAdapter('Date', function parse(value) {

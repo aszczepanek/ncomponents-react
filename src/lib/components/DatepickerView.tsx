@@ -149,6 +149,11 @@ export class DatepickerView extends React.Component<DatepickerViewProps, Datepic
       // Assume unix
       return new Date(this.props.value * 1000);
     }
+
+    if (isDate(this.props.value)) {
+      return this.props.value;
+    }
+    
     return dateUtils.parseISO(this.props.value || "") || new Date();
   }
 
