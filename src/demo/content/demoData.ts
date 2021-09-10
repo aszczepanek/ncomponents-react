@@ -9,7 +9,7 @@ interface DemoAsyncProviderOptions {
 
 class DemoAsyncItemsProvider implements AsyncItemsProvider<DemoItem> {
   loadingFeedback = "Wczytywanie pozycji...";
-  errorFeddback = "Błąd wczytywania pozycji, spróbuj później";
+  errorFeedback = "Błąd wczytywania pozycji, spróbuj później";
   enableSelectLocalFiltering = true;
 
   constructor(private options: DemoAsyncProviderOptions) {}

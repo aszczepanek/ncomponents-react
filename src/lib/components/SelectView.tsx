@@ -122,7 +122,7 @@ export class SelectView<TItem> extends React.Component<SelectViewProps<TItem>, S
   renderMessageItem() {
     if (this.state.asyncError) {
       const asyncDataProvider = this.getAsyncDataProvider();
-      return <li>{(asyncDataProvider && asyncDataProvider.errorFeddback) || "Błąd"}</li>;
+      return <li>{(asyncDataProvider && asyncDataProvider.errorFeedback) || "Błąd"}</li>;
     }
 
     if (this.state.asyncPending) {
