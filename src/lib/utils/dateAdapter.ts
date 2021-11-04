@@ -63,10 +63,20 @@ class DateAdapterFactory {
       };
     }
     else if (formatPattern == "unix") {
-      return function (date: Date | string) {
+      return function (date: Date | string | number) {
+        if (!date) return undefined;
+
         if (typeof date === 'string') {
           date = new Date(date);
         }
+
+        if (typeof date === 'number') {
+          return date;
+        }
+
+        if (!date.getTime) return undefined;
+        if (isNaN(date.getTime())) return undefined;
+
         return Math.floor(date.getTime() / 1000);
       }
     }

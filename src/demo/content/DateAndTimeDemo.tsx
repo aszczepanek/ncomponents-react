@@ -71,7 +71,13 @@ export class DateAndTimeDemo extends React.Component<{}, DateAndTimeDemoState> {
         />
 
         <div className="mt-10">Model (date and time unix): {this.state.unix}</div>
-        <DatepickerInput modelFormat="unix" value={this.state.unix} onChange={(unix) => this.setState({ unix })} />
+        <DatepickerInput
+          modelFormat="unix"
+          value={this.state.unix}
+          onChange={(unix) => {
+            this.setState({ unix });
+          }}
+        />
         <TimepickerInput
           modelFormat="unix"
           value={this.state.unix}
